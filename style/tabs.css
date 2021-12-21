@@ -1,0 +1,163 @@
+.tabs {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 1000;
+  min-height: 100% !important;
+  height: 100%;
+}
+#tab1.active,
+#tab2.active {
+  display: block !important;
+  z-index: 1000 !important;
+  height: calc(100% - (40px));
+}
+#vbi-error-indicator {
+  background: #fff;
+}
+#tab1,
+#tab2 {
+  display: none;
+  height: 100%;
+  width: 100%;
+}
+/* tab list item */
+.tabs #tabs-list {
+  display: flex;
+  justify-content: center;
+  height: 40px;
+  margin: 5px 0 0 0;
+  z-index: 1050;
+  width: 100%;
+  background: #fff;
+}
+.tabs #tabs-list li {
+  float: left;
+  margin: 0px;
+  margin-right: 2px;
+  padding: 10px 5px;
+  text-align: center;
+  color: #747474;
+  opacity: 0.7 !important;
+}
+.tabs #tabs-list li:hover {
+  cursor: pointer;
+}
+.tabs #tabs-list li.active {
+  border-bottom: 2px solid #22a9e2;
+  font-weight: 600;
+  opacity: 1 !important;
+}
+
+#chartcontainer {
+  /* width: calc(100% - (25%)); */
+  display: flex;
+  height: 100%;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 0;
+}
+
+div[class*="subcontainerOne-"],
+div[class*="titledivsub-"] {
+  height: 100%;
+  width: 100%;
+  border-top: 0 solid transparent;
+  display: table;
+}
+
+div[class*="titledivsub-"] {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.container,
+.wrapper {
+  height: 100%;
+  width: 100%;
+}
+#titlediv {
+  display: flex;
+  height: 100%;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-top: 34px;
+  width: 25%;
+  float: left;
+}
+.extradiv {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 10%;
+  float: right;
+}
+.fade-out {
+  opacity: 0.4;
+}
+.header {
+  display: flex;
+  justify-content: space-around;
+  z-index: 1000;
+  width: 100%;
+}
+#titlediv p {
+  margin: 0;
+}
+.container,
+#charttitle {
+  background: #fff;
+}
+.container {
+  padding: 0 0 40px 0 !important;
+}
+#spanpercentvalue {
+  margin-left: 7px;
+}
+.canvas,
+.canvas1 {
+  width: 45%;
+  height: 100%;
+  position: absolute;
+  background-clip: content-box;
+  padding: 25px;
+}
+.canvas1 {
+  right: 0%;
+  width: 45% !important;
+}
+.headertext {
+  text-align: center;
+  color: #b9b9b9;
+  padding-top: 10px;
+  height: 35px;
+}
+.title {
+  display: none !important;
+}
+.chartcontainer.reswidth {
+  width: 100% !important;
+}
+.chartcontainer.reswidth div[class*="subcontainerOne-"],
+.chartcontainer.reswidth div[class*="subcontainerOne-"] .highcharts-container,
+.chartcontainer.reswidth
+  div[class*="subcontainerOne-"]
+  .highcharts-container
+  svg {
+  width: 100% !important;
+}
+.chartcontainer.reswidth .canvas,
+.chartcontainer.reswidth .canvas1 {
+  width: 50% !important;
+  padding-left: 0;
+}
+.versioncontainer {
+  display: flex;
+  justify-content: space-evenly;
+  z-index: 1050;
+  padding-top: 20px;
+}
+.highcharts-container {
+  display: table-cell;
+    vertical-align: middle;
+}

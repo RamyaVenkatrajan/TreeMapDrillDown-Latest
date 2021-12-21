@@ -1,0 +1,1151 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Category",
+            "kind": "Grouping",
+            "name": "category",
+            "description": "Category."
+        },
+        {
+            "displayName": "Tab 1 Values",
+            "name": "Values1",
+            "kind": "Measure",
+            "requiredTypes": [
+                {
+                    "numeric": true
+                },
+                {
+                    "integer": true
+                }
+            ]
+        },
+        {
+            "displayName": "Tab 2 Values",
+            "name": "Values3",
+            "kind": "Measure",
+            "requiredTypes": [
+                {
+                    "numeric": true
+                },
+                {
+                    "integer": true
+                }
+            ]
+        },
+        {
+            "displayName": "Percentage Value",
+            "name": "PercentageValues",
+            "kind": "Measure",
+            "requiredTypes": [
+                {
+                    "numeric": true
+                },
+                {
+                    "integer": true
+                }
+            ]
+        }
+    ],
+    "dataViewMappings": [
+        {
+            "categorical": {
+                "categories": {
+                    "dataReductionAlgorithm": {
+                        "top": {}
+                    },
+                    "for": {
+                        "in": "category"
+                    }
+                },
+                "values": {
+                    "group": {
+                        "by": "category",
+                        "select": [
+                            {
+                                "bind": {
+                                    "to": "Values1"
+                                }
+                            },
+                            {
+                                "bind": {
+                                    "to": "Values3"
+                                }
+                            },
+                            {
+                                "bind": {
+                                    "to": "PercentageValues"
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            "conditions": [
+                {
+                    "category":{
+                        "max": 1
+                    },
+                    "Values1": {
+                        "max": 5
+                    },
+                    "Values3": {
+                        "max": 5
+                    },
+                    "PercentageValues": {
+                        "max": 1
+                    }
+                }
+            ]
+        }
+    ],
+   
+    "objects": {
+        "license": {
+            "displayName": "License",
+            "properties": {
+                "customer": {
+                    "displayName": "Licensed To",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "key": {
+                    "description": "Unlock additional capabilities with your license key. To purchase a license, visit our website http://xviz.com",
+                    "displayName": "License Key",
+                    "type": {
+                        "text": true
+                    }
+                }
+            }
+        },
+        "bifrostSection": {
+            "displayName": "Hidden Props",
+            "properties": {
+                "bifrost": {
+                    "displayName": "Hidden Prop",
+                    "type": {
+                        "text": true
+                    }
+                }
+            }
+        },
+        "chartOptions": {
+            "displayName": "Chart Options",
+            "properties": {
+                "bandBgshow": {
+                    "description": "Enable Band Background",
+                    "displayName": "Show Band Background",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "chartshow": {
+                    "description": "Chart Title section enabled",
+                    "displayName": "Show Chart Title",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "charttitle": {
+                    "description": "",
+                    "displayName": "Chart Title",
+                    "placeHolderText": "Auto",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "fontColor": {
+                    "description": "Select color for chart title",
+                    "displayName": "Chart Title Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "percentDecimal": {
+                    "description": "Select the number of decimal places to displayed in the Percentage value",
+                    "displayName": "Percentage Value Decimal Places",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "percentvalfontColor": {
+                    "description": "Select color for percentage value",
+                    "displayName": "Percentage Value Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "fontfamily": {
+                    "description": "Applied to all the chart title in the visual",
+                    "displayName": "Chart Title Font Family",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Standard for numbers",
+                                "value": "Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Arial",
+                                "value": "Arial, Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Arial Black",
+                                "value": "Arial Black"
+                            },
+                            {
+                                "displayName": "Arial Unicode MS",
+                                "value": "Arial Unicode MS"
+                            },
+                            {
+                                "displayName": "Calibri",
+                                "value": "Calibri"
+                            },
+                            {
+                                "displayName": "Cambria",
+                                "value": "Cambria"
+                            },
+                            {
+                                "displayName": "Cambria Math",
+                                "value": "Cambria Math"
+                            },
+                            {
+                                "displayName": "Candara",
+                                "value": "Candara"
+                            },
+                            {
+                                "displayName": "Comic Sans MS",
+                                "value": "Comic Sans MS"
+                            },
+                            {
+                                "displayName": "Consolas",
+                                "value": "Consolas"
+                            },
+                            {
+                                "displayName": "Constantia",
+                                "value": "Constantia"
+                            },
+                            {
+                                "displayName": "Corbel",
+                                "value": "Corbel"
+                            },
+                            {
+                                "displayName": "Courier New",
+                                "value": "Courier New"
+                            },
+                            {
+                                "displayName": "Georgia",
+                                "value": "Georgia"
+                            },
+                            {
+                                "displayName": "Helvetica Neue",
+                                "value": "Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Lucida Sans Unicode",
+                                "value": "Lucida Sans Unicode"
+                            },
+                            {
+                                "displayName": "Segoe (Bold)",
+                                "value": "\"Segoe UI Bold\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI",
+                                "value": "\"Segoe UI\", wf_segoe-ui_normal, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI Light",
+                                "value": "\"Segoe UI Light\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Symbol",
+                                "value": "Symbol"
+                            },
+                            {
+                                "displayName": "Tahoma",
+                                "value": "Tahoma"
+                            },
+                            {
+                                "displayName": "Times New Roman",
+                                "value": "Times New Roman"
+                            },
+                            {
+                                "displayName": "Trebuchet MS",
+                                "value": "Trebuchet MS"
+                            },
+                            {
+                                "displayName": "Verdana",
+                                "value": "Verdana"
+                            },
+                            {
+                                "displayName": "Wingdings",
+                                "value": "Wingdings"
+                            },
+                            {
+                                "displayName": "Helvetica Neue",
+                                "value": "Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Eurostile",
+                                "value": "Eurostile, sans-serif"
+                            }
+                        ]
+                    }
+                },
+                "fontSize": {
+                    "description": "Select font size for chart title",
+                    "displayName": "Chart Title Font Size",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "fontWeight": {
+                    "description": "Select font weight for chart title",
+                    "displayName": "Chart Title Font Weight",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "100",
+                                "value": "100"
+                            },
+                            {
+                                "displayName": "200",
+                                "value": "200"
+                            },
+                            {
+                                "displayName": "300",
+                                "value": "300"
+                            },
+                            {
+                                "displayName": "400",
+                                "value": "400"
+                            },
+                            {
+                                "displayName": "500",
+                                "value": "500"
+                            },
+                            {
+                                "displayName": "600",
+                                "value": "600"
+                            },
+                            {
+                                "displayName": "700",
+                                "value": "700"
+                            },
+                            {
+                                "displayName": "800",
+                                "value": "800"
+                            },
+                            {
+                                "displayName": "Bold",
+                                "value": "bold"
+                            },
+                            {
+                                "displayName": "Thin",
+                                "value": "thin"
+                            }
+                        ]
+                    }
+                },
+                "textAlign": {
+                    "description": "Select alignment for chart title",
+                    "displayName": "Text Align",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Left",
+                                "value": "left"
+                            },
+                            {
+                                "displayName": "Center",
+                                "value": "center"
+                            },
+                            {
+                                "displayName": "Right",
+                                "value": "right"
+                            }
+                        ]
+                    }
+                },
+                "bandBg": {
+                    "description": "Active Background color",
+                    "displayName": "Band Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "tabtitleOptions": {
+            "displayName": "Tab Title Options",
+            "properties": {
+                "tabtext1": {
+                    "description": "Tab 1 title text",
+                    "displayName": "Tab 1 Title Text",
+                    "placeHolderText": "Auto",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "tabtext2": {
+                    "description": "Tab 2 title text",
+                    "displayName": "Tab 2 Title Text",
+                    "placeHolderText": "Auto",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "tabfontColor": {
+                    "description": "Select color for tab titles",
+                    "displayName": "Tab Title Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "tabfontfamily": {
+                    "description": "Applied to tab titles in the visual",
+                    "displayName": "Tab Title Font Family",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Standard for numbers",
+                                "value": "Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Arial",
+                                "value": "Arial, Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Arial Black",
+                                "value": "Arial Black"
+                            },
+                            {
+                                "displayName": "Arial Unicode MS",
+                                "value": "Arial Unicode MS"
+                            },
+                            {
+                                "displayName": "Calibri",
+                                "value": "Calibri"
+                            },
+                            {
+                                "displayName": "Cambria",
+                                "value": "Cambria"
+                            },
+                            {
+                                "displayName": "Cambria Math",
+                                "value": "Cambria Math"
+                            },
+                            {
+                                "displayName": "Candara",
+                                "value": "Candara"
+                            },
+                            {
+                                "displayName": "Comic Sans MS",
+                                "value": "Comic Sans MS"
+                            },
+                            {
+                                "displayName": "Consolas",
+                                "value": "Consolas"
+                            },
+                            {
+                                "displayName": "Constantia",
+                                "value": "Constantia"
+                            },
+                            {
+                                "displayName": "Corbel",
+                                "value": "Corbel"
+                            },
+                            {
+                                "displayName": "Courier New",
+                                "value": "Courier New"
+                            },
+                            {
+                                "displayName": "Georgia",
+                                "value": "Georgia"
+                            },
+                            {
+                                "displayName": "Helvetica Neue",
+                                "value": "Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Lucida Sans Unicode",
+                                "value": "Lucida Sans Unicode"
+                            },
+                            {
+                                "displayName": "Segoe (Bold)",
+                                "value": "\"Segoe UI Bold\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI",
+                                "value": "\"Segoe UI\", wf_segoe-ui_normal, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI Light",
+                                "value": "\"Segoe UI Light\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Symbol",
+                                "value": "Symbol"
+                            },
+                            {
+                                "displayName": "Tahoma",
+                                "value": "Tahoma"
+                            },
+                            {
+                                "displayName": "Times New Roman",
+                                "value": "Times New Roman"
+                            },
+                            {
+                                "displayName": "Trebuchet MS",
+                                "value": "Trebuchet MS"
+                            },
+                            {
+                                "displayName": "Verdana",
+                                "value": "Verdana"
+                            },
+                            {
+                                "displayName": "Wingdings",
+                                "value": "Wingdings"
+                            },
+                            {
+                                "displayName": "Helvetica Neue",
+                                "value": "Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Eurostile",
+                                "value": "Eurostile, sans-serif"
+                            }
+                        ]
+                    }
+                },
+                "tabfontSize": {
+                    "description": "Select font size for tab titles",
+                    "displayName": "Tab Title Font Size",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "borderbottomColor": {
+                    "description": "Select color for tab titles border",
+                    "displayName": "Tab Title Border Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "dataLabels": {
+            "displayName": "Data Labels",
+            "properties": {
+                "show": {
+                    "description": "Enable Datalabels section",
+                    "displayName": "Show",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "dlfontSize": {
+                    "description": "Select font size for data labels",
+                    "displayName": "Font Size",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "dlFontWeight": {
+                    "description": "Select font weight for data labels",
+                    "displayName": "Font Weight",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "100",
+                                "value": "100"
+                            },
+                            {
+                                "displayName": "200",
+                                "value": "200"
+                            },
+                            {
+                                "displayName": "300",
+                                "value": "300"
+                            },
+                            {
+                                "displayName": "400",
+                                "value": "400"
+                            },
+                            {
+                                "displayName": "500",
+                                "value": "500"
+                            },
+                            {
+                                "displayName": "600",
+                                "value": "600"
+                            },
+                            {
+                                "displayName": "700",
+                                "value": "700"
+                            },
+                            {
+                                "displayName": "800",
+                                "value": "800"
+                            },
+                            {
+                                "displayName": "Bold",
+                                "value": "bold"
+                            },
+                            {
+                                "displayName": "Thin",
+                                "value": "thin"
+                            }
+                        ]
+                    }
+                },
+                "dlfontColor": {
+                    "description": "Select color for data labels",
+                    "displayName": "Font Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "dlshowbg": {
+                    "description": "Enable Background",
+                    "displayName": "Enable Background",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "currentdlfontWeight": {
+                    "description": "Select font weight for current year data labels",
+                    "displayName": "Current year Font Weight",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "100",
+                                "value": "100"
+                            },
+                            {
+                                "displayName": "200",
+                                "value": "200"
+                            },
+                            {
+                                "displayName": "300",
+                                "value": "300"
+                            },
+                            {
+                                "displayName": "400",
+                                "value": "400"
+                            },
+                            {
+                                "displayName": "500",
+                                "value": "500"
+                            },
+                            {
+                                "displayName": "600",
+                                "value": "600"
+                            },
+                            {
+                                "displayName": "700",
+                                "value": "700"
+                            },
+                            {
+                                "displayName": "800",
+                                "value": "800"
+                            },
+                            {
+                                "displayName": "Bold",
+                                "value": "bold"
+                            },
+                            {
+                                "displayName": "Thin",
+                                "value": "thin"
+                            }
+                        ]
+                    }
+                },
+                "dlfontfamily": {
+                    "description": "Applied to all the data label in the visual",
+                    "displayName": "Data Label Font Family",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Standard for numbers",
+                                "value": "Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Arial",
+                                "value": "Arial, Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Arial Black",
+                                "value": "Arial Black"
+                            },
+                            {
+                                "displayName": "Arial Unicode MS",
+                                "value": "Arial Unicode MS"
+                            },
+                            {
+                                "displayName": "Calibri",
+                                "value": "Calibri"
+                            },
+                            {
+                                "displayName": "Cambria",
+                                "value": "Cambria"
+                            },
+                            {
+                                "displayName": "Cambria Math",
+                                "value": "Cambria Math"
+                            },
+                            {
+                                "displayName": "Candara",
+                                "value": "Candara"
+                            },
+                            {
+                                "displayName": "Comic Sans MS",
+                                "value": "Comic Sans MS"
+                            },
+                            {
+                                "displayName": "Consolas",
+                                "value": "Consolas"
+                            },
+                            {
+                                "displayName": "Constantia",
+                                "value": "Constantia"
+                            },
+                            {
+                                "displayName": "Corbel",
+                                "value": "Corbel"
+                            },
+                            {
+                                "displayName": "Courier New",
+                                "value": "Courier New"
+                            },
+                            {
+                                "displayName": "Georgia",
+                                "value": "Georgia"
+                            },
+                            {
+                                "displayName": "Helvetica Neue",
+                                "value": "Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Lucida Sans Unicode",
+                                "value": "Lucida Sans Unicode"
+                            },
+                            {
+                                "displayName": "Segoe (Bold)",
+                                "value": "\"Segoe UI Bold\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI",
+                                "value": "\"Segoe UI\", wf_segoe-ui_normal, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI Light",
+                                "value": "\"Segoe UI Light\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Symbol",
+                                "value": "Symbol"
+                            },
+                            {
+                                "displayName": "Tahoma",
+                                "value": "Tahoma"
+                            },
+                            {
+                                "displayName": "Times New Roman",
+                                "value": "Times New Roman"
+                            },
+                            {
+                                "displayName": "Trebuchet MS",
+                                "value": "Trebuchet MS"
+                            },
+                            {
+                                "displayName": "Verdana",
+                                "value": "Verdana"
+                            },
+                            {
+                                "displayName": "Wingdings",
+                                "value": "Wingdings"
+                            },
+                            {
+                                "displayName": "Helvetica Neue",
+                                "value": "Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Eurostile",
+                                "value": "Eurostile, sans-serif"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "markerOption": {
+            "displayName": "Marker Option",
+            "properties": {
+                "show": {
+                    "description": "Enable Marker Option",
+                    "displayName": "Show",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "markerSymbol": {
+                    "description":"Marker Symbol for data label formats",
+                    "displayName": "Marker Symbol",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Circle",
+                                "value": "circle"
+                            },
+                            {
+                                "displayName": "Diamond",
+                                "value": "diamond"
+                            },
+                            {
+                                "displayName": "Square",
+                                "value": "square"
+                            },
+                            {
+                                "displayName": "Triangle",
+                                "value": "triangle"
+                            },
+                            {
+                                "displayName": "Triangle-down",
+                                "value": "triangle-down"
+                            }
+                        ]
+                    }
+                },
+                "markerRadius": {
+                    "description":"Marker Radius for data label formats",
+                    "displayName": "Marker Radius",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "markerfillcolor": {
+                    "description":"Marker coloring for data label formats",
+                    "displayName": "Marker color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "numberformat": {
+            "description": "Number Formatting Options",
+            "displayName": "Number Formatting (PRO)",
+            "properties": {
+                "customizeScalingLabel": {
+                    "description": "Customize Scaling Label",
+                    "displayName": "Customize Scaling Label",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "dlBillions": {
+                    "description": "",
+                    "displayName": "Billions",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "dlDecimalSeperator": {
+                    "description": "",
+                    "displayName": "Decimal Separator",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "dlMillions": {
+                    "description": "",
+                    "displayName": "Millions",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "dlNoOfDecimal": {
+                    "description": "",
+                    "displayName": "Value Decimal Places",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "dlPrefix": {
+                    "description": "Enter a Prefix (optional)",
+                    "displayName": "Prefix",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "dlScalingFactor": {
+                    "description": "Select the units (Millions, Billions etc.)",
+                    "displayName": "Scaling Display",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Auto",
+                                "value": "auto"
+                            },
+                            {
+                                "displayName": "None",
+                                "value": "default"
+                            },
+                            {
+                                "displayName": "Thousand",
+                                "value": "1000"
+                            },
+                            {
+                                "displayName": "Million",
+                                "value": "1000000"
+                            },
+                            {
+                                "displayName": "Billion",
+                                "value": "1000000000"
+                            },
+                            {
+                                "displayName": "Trillion",
+                                "value": "1000000000000"
+                            }
+                        ]
+                    }
+                },
+                "dlSuffix": {
+                    "description": "Enter a Suffix (optional)",
+                    "displayName": "Suffix",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "dlThousandSeperator": {
+                    "description": "",
+                    "displayName": "Thousands Separator",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "dlThousands": {
+                    "description": "",
+                    "displayName": "Thousands",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "dlTrillion": {
+                    "description": "",
+                    "displayName": "Trillions",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "enableDataLabelFormatting": {
+                    "description": "Enable to format the Data Labels",
+                    "displayName": "Data Label Formatting",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "negativeValueColor": {
+                    "displayName": "Negative Value Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "negativeValueFormat": {
+                    "description": "Select the number format for  Negative values",
+                    "displayName": "Negative Value Format",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "X",
+                                "value": "x"
+                            },
+                            {
+                                "displayName": "-X",
+                                "value": "-x"
+                            },
+                            {
+                                "displayName": "X-",
+                                "value": "x-"
+                            },
+                            {
+                                "displayName": "(X)",
+                                "value": "(x)"
+                            }
+                        ]
+                    }
+                },
+                "noOfDecimal": {
+                    "description": "",
+                    "displayName": "Value Decimal Places",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "numericSymbols": {
+                    "description": "Numeric Symbols",
+                    "displayName": "Numeric Symbols",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "positiveValueColor": {
+                    "displayName": "Positive Value Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "positiveValueFormat": {
+                    "description": "Select the number format for  Positive values",
+                    "displayName": "Positive Value Format",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "X",
+                                "value": "x"
+                            },
+                            {
+                                "displayName": "+X",
+                                "value": "+x"
+                            },
+                            {
+                                "displayName": "X+",
+                                "value": "x+"
+                            }
+                        ]
+                    }
+                },
+                "prefix": {
+                    "description": "Enter a Prefix (optional)",
+                    "displayName": "Prefix",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "scalingFactor": {
+                    "description": "Select the units (Millions, Billions etc.)",
+                    "displayName": "Scaling Display",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Auto",
+                                "value": "auto"
+                            },
+                            {
+                                "displayName": "None",
+                                "value": "default"
+                            },
+                            {
+                                "displayName": "Thousand",
+                                "value": "1000"
+                            },
+                            {
+                                "displayName": "Million",
+                                "value": "1000000"
+                            },
+                            {
+                                "displayName": "Billion",
+                                "value": "1000000000"
+                            },
+                            {
+                                "displayName": "Trillion",
+                                "value": "1000000000000"
+                            },
+                            {
+                                "displayName": "Percentage",
+                                "value": "100"
+                            }
+                        ]
+                    }
+                },
+                "semanticFormatting": {
+                    "description": "Colors for underlying Data Format Types",
+                    "displayName": "Semantic Formatting",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "show": {
+                    "description": "",
+                    "displayName": "Show",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "showMeasureLabel": {
+                    "description": "",
+                    "displayName": "Measure Label",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "suffix": {
+                    "description": "Enter a Suffix (optional)",
+                    "displayName": "Suffix",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "dlPercent": {
+                    "description": "",
+                    "displayName": "Percentage",
+                    "type": {
+                        "text": true
+                    }
+                }
+            }
+        }
+    },
+    "sorting": {
+        "default": {}
+    },
+    "supportsHighlight": true,
+    "supportsLandingPage": true,
+    "supportsSynchronizingFilterState": true,
+    "supportsMultiVisualSelection": true,
+    "tooltips": {
+        "roles": [
+            "tooltips"
+        ],
+        "supportedTypes": {
+            "canvas": true,
+            "default": true
+        }
+    }
+}
