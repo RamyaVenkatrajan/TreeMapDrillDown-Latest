@@ -1,7 +1,20 @@
-.tabs {
-  width: 100%;
+#tabs_container,
+#tabs_container1 {
+  width: 50%;
   position: absolute;
   top: 0;
+  z-index: 1000;
+  min-height: 100% !important;
+  height: 100%;
+}
+#tabs_container1 {
+  right: 0;
+}
+
+.tabs,
+.tabs1 {
+  width: 100%;
+  display: inline-block;
   z-index: 1000;
   min-height: 100% !important;
   height: 100%;
@@ -22,7 +35,8 @@
   width: 100%;
 }
 /* tab list item */
-.tabs #tabs-list {
+.tabs #tabs-list,
+.tabs1 #tabs-list {
   display: flex;
   justify-content: center;
   height: 40px;
@@ -31,7 +45,8 @@
   width: 100%;
   background: #fff;
 }
-.tabs #tabs-list li {
+.tabs #tabs-list li,
+.tabs1 #tabs-list li {
   float: left;
   margin: 0px;
   margin-right: 2px;
@@ -40,10 +55,12 @@
   color: #747474;
   opacity: 0.7 !important;
 }
-.tabs #tabs-list li:hover {
+.tabs #tabs-list li:hover,
+.tabs1 #tabs-list li:hover {
   cursor: pointer;
 }
-.tabs #tabs-list li.active {
+.tabs #tabs-list li.active,
+.tabs1 #tabs-list li.active {
   border-bottom: 2px solid #22a9e2;
   font-weight: 600;
   opacity: 1 !important;
@@ -159,5 +176,130 @@ div[class*="titledivsub-"] {
 }
 .highcharts-container {
   display: table-cell;
-    vertical-align: middle;
+  vertical-align: middle;
+}
+/* .mySlides .highcharts-container{
+  width: 100% !important;
+} */
+
+/* media query*/
+
+@media screen and (max-width: 599px) {
+  .slideshowcontainer #tabs_container,
+  .slideshowcontainer #tabs_container1 {
+    width: 100% !important;
+  }
+}
+
+/********SLIDESHOW**************/
+/* Slideshow container */
+.slideshowcontainer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: black;
+  font-weight: bold;
+  font-size: 25px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  z-index: 1050;
+}
+.prev::before {
+  content: "\02C2";
+}
+.next::after {
+  content: "\02C3";
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active,
+.dot:hover {
+  /* background-color: #717171; */
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
 }
