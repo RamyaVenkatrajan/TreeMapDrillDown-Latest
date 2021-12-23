@@ -44,6 +44,7 @@
   z-index: 1050;
   width: 100%;
   background: #fff;
+  padding-left: 0;
 }
 .tabs #tabs-list li,
 .tabs1 #tabs-list li {
@@ -89,11 +90,15 @@ div[class*="titledivsub-"] {
   justify-content: center;
 }
 .container,
-.wrapper {
+.wrapper,
+.wrapper1 {
   height: 100%;
   width: 100%;
 }
-#titlediv {
+#titlediv,
+#titlediv1,
+#tabtitlediv,
+#tabtitlediv2  {
   display: flex;
   height: 100%;
   justify-content: space-between;
@@ -101,6 +106,7 @@ div[class*="titledivsub-"] {
   padding-top: 34px;
   width: 25%;
   float: left;
+  padding-left: 10px;
 }
 .extradiv {
   display: flex;
@@ -118,7 +124,10 @@ div[class*="titledivsub-"] {
   z-index: 1000;
   width: 100%;
 }
-#titlediv p {
+#titlediv p,
+#tabtitlediv p,
+#tabtitlediv2 p,
+#titlediv1 {
   margin: 0;
 }
 .container,
@@ -214,13 +223,14 @@ div[class*="titledivsub-"] {
   width: auto;
   padding: 16px;
   margin-top: -22px;
-  color: black;
+  color: #8e8e8e;
   font-weight: bold;
   font-size: 25px;
   transition: 0.6s ease;
   border-radius: 0 3px 3px 0;
   user-select: none;
   z-index: 1050;
+  background: #dcdcdc;
 }
 .prev::before {
   content: "\02C2";
@@ -237,8 +247,11 @@ div[class*="titledivsub-"] {
 
 /* On hover, add a black background color with a little bit see-through */
 .prev:hover,
-.next:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+.next:hover,
+.prev:active,
+.next:active{
+  color: #8e8e8e !important;
+  text-decoration: none  !important;
 }
 
 /* Caption text */

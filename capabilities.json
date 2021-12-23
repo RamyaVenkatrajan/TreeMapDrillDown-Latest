@@ -33,6 +33,19 @@
             ]
         },
         {
+            "displayName": "Business Unit",
+            "name": "BusinessUnit",
+            "kind": "Measure",
+            "requiredTypes": [
+                {
+                    "numeric": true
+                },
+                {
+                    "integer": true
+                }
+            ]
+        },
+        {
             "displayName": "Percentage Value",
             "name": "PercentageValues",
             "kind": "Measure",
@@ -73,6 +86,11 @@
                             },
                             {
                                 "bind": {
+                                    "to": "BusinessUnit"
+                                }
+                            },
+                            {
+                                "bind": {
                                     "to": "PercentageValues"
                                 }
                             }
@@ -90,6 +108,9 @@
                     },
                     "Values3": {
                         "max": 5
+                    },
+                    "BusinessUnit": {
+                        "max": 1
                     },
                     "PercentageValues": {
                         "max": 1

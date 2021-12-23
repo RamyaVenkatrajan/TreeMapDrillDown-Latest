@@ -20,7 +20,7 @@ export class TreeMapDrilldownUtil {
                 
                 var firsthalfseries = Values1.slice(0, Values1.length / 2);
                 var secondhalfseries = Values1.slice(-Values1.length / 2);
-                console.log(" Values1.length1", Values1.length);
+               // console.log(" Values1.length1", Values1.length);
                 for (let i = 0; i < Values1.length / 2; i++) {
 
                     seriesfilterdata1[i] = [];
@@ -28,13 +28,13 @@ export class TreeMapDrilldownUtil {
                     seriesfilterdata1[i].push(secondhalfseries[i].data[1]);
                 }
             } else if (data.categorical.dimensions[0].values.length == 1){
-                console.log(" Values1.length", Values1.length);
+              //  console.log(" Values1.length", Values1.length);
                 for (let i = 0; i < Values1.length; i++) {
                     seriesfilterdata1[i] = [];
                     seriesfilterdata1[i].push("null");
                     seriesfilterdata1[i].push(Values1[i].data[0]);
                   
-                    console.log(" seriesfilterdata1", seriesfilterdata1[i])
+                  //  console.log(" seriesfilterdata1", seriesfilterdata1[i])
                 }
             }
         }
@@ -42,7 +42,7 @@ export class TreeMapDrilldownUtil {
             var Values3 = seriesData.filter(function (item) {
                 return (item.role["Values3"])
             });
-            console.log("Values3",Values3)
+           // console.log("Values3",Values3)
            
             if (data.categorical.dimensions[0].values.length > 1) {
                 var firsthalfseries = Values3.slice(0, Values3.length / 2);
@@ -53,14 +53,14 @@ export class TreeMapDrilldownUtil {
                     seriesfilterdata2[i].push(secondhalfseries[i].data[1]);
                 }
             } else if (data.categorical.dimensions[0].values.length == 1) {
-                console.log("data.categorical.dimensions[0].values.length",data.categorical.dimensions[0].values.length)
+               // console.log("data.categorical.dimensions[0].values.length",data.categorical.dimensions[0].values.length)
                 for (let i = 0; i <Values3.length; i++) {
                     seriesfilterdata2[i] = [];
                    
                     //seriesfilterdata2[i].push(Values3[i].data[0]);
                      //seriesfilterdata1[i].push("null");
 
-                    console.log(" seriesfilterdata2", seriesfilterdata2[i])
+                   // console.log(" seriesfilterdata2", seriesfilterdata2[i])
                     
                 }
             }
@@ -75,11 +75,11 @@ export class TreeMapDrilldownUtil {
         if (isbool) {
             if (data.categorical.dimensions[0].values.length > 1) {
                 tbchartHeight1 = Chartheight / (Values1.length / 2);
-                console.log("chartHeight1!!", tbchartHeight1);
+               // console.log("chartHeight1!!", tbchartHeight1);
                
             } else if(data.categorical.dimensions[0].values.length == 1 ) {
                 tbchartHeight1 = Chartheight / (Values1.length);
-                console.log("chartHeight1", tbchartHeight1);
+               // console.log("chartHeight1", tbchartHeight1);
             }
         } else {
 
@@ -197,8 +197,7 @@ export class TreeMapDrilldownUtil {
                     },
                     chartOptions: {
                         chart: {
-                            margin: [40, 90, 40, 70],
-                           // height: isbool ? tbchartHeight1/2 : tbchartHeight2/2,
+                            margin: [40, 120, 40, 120],
                         }
                     }
                 },
@@ -209,9 +208,7 @@ export class TreeMapDrilldownUtil {
                     },
                     chartOptions: {
                         chart: {
-                            margin: [50, 90, 50, 100],
-                            
-
+                           margin: [50, 130, 50, 90],
                         }
                     }
                 },
@@ -222,8 +219,7 @@ export class TreeMapDrilldownUtil {
                     },
                     chartOptions: {
                         chart: {
-                            margin: [40, 90, 40, 90],
-
+                            margin: [40, 90, 40, 80],
                         }
                     }
                 },
@@ -235,7 +231,6 @@ export class TreeMapDrilldownUtil {
                     chartOptions: {
                         chart: {
                             margin: [20, 90, 20, 90],
-
                         }
                     }
                 },
@@ -246,8 +241,7 @@ export class TreeMapDrilldownUtil {
                     },
                     chartOptions: {
                         chart: {
-                            margin: [20, 80, 20, 80],
-
+                            margin: [20, 130, 20, 100],
                         }
                     }
                 },
@@ -257,14 +251,12 @@ export class TreeMapDrilldownUtil {
                     },
                     chartOptions: {
                         chart: {
-                            margin: [0, 80, 0, 80],
-
+                            margin: [0, 130, 0, 90],
                         }
                     }
                 },
                 ]
             }
-
         };
         return defaultValue
     }
