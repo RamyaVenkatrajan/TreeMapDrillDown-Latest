@@ -9,93 +9,72 @@ import { Console } from "console";
 export class TreeMapDrilldownUtil {
     public static getDefaultValues(instance: TreeMapDrilldownChart, settings: VisualSettings, data: Data, selectionIdBuilder: SelectionIdBuilder, seriesData: any, i, isbool: boolean) {
         let seriesfilterdata1 = [], seriesfilterdata2 = [];
-        // debugger
         if (isbool) {
-           
             var Values1 = seriesData.filter(function (item) {
                 return (item.role["Values1"])
             });
-           // console.log("Values1",Values1);
-            if (data.categorical.dimensions[0].values.length > 1) {
-                
+            if (data.categorical['groupDimension'][0].values.length > 1) {
+
                 var firsthalfseries = Values1.slice(0, Values1.length / 2);
                 var secondhalfseries = Values1.slice(-Values1.length / 2);
-                console.log(" Values1.length1", Values1.length);
                 for (let i = 0; i < Values1.length / 2; i++) {
 
                     seriesfilterdata1[i] = [];
                     seriesfilterdata1[i].push(firsthalfseries[i].data[0]);
-                    seriesfilterdata1[i].push(secondhalfseries[i].data[1]);
+                    seriesfilterdata1[i].push(secondhalfseries[i].data[0]);
                 }
-            } else if (data.categorical.dimensions[0].values.length == 1){
-                console.log(" Values1.length", Values1.length);
+            } else if (data.categorical['groupDimension'][0].values.length == 1) {
                 for (let i = 0; i < Values1.length; i++) {
                     seriesfilterdata1[i] = [];
                     seriesfilterdata1[i].push("null");
                     seriesfilterdata1[i].push(Values1[i].data[0]);
-                  
-                    console.log(" seriesfilterdata1", seriesfilterdata1[i])
                 }
             }
         }
-        else  {
+        else {
             var Values3 = seriesData.filter(function (item) {
                 return (item.role["Values3"])
             });
-            console.log("Values3",Values3)
-           
-            if (data.categorical.dimensions[0].values.length > 1) {
+            if (data.categorical['groupDimension'][0].values.length > 1) {
                 var firsthalfseries = Values3.slice(0, Values3.length / 2);
                 var secondhalfseries = Values3.slice(-Values3.length / 2);
                 for (let i = 0; i < Values3.length / 2; i++) {
                     seriesfilterdata2[i] = [];
                     seriesfilterdata2[i].push(firsthalfseries[i].data[0]);
-                    seriesfilterdata2[i].push(secondhalfseries[i].data[1]);
+                    seriesfilterdata2[i].push(secondhalfseries[i].data[0]);
                 }
-            } else if (data.categorical.dimensions[0].values.length == 1) {
-                console.log("data.categorical.dimensions[0].values.length",data.categorical.dimensions[0].values.length)
-                for (let i = 0; i <Values3.length; i++) {
+            } else if (data.categorical['groupDimension'][0].values.length == 1) {
+                for (let i = 0; i < Values3.length; i++) {
                     seriesfilterdata2[i] = [];
-                   
-                    //seriesfilterdata2[i].push(Values3[i].data[0]);
-                     //seriesfilterdata1[i].push("null");
-
-                    console.log(" seriesfilterdata2", seriesfilterdata2[i])
-                    
+                    seriesfilterdata2[i].push("null");
+                    seriesfilterdata2[i].push(Values3[i].data[0]);
                 }
             }
         }
 
-
-
         let tab1height = document.getElementById('tabs').offsetHeight;
-        //console.log("tab1height", tab1height);
         let Chartheight = tab1height - 40;
-        let tbchartHeight1, tbchartHeight2;
+        let tbchartHeight1: number, tbchartHeight2;
         if (isbool) {
-            if (data.categorical.dimensions[0].values.length > 1) {
+            if (data.categorical['groupDimension'][0].values.length > 1) {
                 tbchartHeight1 = Chartheight / (Values1.length / 2);
-                console.log("chartHeight1!!", tbchartHeight1);
-               
-            } else if(data.categorical.dimensions[0].values.length == 1 ) {
+
+            } else if (data.categorical['groupDimension'][0].values.length == 1) {
                 tbchartHeight1 = Chartheight / (Values1.length);
-                console.log("chartHeight1", tbchartHeight1);
             }
         } else {
 
-            if (data.categorical.dimensions[0].values.length > 1) {
+            if (data.categorical['groupDimension'][0].values.length > 1) {
                 tbchartHeight2 = Chartheight / (Values3.length / 2);
-                //console.log("chartHeight2!!", tbchartHeight2);
-            } else if(data.categorical.dimensions[0].values.length ==1 ) {
+            } else if (data.categorical['groupDimension'][0].values.length == 1) {
                 tbchartHeight2 = Chartheight / (Values3.length);
-                //console.log("chartHeight2", tbchartHeight2);
             }
         }
 
         const defaultValue = {
             chart: {
                 type: 'line',
-                height: isbool ? tbchartHeight1/2 : tbchartHeight2/2,
+                height: isbool ? tbchartHeight1 / 2 : tbchartHeight2 / 2,
                 margin: [50, 90, 50, 90],
                 backgroundColor: 'transparent',
             },
@@ -146,7 +125,6 @@ export class TreeMapDrilldownUtil {
                     dataLabels: {
                         enabled: settings.dataLabels.show,
                         inside: false,
-                     //   align: 'right',
                         allowOverlap: true,
                         crop: false,
                         overflow: 'none',
@@ -165,8 +143,6 @@ export class TreeMapDrilldownUtil {
                                 return false
                             },
                             click: (e) => {
-                                console.log('PLOT DATA ', e.point.xAxis);
-                                console.log("Event SELECTION BUILDER !!!!", selectionIdBuilder);
                                 instance.hcSelectionManager.select(e);
                                 if (instance.hcSelectionManager.getSelectedPointCount() > 0) {
                                     instance.hcSelectionManager.selectPointsFromSelectionIds(instance.chartRef);
@@ -192,13 +168,12 @@ export class TreeMapDrilldownUtil {
             responsive: {
                 rules: [{
                     condition: {
-                        minWidth:401,
+                        minWidth: 401,
                         maxWidth: 500
                     },
                     chartOptions: {
                         chart: {
                             margin: [40, 90, 40, 70],
-                           // height: isbool ? tbchartHeight1/2 : tbchartHeight2/2,
                         }
                     }
                 },
@@ -210,8 +185,6 @@ export class TreeMapDrilldownUtil {
                     chartOptions: {
                         chart: {
                             margin: [50, 90, 50, 100],
-                            
-
                         }
                     }
                 },
@@ -223,31 +196,28 @@ export class TreeMapDrilldownUtil {
                     chartOptions: {
                         chart: {
                             margin: [40, 90, 40, 90],
-
                         }
                     }
                 },
                 {
                     condition: {
-                        minWidth:1,
+                        minWidth: 1,
                         maxWidth: 229
                     },
                     chartOptions: {
                         chart: {
                             margin: [20, 90, 20, 90],
-
                         }
                     }
                 },
                 {
                     condition: {
-                        minHeight:41,
+                        minHeight: 41,
                         maxHeight: 100
                     },
                     chartOptions: {
                         chart: {
                             margin: [20, 80, 20, 80],
-
                         }
                     }
                 },
@@ -258,7 +228,6 @@ export class TreeMapDrilldownUtil {
                     chartOptions: {
                         chart: {
                             margin: [0, 80, 0, 80],
-
                         }
                     }
                 },

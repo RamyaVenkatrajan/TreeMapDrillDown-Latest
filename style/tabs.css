@@ -30,6 +30,7 @@
   z-index: 1050;
   width: 100%;
   background: #fff;
+  padding-left: 0;
 }
 .tabs #tabs-list li {
   float: left;
@@ -81,7 +82,7 @@ div[class*="titledivsub-"] {
   height: 100%;
   justify-content: space-between;
   flex-direction: column;
-  padding-top: 34px;
+  padding-top: 55px;
   width: 25%;
   float: left;
 }
@@ -135,9 +136,6 @@ div[class*="titledivsub-"] {
 .title {
   display: none !important;
 }
-.chartcontainer.reswidth {
-  width: 100% !important;
-}
 .chartcontainer.reswidth div[class*="subcontainerOne-"],
 .chartcontainer.reswidth div[class*="subcontainerOne-"] .highcharts-container,
 .chartcontainer.reswidth
@@ -146,11 +144,7 @@ div[class*="titledivsub-"] {
   svg {
   width: 100% !important;
 }
-.chartcontainer.reswidth .canvas,
-.chartcontainer.reswidth .canvas1 {
-  width: 50% !important;
-  padding-left: 0;
-}
+
 .versioncontainer {
   display: flex;
   justify-content: space-evenly;
@@ -159,5 +153,5 @@ div[class*="titledivsub-"] {
 }
 .highcharts-container {
   display: table-cell;
-    vertical-align: middle;
+  vertical-align: middle;
 }

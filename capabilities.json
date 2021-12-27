@@ -54,7 +54,7 @@
                         "top": {}
                     },
                     "for": {
-                        "in": "category"
+                        "in": ""
                     }
                 },
                 "values": {
@@ -82,7 +82,7 @@
             },
             "conditions": [
                 {
-                    "category":{
+                    "category": {
                         "max": 1
                     },
                     "Values1": {
