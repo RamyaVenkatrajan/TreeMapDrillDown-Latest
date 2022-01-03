@@ -46,8 +46,8 @@ export class TreeMapDrilldownUtil {
             } else if (data.categorical['groupDimension'][0].values.length == 1) {
                 for (let i = 0; i < Values3.length; i++) {
                     seriesfilterdata2[i] = [];
-                    seriesfilterdata2[i].push("null");
-                    seriesfilterdata2[i].push(Values3[i].data[0]);
+                    // seriesfilterdata2[i].push("null");
+                    // seriesfilterdata2[i].push(Values3[i].data[0]);
                 }
             }
         }

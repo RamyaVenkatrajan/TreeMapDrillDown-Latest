@@ -85,7 +85,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             isMeasureComponent: true,
             resizeHandler: {
                 callBack: () => {
-                  
+
                     this.generateData(this._data, this._element, this.__selectionIdBuilder, this._settings);
                 },
                 timeOut: 0,
@@ -176,8 +176,8 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             countValues1: 0,
             countValues3: 0,
         };
-        
-    
+
+
         data.metadata.dimensions.forEach((dimMeta) => {
             if (dimMeta.role["category"]) {
                 this.fieldsMeta.hasCategory = true;
@@ -212,7 +212,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
     ) {
         try {
 
-            // console.log("Data", data);
+            //console.log("Data", data);
             this.chartfilter = [], this.chartfilter1 = [];
             let seriesData = this.GET_SERIES(data, settings, selectionIdBuilder, this.hcSelectionManager);
 
@@ -278,7 +278,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             ul.appendChild(second_li);
             tabs.appendChild(tabl1div);
             tabs.appendChild(tabl2div);
-        
+
             const errorElement = document.getElementById("tabs");
             if (errorElement != null) {
                 errorElement.parentNode.removeChild(errorElement);
@@ -305,45 +305,46 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             var actual_width, newactualwidth, chartwidth;
             actual_width = ((widowwidth) * 25);
             newactualwidth = (actual_width / 100);
-            chartwidth = (widowwidth ) - newactualwidth;
+            chartwidth = (widowwidth) - newactualwidth;
 
             if (settings.chartOptions.chartshow !== false && this.fieldsMeta.hasPercentageValues && this.fieldsMeta.hasCategory) {
                 const percentval = data.categorical.measures.filter(function (item) {
                     return (item.role["PercentageValues"])
                 });
                 let percentValue;
-                if(percentval.length > 1){
-                     percentValue = percentval[1].values[0];
-                }else{
+                if (percentval.length > 1) {
+                    percentValue = percentval[1].values[0];
+                } else {
                     percentValue = percentval[0].values[0];
                 }
-                    let decpercent = '';
-                    if (percentValue == 1) {
-                        decpercent = Math.round(percentValue).toString() + '%';
-
-                    } else if (percentValue > 1 && percentValue <= 100) {
-                        decpercent = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
-                    }else if(percentValue > 100){
-                        decpercent = (percentValue).toFixed(settings.chartOptions.percentDecimal) + '%';
-                    }
-                    else if (percentValue < 0) {
-                        decpercent = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
-                    }
-                    else if (percentValue > 0 && percentValue < 1) {
-                        let parsevalue = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
-                        decpercent = parsevalue;
-
-                    } else if (percentValue == 0) {
-                        decpercent = percentValue.toString() + '%';
-                    }
-                    const percent = (settings.chartOptions.chartshow == true && this.fieldsMeta.hasPercentageValues) ? decpercent : '';
-                    spanpercentvalue.innerHTML = percent.toString();
-                    if (percentValue == null) {
-                        UIIndicators.showErrorMessage(tabs, "Invalid percentage value data. Please add valid value");
-                        var taberror = document.querySelector('.info-container');
-                        taberror.classList.add('percenterror');
-                        tabs.insertBefore(taberror, tabs.childNodes[0]);
-                    }
+                // console.log("percentValue",percentValue);
+                let decpercent = '';
+                if (percentValue == 1) {
+                    decpercent = (percentValue * 100).toString() + '%';
+            
+                } else if (percentValue > 1 && percentValue <100) {
+                    decpercent = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
+                } else if (percentValue >= 100) {
+                    decpercent = (percentValue).toString() + '%';
+                }
+                else if (percentValue < 0) {
+                    decpercent = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
+                }
+                else if (percentValue > 0 && percentValue < 1) {
+                    let parsevalue = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
+                    decpercent = parsevalue;
+            
+                } else if (percentValue == 0) {
+                    decpercent = percentValue.toString() + '%';
+                }
+                const percent = (settings.chartOptions.chartshow == true && this.fieldsMeta.hasPercentageValues) ? decpercent : '';
+                spanpercentvalue.innerHTML = percent.toString();
+                if (percentValue == null) {
+                    UIIndicators.showErrorMessage(tabs, "Invalid percentage value data. Please add valid value");
+                    var taberror = document.querySelector('.info-container');
+                    taberror.classList.add('percenterror');
+                    tabs.insertBefore(taberror, tabs.childNodes[0]);
+                }
             }
 
             var Values1 = seriesData.filter(function (item) {
@@ -354,10 +355,10 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             let filtervalues = filtermeeasure.map(function (e, i) {
                 return e.values;
             })
-            let somefilter = filtervalues.every(item => (item[0] === null)  || (item[0] === undefined));
+            let somefilter = filtervalues.every(item => (item[0] === null) || (item[0] === undefined));
 
             let filtermeeasure2 = data.categorical.measures.filter(f => f.role["Values3"]);
-            
+
             let filtervalues2 = filtermeeasure2.map(function (e, i) {
                 return e.values;
             })
@@ -425,7 +426,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                             headertext2.innerHTML = data.categorical['groupDimension'][0].values[0];
                         }
                     } else {
-                        let lesslength =  data.categorical['groupDimension'][0].values[0];
+                        let lesslength = data.categorical['groupDimension'][0].values[0];
                         headertext2.innerHTML = lesslength;
 
                         if (isNaN(lesslength)) {
@@ -434,18 +435,18 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                             headertext1.innerHTML = (parseInt(lesslength) - 1).toString();
                         }
                     }
-                       
-                    const Value1label = Values1.map(v =>v.name)
+
+                    const Value1label = Values1.map(v => v.name)
                     let clientHeight = document.getElementById('tab1').offsetHeight;
                     let chartHeight, vllength;
-                    if(data.categorical['groupDimension'][0].values.length > 1){
-                         chartHeight = clientHeight / (Values1.length / 2);
-                         vllength = Values1.length / 2;
-                    }else{
-                         chartHeight = clientHeight / (Values1.length);
-                         vllength = Values1.length;
+                    if (data.categorical['groupDimension'][0].values.length > 1) {
+                        chartHeight = clientHeight / (Values1.length / 2);
+                        vllength = Values1.length / 2;
+                    } else {
+                        chartHeight = clientHeight / (Values1.length);
+                        vllength = Values1.length;
                     }
-              
+
                     for (let i = 0; i < vllength; i++) {
                         const titledivsub = document.createElement('div');
                         const subcontainerOne = document.createElement('div');
@@ -458,7 +459,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                         chartcontainer.appendChild(subcontainerOne);
                         this.chartSetting = TreeMapDrilldownUtil.getDefaultValues(this, settings, data, selectionIdBuilder, seriesData, i, true);
                         this.chartRef = this.highcharts.chart(subcontainerOne, this.chartSetting);
-                       // console.log("chartRef", this.chartRef);
+                        // console.log("chartRef", this.chartRef);
                         this.chartfilter[i] = [];
                         this.chartfilter[i].push(this.chartRef);
 
@@ -475,7 +476,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             });
 
             if (!this.fieldsMeta.hasCategory) {
-              
+
                 UIIndicators.showErrorMessage(tabs, "Please add Category value",);
                 var taberror = document.querySelector('.info-container');
                 tabs.insertBefore(taberror, tabs.childNodes[0]);
@@ -492,7 +493,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                     const titlediv = document.createElement('div');
                     const chartcontainer = document.createElement('div');
                     const versioncontainer = document.createElement('div');
-                   
+
                     // create id
                     wrapper.className = 'wrapper';
                     container.className = 'container'
@@ -526,13 +527,13 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                     versioncontainer.appendChild(headertext3);
                     versioncontainer.appendChild(headertext4);
 
-                    if ( data.categorical['groupDimension'][0].values.length > 1) {
-                        if (isNaN(parseInt(data.categorical['groupDimension'][0].values[0])) || isNaN(parseInt( data.categorical['groupDimension'][0].values[1]))) {
+                    if (data.categorical['groupDimension'][0].values.length > 1) {
+                        if (isNaN(parseInt(data.categorical['groupDimension'][0].values[0])) || isNaN(parseInt(data.categorical['groupDimension'][0].values[1]))) {
                             headertext3.innerHTML = data.categorical['groupDimension'][0].values[0];
-                            headertext4.innerHTML =  data.categorical['groupDimension'][0].values[1];
+                            headertext4.innerHTML = data.categorical['groupDimension'][0].values[1];
                         } else {
-                            const tab2offsetvalue = parseInt( data.categorical['groupDimension'][0].values[0]) - 1;
-                            const tab2offsetvalue2 = parseInt( data.categorical['groupDimension'][0].values[1]) - 1;
+                            const tab2offsetvalue = parseInt(data.categorical['groupDimension'][0].values[0]) - 1;
+                            const tab2offsetvalue2 = parseInt(data.categorical['groupDimension'][0].values[1]) - 1;
 
                             if (data.categorical['groupDimension'][0].values[0] < data.categorical['groupDimension'][0].values[1]) {
                                 headertext3.innerHTML = tab2offsetvalue.toString();
@@ -544,7 +545,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                             }
                         }
                     } else {
-                        let lesslength =  data.categorical['groupDimension'][0].values[0];
+                        let lesslength = data.categorical['groupDimension'][0].values[0];
                         headertext4.innerHTML = lesslength;
 
                         if (isNaN(lesslength)) {
@@ -558,14 +559,14 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                     const Value3label = Values3.map(v => v.name)
                     let clientHeight1 = document.getElementById('tabs').offsetHeight;
                     let chartHeight1, vllength1;
-                    if(data.categorical['groupDimension'][0].values.length > 1){
+                    if (data.categorical['groupDimension'][0].values.length > 1) {
                         chartHeight1 = clientHeight1 / (Values3.length / 2);
                         vllength1 = Values3.length / 2;
-                   }else{
+                    } else {
                         chartHeight1 = clientHeight1 / (Values3.length);
                         vllength1 = Values3.length;
-                   }
-                   
+                    }
+
                     for (let i = 0; i < vllength1; i++) {
                         const titledivsub = document.createElement('div');
                         titledivsub.className = `titledivsub-${i}`;
@@ -592,7 +593,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             console.log("error", e);
         }
     }
-    
+
     private getNumberFormattingSettings(numberFormatSettings: any, settings: VisualSettings) {
         let noOfDecimal, scalingFactor, prefix, suffix;
         if (numberFormatSettings && numberFormatSettings.showMeasureLabel) {
@@ -617,7 +618,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         const dataViewMeasures = data.categorical.measures;
         const valueMeasures = dataViewMeasures.filter(dataViewMeasure => dataViewMeasure.role.Values1 || dataViewMeasure.role.Values3);
         let selectiondata = [], seriesData = [];
-      
+
         for (let measureIndex = 0; measureIndex < valueMeasures.length; measureIndex++) {
 
             const series = [];
@@ -632,7 +633,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             const numberFormatSettings = dataViewMeasureObjectSettings && dataViewMeasureObjectSettings.numberformat;
             const { noOfDecimal, scalingFactor, prefix, suffix } = this.getNumberFormattingSettings(numberFormatSettings, settings);
             measureValues.forEach((element, index) => {
-        
+
                 const categoriesObject = {};
                 const categoryIndex = [], catagoryMemberIndex = [];
                 dataViewCategories.forEach((categories, catagoryIndex) => {
@@ -640,13 +641,13 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                     categoryIndex.push(catagoryIndex);
                     catagoryMemberIndex.push(index);
                 });
-              
+
                 const selectionId = selectionIdBuilder.getSelectionId({
                     'measureName': measureName,
                     // 'categoricalIndex': categoryIndex,
-                     'categoricalMemberIndex': catagoryMemberIndex,
+                    'categoricalMemberIndex': catagoryMemberIndex,
                 });
-              
+
                 const isPointSelected = hcSelectionManager.isSelected(dataViewMeasure, index, selectionId);
                 const seriesData = {
                     key: element,
@@ -663,7 +664,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                         shadow: false,
                         style: {
                             fontSize: settings.dataLabels.dlfontSize + 'px',
-                            fontWeight: measureIndex >= (valueMeasures.length/2) ? settings.dataLabels.currentdlfontWeight : settings.dataLabels.dlFontWeight,
+                            fontWeight: measureIndex >= (valueMeasures.length / 2) ? settings.dataLabels.currentdlfontWeight : settings.dataLabels.dlFontWeight,
                             color: settings.dataLabels.dlfontColor,
                             textShadow: false,
                             textOutline: false,
@@ -749,4 +750,3 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         this.highcharts.chart(element, lpChartSettings);
     }
 }
-
