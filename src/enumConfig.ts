@@ -53,6 +53,14 @@ export class EnumConfig {
                     isVisible: (settings: VisualSettings) => settings.chartOptions.chartshow !== false
                 },
                 {
+                    name: 'charttitle2',
+                    isVisible: (settings: VisualSettings) => settings.chartOptions.chartshow !== false
+                },
+                {
+                    name: 'charttitle3',
+                    isVisible: (settings: VisualSettings) => settings.chartOptions.chartshow !== false
+                },
+                {
                     name: 'fontfamily',
                     isVisible: (settings: VisualSettings) => settings.chartOptions.chartshow !== false
                 },
@@ -99,19 +107,8 @@ export class EnumConfig {
                 {
                     name: 'percentvalfontColor',
                     isVisible: (settings: VisualSettings) => settings.chartOptions.chartshow !== false
-                },
-                {
-                    name: 'chartSeries',
-                    isVisible: true,
-                    validValues: (settings: any) => {
-                        return {
-                            numberRange: {
-                                min: 1,
-                                max: this.maxlength,
-                            },
-                        }
-                    },
                 }
+              
             ]
         };
     }
@@ -222,11 +219,27 @@ export class EnumConfig {
             name: 'tabtitleOptions',
             properties: [
                 {
-                    name: 'tabtext1',
+                    name: 'chart1tabtext1',
                     isVisible: true
                 },
                 {
-                    name: 'tabtext2',
+                    name: 'chart1tabtext2',
+                    isVisible: true
+                },
+                {
+                    name: 'chart2tabtext1',
+                    isVisible: true
+                },
+                {
+                    name: 'chart2tabtext2',
+                    isVisible: true
+                },
+                {
+                    name: 'chart3tabtext1',
+                    isVisible: true
+                },
+                {
+                    name: 'chart3tabtext2',
                     isVisible: true
                 },
                 {

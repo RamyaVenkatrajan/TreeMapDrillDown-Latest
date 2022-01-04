@@ -4,7 +4,13 @@
             "displayName": "Category",
             "kind": "Grouping",
             "name": "category",
-            "description": "Category."
+            "description": "Category"
+        },
+        {
+            "displayName": "Business Unit",
+            "name": "BusinessUnit",
+            "kind": "Grouping",
+            "description": "Business Unit."
         },
         {
             "displayName": "Tab 1 Values",
@@ -22,19 +28,6 @@
         {
             "displayName": "Tab 2 Values",
             "name": "Values3",
-            "kind": "Measure",
-            "requiredTypes": [
-                {
-                    "numeric": true
-                },
-                {
-                    "integer": true
-                }
-            ]
-        },
-        {
-            "displayName": "Business Unit",
-            "name": "BusinessUnit",
             "kind": "Measure",
             "requiredTypes": [
                 {
@@ -67,7 +60,7 @@
                         "top": {}
                     },
                     "for": {
-                        "in": "category"
+                        "in": "BusinessUnit"
                     }
                 },
                 "values": {
@@ -86,11 +79,6 @@
                             },
                             {
                                 "bind": {
-                                    "to": "BusinessUnit"
-                                }
-                            },
-                            {
-                                "bind": {
                                     "to": "PercentageValues"
                                 }
                             }
@@ -103,14 +91,14 @@
                     "category":{
                         "max": 1
                     },
-                    "Values1": {
-                        "max": 5
-                    },
-                    "Values3": {
-                        "max": 5
-                    },
                     "BusinessUnit": {
                         "max": 1
+                    },
+                    "Values1": {
+                        "max": 4
+                    },
+                    "Values3": {
+                        "max": 4
                     },
                     "PercentageValues": {
                         "max": 1
@@ -169,7 +157,23 @@
                 },
                 "charttitle": {
                     "description": "",
-                    "displayName": "Chart Title",
+                    "displayName": "Chart Title 1",
+                    "placeHolderText": "Auto",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "charttitle2": {
+                    "description": "",
+                    "displayName": "Chart Title 2",
+                    "placeHolderText": "Auto",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "charttitle3": {
+                    "description": "",
+                    "displayName": "Chart Title 3",
                     "placeHolderText": "Auto",
                     "type": {
                         "text": true
@@ -405,23 +409,62 @@
                             }
                         }
                     }
+                },
+                "breakWidth": {
+                    "description": "Responsive Breakwidth",
+                    "displayName": "Break Width",
+                    "type": {
+                        "numeric": true
+                    }
                 }
             }
         },
         "tabtitleOptions": {
             "displayName": "Tab Title Options",
             "properties": {
-                "tabtext1": {
+                "chart1tabtext1": {
                     "description": "Tab 1 title text",
-                    "displayName": "Tab 1 Title Text",
+                    "displayName": "Chart 1 - Tab 1 title",
                     "placeHolderText": "Auto",
                     "type": {
                         "text": true
                     }
                 },
-                "tabtext2": {
+                "chart1tabtext2": {
                     "description": "Tab 2 title text",
-                    "displayName": "Tab 2 Title Text",
+                    "displayName": "Chart 1 - Tab 2 title",
+                    "placeHolderText": "Auto",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "chart2tabtext1": {
+                    "description": "Tab 1 title text",
+                    "displayName": "Chart 2 - Tab 1 title",
+                    "placeHolderText": "Auto",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "chart2tabtext2": {
+                    "description": "Tab 2 title text",
+                    "displayName": "Chart 2 - Tab 2 title",
+                    "placeHolderText": "Auto",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "chart3tabtext1": {
+                    "description": "Tab 1 title text",
+                    "displayName": "Chart 3 - Tab 1 title",
+                    "placeHolderText": "Auto",
+                    "type": {
+                        "text": true
+                    }
+                },
+                "chart3tabtext2": {
+                    "description": "Tab 2 title text",
+                    "displayName": "Chart 3 - Tab 2 title",
                     "placeHolderText": "Auto",
                     "type": {
                         "text": true

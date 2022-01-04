@@ -1,3 +1,4 @@
+import { bool } from "aws-sdk/clients/signer";
 import powerbiVisualsApi from "powerbi-visuals-api";
 import ISelectionId = powerbiVisualsApi.visuals.ISelectionId; 
 
@@ -14,6 +15,7 @@ export interface SeriesOptions extends Highcharts.SeriesBarOptions {
 
 export interface FieldsMeta {
     hasCategory: boolean;
+    hasBusinessUnit:boolean;
     hasValues1: boolean;
     hasValues3: boolean;
     hasPercentageValues:boolean;

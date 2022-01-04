@@ -1,14 +1,17 @@
-#tabs_container,
-#tabs_container1 {
-  width: 50%;
-  position: absolute;
-  top: 0;
+/**********************
+Tab section css
+**********************/
+#tabs_container0,
+#tabs_container1,
+#tabs_container2 {
+  width: 33.3%;
+  /* position: absolute;
+  top: 0; */
   z-index: 1000;
   min-height: 100% !important;
   height: 100%;
-}
-#tabs_container1 {
-  right: 0;
+  display: inline-block;
+  float: left;
 }
 
 .tabs,
@@ -34,7 +37,6 @@
   height: 100%;
   width: 100%;
 }
-/* tab list item */
 .tabs #tabs-list,
 .tabs1 #tabs-list {
   display: flex;
@@ -68,12 +70,12 @@
 }
 
 #chartcontainer {
-  /* width: calc(100% - (25%)); */
+  width: 75%;
   display: flex;
   height: 100%;
-  justify-content: space-between;
   flex-direction: column;
   padding-bottom: 0;
+  position: relative;
 }
 
 div[class*="subcontainerOne-"],
@@ -96,9 +98,7 @@ div[class*="titledivsub-"] {
   width: 100%;
 }
 #titlediv,
-#titlediv1,
-#tabtitlediv,
-#tabtitlediv2  {
+#titlediv1 {
   display: flex;
   height: 100%;
   justify-content: space-between;
@@ -108,13 +108,7 @@ div[class*="titledivsub-"] {
   float: left;
   padding-left: 10px;
 }
-.extradiv {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  width: 10%;
-  float: right;
-}
+
 .fade-out {
   opacity: 0.4;
 }
@@ -125,11 +119,10 @@ div[class*="titledivsub-"] {
   width: 100%;
 }
 #titlediv p,
-#tabtitlediv p,
-#tabtitlediv2 p,
 #titlediv1 {
   margin: 0;
 }
+
 .container,
 #charttitle {
   background: #fff;
@@ -142,40 +135,26 @@ div[class*="titledivsub-"] {
 }
 .canvas,
 .canvas1 {
-  width: 45%;
+  width: 50%;
   height: 100%;
   position: absolute;
   background-clip: content-box;
   padding: 25px;
+  padding-bottom: 0 !important;
 }
 .canvas1 {
   right: 0%;
-  width: 45% !important;
+  width: 55% !important;
 }
-.headertext {
+.headertext,
+.headertext2 {
   text-align: center;
   color: #b9b9b9;
   padding-top: 10px;
   height: 35px;
 }
-.title {
-  display: none !important;
-}
-.chartcontainer.reswidth {
-  width: 100% !important;
-}
-.chartcontainer.reswidth div[class*="subcontainerOne-"],
-.chartcontainer.reswidth div[class*="subcontainerOne-"] .highcharts-container,
-.chartcontainer.reswidth
-  div[class*="subcontainerOne-"]
-  .highcharts-container
-  svg {
-  width: 100% !important;
-}
-.chartcontainer.reswidth .canvas,
-.chartcontainer.reswidth .canvas1 {
-  width: 50% !important;
-  padding-left: 0;
+.headertext2{
+  margin-left: 25px;
 }
 .versioncontainer {
   display: flex;
@@ -187,50 +166,37 @@ div[class*="titledivsub-"] {
   display: table-cell;
   vertical-align: middle;
 }
-/* .mySlides .highcharts-container{
+
+/**********************
+slider css
+**********************/
+
+.mySlides #tabs_container2,
+.mySlides #tabs_container1,
+.mySlides #tabs_container0 {
   width: 100% !important;
-} */
-
-/* media query*/
-
-@media screen and (max-width: 599px) {
-  .slideshowcontainer #tabs_container,
-  .slideshowcontainer #tabs_container1 {
-    width: 100% !important;
-  }
 }
 
-/********SLIDESHOW**************/
-/* Slideshow container */
-.slideshowcontainer {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-}
 .slideshow-container {
   max-width: 1000px;
   position: relative;
   margin: auto;
 }
-
-/* Next & previous buttons */
 .prev,
 .next {
   cursor: pointer;
   position: absolute;
   top: 50%;
   width: auto;
-  padding: 16px;
+  padding: 10px;
   margin-top: -22px;
-  color: #8e8e8e;
+  color: #848484;
   font-weight: bold;
   font-size: 25px;
   transition: 0.6s ease;
   border-radius: 0 3px 3px 0;
   user-select: none;
   z-index: 1050;
-  background: #dcdcdc;
 }
 .prev::before {
   content: "\02C2";
@@ -238,81 +204,44 @@ div[class*="titledivsub-"] {
 .next::after {
   content: "\02C3";
 }
-
-/* Position the "next button" to the right */
+.prev{
+  left: 0;
+}
 .next {
   right: 0;
   border-radius: 3px 0 0 3px;
 }
 
-/* On hover, add a black background color with a little bit see-through */
 .prev:hover,
 .next:hover,
 .prev:active,
-.next:active{
+.next:active {
   color: #8e8e8e !important;
-  text-decoration: none  !important;
+  text-decoration: none !important;
 }
-
-/* Caption text */
-.text {
-  color: #f2f2f2;
-  font-size: 15px;
-  padding: 8px 12px;
-  position: absolute;
-  bottom: 8px;
-  width: 100%;
-  text-align: center;
+.mySlides .container{
+  display: flex;
 }
-
-/* Number text (1/3 etc) */
-.numbertext {
-  color: #f2f2f2;
-  font-size: 12px;
-  padding: 8px 12px;
-  position: absolute;
-  top: 0;
+.mySlides #titlediv{
+  height: unset !important;
 }
+#slideshowcontainer{}
 
-/* The dots/bullets/indicators */
-.dot {
-  cursor: pointer;
-  height: 15px;
-  width: 15px;
-  margin: 0 2px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;
-  transition: background-color 0.6s ease;
-}
-
-.active,
-.dot:hover {
-  /* background-color: #717171; */
-}
-
-/* Fading animation */
-.fade {
-  -webkit-animation-name: fade;
-  -webkit-animation-duration: 1.5s;
-  animation-name: fade;
-  animation-duration: 1.5s;
-}
-
-@-webkit-keyframes fade {
-  from {
-    opacity: 0.4;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fade {
-  from {
-    opacity: 0.4;
-  }
-  to {
-    opacity: 1;
-  }
+/**********************
+Media query
+**********************/
+@media screen and (max-width: 600px) {
+  /* .container {
+    position: absolute;
+  } */
+  /* .mySlides #tabs_container2,
+  .mySlides #tabs_container1,
+  .mySlides #tabs_container0 {
+  position:absolute;
+  } */
+  /* .slideshowcontainer {
+    width: 100%;
+    height: 100%;
+    top: 0;
+  } */
 }

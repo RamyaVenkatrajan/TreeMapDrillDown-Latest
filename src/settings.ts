@@ -50,6 +50,8 @@ export class ChartOptions {
   public bandBg: string = "#FFF7E2";
   public chartshow: boolean = true;
   public charttitle: string = "Sample";
+  public charttitle2: string = "Sample";
+  public charttitle3: string = "Sample";
   public fontColor: string = "#C10230";
   public percentDecimal: number = 0.0;
   public percentvalfontColor: string = "#CDCECD";
@@ -57,15 +59,21 @@ export class ChartOptions {
   public fontSize: number = 20.0;
   public fontWeight: string = "600";
   public textAlign: string = "center";
+  public breakWidth: number = 600;
 
 }
 export class TabtitleOptions {
-  public tabtext1: string = "";
-  public tabtext2: string = "";
+  public chart1tabtext1: string = "";
+  public chart1tabtext2: string = "";
+  public chart2tabtext1: string = "";
+  public chart2tabtext2: string = "";
+  public chart3tabtext1: string = "";
+  public chart3tabtext2: string = "";
   public tabfontColor: string = "#747474";
   public tabfontfamily: string = "Helvetica, sans-serif";
   public tabfontSize: number = 14.0;
   public borderbottomColor: string = "#22A9E2";
+
 }
 export class DataLabels {
   public show: boolean = true;

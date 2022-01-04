@@ -9,6 +9,7 @@ import { UIIndicators } from '@visualbi/bifrost-powerbi/dist/UIIndicators';
 import { HighchartSelectionManager } from "@visualbi/powerbi-common/dist/HighChartUtils/selection";
 import { BifrostDataUtils } from '@visualbi/powerbi-common/dist/Utils/bifrostDataUtils';
 import { throws } from "assert";
+import { integer } from "aws-sdk/clients/cloudfront";
 import { settings } from "cluster";
 import "core-js/stable";
 import customEvents from "highcharts-custom-events/js/customEvents";
@@ -45,15 +46,12 @@ wordcloud(Highcharts);
 customEvents(Highcharts);
 
 const debounce = require("lodash.debounce");
-//import { TreeMapDrilldownChartSelection } from "./TreeMapDrilldownChartSelection";
 const escape = require("lodash.escape");
 
 export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
     private highcharts: any;
     private chartSetting: any;
     private chartSetting2: any;
-    private chartSetting3: any;
-    private chartSetting4: any;
     public chartRef: Highcharts.Chart;
     public chartRef2: Highcharts.Chart;
     public chartRef3: Highcharts.Chart;
@@ -69,13 +67,10 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
     public isFilterRedraw: boolean;
     public isSetDataUsed: boolean;
     public _isPBIMobile: boolean;
-    // public bifrostData: Data;
+    public bifrostData: Data;
     private maxlength = 0;
     private chartfilter = [];
     private chartfilter1 = [];
-    private chartfilter3 = [];
-    private chartfilter4 = [];
-    public tabwidth: any;
     private slideIndex = 1;
     private _data: Data;
     private _settings: VisualSettings;
@@ -131,16 +126,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         return this.enumConfig.getEnumerationConfigurationArray(this);
     };
 
-    public render({
-        data,
-        element,
-        selectionIdBuilder,
-        settings,
-        sampleVisual,
-        isPBIDesktop,
-        isPBIMobile,
-        isMSBrowser,
-    }: {
+    public render({ data, element, selectionIdBuilder, settings, sampleVisual, isPBIDesktop, isPBIMobile, isMSBrowser }: {
         data: Data;
         element: HTMLElement;
         selectionIdBuilder: SelectionIdBuilder;
@@ -152,14 +138,14 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         measureValueIndex: number;
         options: VisualConstructorOptions
     }) {
-        //  console.log("Data", data);
-        this._data = data; this._element = element; this._settings = settings;
-        this.__selectionIdBuilder = selectionIdBuilder;
-
+        console.log("Data", data);
         if (sampleVisual) {
             this.generateSampleVisual(element);
             return;
         } else {
+            this._data = data; this._element = element; this._settings = settings;
+            this.__selectionIdBuilder = selectionIdBuilder;
+
             this.getFieldsMeta(data);
             this._isPBIApplication = isPBIDesktop || isPBIMobile;
             this._isMSBrowser = isMSBrowser;
@@ -173,10 +159,12 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             }
         }
     }
-
+  
     private getFieldsMeta(data: Data) {
+       
         this.fieldsMeta = {
             hasCategory: false,
+            hasBusinessUnit: false,
             hasValues1: false,
             hasValues3: false,
             hasPercentageValues: false,
@@ -189,6 +177,19 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 this.fieldsMeta.hasCategory = true;
             }
         });
+
+        data.categorical['groupDimension'].forEach((dimMeta) => {
+            if (dimMeta.role["category"]) {
+                this.fieldsMeta.hasCategory = true;
+            }
+        });
+
+        data.metadata.dimensions.forEach((dimMeta) => {
+            if (dimMeta.role["BusinessUnit"]) {
+                this.fieldsMeta.hasBusinessUnit = true;
+            }
+        });
+
         data.metadata.measures.forEach((mesMeta) => {
             if (mesMeta.role["Values1"]) {
                 this.fieldsMeta.hasValues1 = true;
@@ -203,55 +204,36 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         });
     }
 
-    private generateData(
-        data: Data,
-        element: HTMLElement,
-        selectionIdBuilder: SelectionIdBuilder,
-        settings: VisualSettings,
-        carouselstate: string
-    ) {
+    private generateData(data: Data, element: HTMLElement, selectionIdBuilder: SelectionIdBuilder, settings: VisualSettings, carouselstate: string, index: integer) {
         try {
-
-            console.log("Data", data);
+           
             this.chartfilter = [], this.chartfilter1 = [];
             let seriesData = this.GET_SERIES(data, settings, selectionIdBuilder, this.hcSelectionManager);
-
             const tabs_container = document.createElement('div');
             const tabs = document.createElement('div');
-            const chattily = document.createElement('div');
-            const spantitle = document.createElement('span');
-            const spanpercentvalue = document.createElement('span')
             const ul = document.createElement('ul');
             const first_li = document.createElement('li');
             const second_li = document.createElement('li');
             const tabl1div = document.createElement('div');
             const tabl2div = document.createElement('div');
-            // create id
-            tabs_container.id = 'tabs_container';
+            // Create id 
+            tabs_container.id = `tabs_container${index}`;
             tabs.className = 'tabs';
             tabs.id = 'tabs';
-            if (settings.chartOptions.chartshow !== false) {
-                // Chart title Options
-                chattily.id = 'charttitle';
-                spantitle.id = 'spantitle';
-                spanpercentvalue.id = 'spanpercentvalue';
-                spantitle.innerHTML = (settings.chartOptions.chartshow == true) ? settings.chartOptions.charttitle : settings.chartOptions.charttitle = '';
-                chattily.style.fontFamily = settings.chartOptions.fontfamily;
-                chattily.style.fontSize = settings.chartOptions.fontSize + "px";
-                chattily.style.fontWeight = settings.chartOptions.fontWeight;
-                spantitle.style.color = settings.chartOptions.fontColor;
-                spanpercentvalue.style.color = settings.chartOptions.percentvalfontColor;
-                chattily.style.textAlign = settings.chartOptions.textAlign;
-            }
-            if (settings.chartOptions.chartshow && spantitle.innerHTML == '') {
-                spantitle.innerHTML = 'Sample';
-            }
-
             ul.id = 'tabs-list';
             first_li.className = 'active';
             // Tabs title Options
-            first_li.innerHTML = settings.tabtitleOptions.tabtext1;
-            second_li.innerHTML = settings.tabtitleOptions.tabtext2;
+            if(index ==  data.categorical.dimensions[0].values.indexOf('RASP')){
+                first_li.innerHTML = settings.tabtitleOptions.chart1tabtext1;
+                second_li.innerHTML = settings.tabtitleOptions.chart1tabtext2;
+            }else if(index ==  data.categorical.dimensions[0].values.indexOf('CAS')){
+                first_li.innerHTML = settings.tabtitleOptions.chart2tabtext1;
+                second_li.innerHTML = settings.tabtitleOptions.chart2tabtext2;
+            }else if(index ==  data.categorical.dimensions[0].values.indexOf('PAS')){
+                first_li.innerHTML = settings.tabtitleOptions.chart3tabtext1;
+                second_li.innerHTML = settings.tabtitleOptions.chart3tabtext2;
+            }
+            
 
             if (first_li.innerHTML == '') {
                 first_li.innerHTML = 'Tab 1';
@@ -271,10 +253,11 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             second_li.style.fontSize = settings.tabtitleOptions.tabfontSize + "px";
             second_li.style.borderBottomColor = settings.tabtitleOptions.borderbottomColor;
             second_li.style.fontFamily = settings.tabtitleOptions.tabfontfamily;
-            // Append
-            tabs.appendChild(chattily);
-            chattily.appendChild(spantitle);
-            chattily.appendChild(spanpercentvalue);
+
+            // Percentage value calculation
+            this.sharePercentCalc(data, settings, element,tabs, index);
+
+            // Append child divs to parent div
             tabs.appendChild(ul);
             ul.appendChild(first_li);
             ul.appendChild(second_li);
@@ -282,14 +265,14 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             tabs.appendChild(tabl2div);
             tabs_container.appendChild(tabs);
 
-            const errorElement = document.getElementById("tabs_container");
+            const errorElement = document.getElementById(`tabs_container${index}`);
             if (errorElement != null) {
                 errorElement.parentNode.removeChild(errorElement);
                 element.appendChild(tabs_container);
             } else {
                 element.appendChild(tabs_container);
             }
-            // ADD EVENT LISTENER
+            // Add Event Listener
             first_li.onclick = () => {
                 tabl2div.classList.remove('active');
                 tabl1div.classList.add('active');
@@ -303,297 +286,193 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 second_li.classList.add('active');
                 tabl1div.style.display = 'none';
             }
-
-            if (settings.chartOptions.chartshow !== false && this.fieldsMeta.hasPercentageValues && this.fieldsMeta.hasCategory) {
-                const percentval = data.categorical.measures.filter(function (item) {
-                    return (item.role["PercentageValues"])
-                });
-                if (percentval.length > 1) {
-                    let percentValue = percentval[1].values[1];
-                    let decpercent = '';
-                    if (percentValue == 1) {
-                        decpercent = Math.round(percentValue).toString() + '%';
-
-                    } else if (percentValue > 1) {
-                        decpercent = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
-                    }
-                    else if (percentValue < 0) {
-                        decpercent = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
-                    }
-                    else if (percentValue > 0 && percentValue < 1) {
-                        let parsevalue = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
-                        decpercent = parsevalue;
-
-                    } else if (percentValue == 0) {
-                        decpercent = percentValue.toString() + '%';
-                    }
-                    if (percentValue == null) {
-                        UIIndicators.showErrorMessage(tabs, "Invalid percentage value data. Please add valid value");
-                        var taberror = document.querySelector('.info-container');
-                        taberror.classList.add('percenterror');
-                        tabs.insertBefore(taberror, tabs.childNodes[0]);
-                    }
-                    const percent = (settings.chartOptions.chartshow == true && this.fieldsMeta.hasPercentageValues) ? decpercent : '';
-                    spanpercentvalue.innerHTML = percent.toString();
-
-                } else {
-                    //  console.log("percent");
-                }
-            }
-
-            var Values1 = seriesData.filter(function (item) {
+            let Values1 = seriesData.filter(function (item) {
                 return (item.role["Values1"])
             });
+            let Values3 = seriesData.filter(function (item) {
+                return (item.role["Values3"])
+            });
+            // Checking for invalid Data
             let filtermeeasure = data.categorical.measures.filter(f => f.role["Values1"]);
             let filtervalues = filtermeeasure.map(function (e, i) {
                 return e.values;
             })
-            let somefilter = filtervalues.some(item => (item[0] === null && item[1] === null) || (item.length == 0) || (item[0] === undefined && item[1] === undefined));
+            let somefilter = filtervalues.every(item => (item[0] === null) || (item[0] === undefined));
 
             let filtermeeasure2 = data.categorical.measures.filter(f => f.role["Values3"]);
             let filtervalues2 = filtermeeasure2.map(function (e, i) {
                 return e.values;
             })
-            let somefilter2 = filtervalues2.some(item => (item[0] === null && item[1] === null) || (item.length == 0) || (item[0] === undefined && item[1] === undefined));
-           
+            let somefilter2 = filtervalues2.every(item => (item[0] === null) || (item[0] === undefined));
 
-           // chart width calculation
+            // Chart width calculation
             var widowwidth = document.getElementById('slideshowcontainer').offsetWidth;
-            var actual_width, newactualwidth,chartwidth;
-            if(widowwidth <=600){
-                actual_width = ((widowwidth)*25);
-                newactualwidth= (actual_width/100);
+            var actual_width, newactualwidth, chartwidth;
+            if (widowwidth <= settings.chartOptions.breakWidth) {
+                actual_width = ((widowwidth) * 25);
+                newactualwidth = (actual_width / 100);
                 chartwidth = (widowwidth) - newactualwidth;
-            }else{
-                actual_width = ((widowwidth/2)*25);
-                newactualwidth= (actual_width/100);
-                chartwidth = (widowwidth/2) - newactualwidth;
+            } else {
+                actual_width = ((widowwidth / 3) * 25);
+                newactualwidth = (actual_width / 100);
+                chartwidth = (widowwidth / 3) - newactualwidth;
             }
+            console.log("widowwidth",widowwidth);
 
+            // Chart 1 - tab1 codings
             const parentdiv = document.getElementById('slideshowcontainer');
-            if (!this.fieldsMeta.hasCategory) {
-                UIIndicators.showErrorMessage(parentdiv, "Please add Category value",);
-                var taberror = document.querySelector('.info-container');
-                parentdiv.insertBefore(taberror, parentdiv.childNodes[0]);
+            //Value 1 check
+      
+            if (!this.fieldsMeta.hasValues1) {
+                UIIndicators.showErrorMessage(tabl1div, "Please add appropriate Tab 1 value data", null);
+                // let tablerror = document.querySelector('.info-container');
+                // tabs_container.prepend(tablerror);
+                document.getElementById("vbi-error-message").removeAttribute('id');
+            } else if (somefilter) {
+                UIIndicators.showErrorMessage(tabl1div, "Invalid data.Please add valid value", null);
+                document.getElementById("vbi-error-message").removeAttribute('id');
             }
             else {
-                if (!this.fieldsMeta.hasValues1) {
-                    UIIndicators.showErrorMessage(tabl1div, "Please add appropriate Tab 1 value data");
-                } else if (somefilter) {
-                    UIIndicators.showErrorMessage(tabl1div, "Invalid data.Please add valid value",);
+                const wrapper = document.createElement('div');
+                const container = document.createElement('div');
+                const titlediv = document.createElement('div');
+                const chartcontainer = document.createElement('div');
+                const versioncontainer = document.createElement('div');
+
+                // create id
+                wrapper.className = 'wrapper';
+                container.className = 'container'
+                titlediv.id = 'titlediv';
+                chartcontainer.className = 'chartcontainer';
+                chartcontainer.id = 'chartcontainer';
+                versioncontainer.className = 'versioncontainer';
+
+                // create canvas background
+                let rectwrapper = document.createElement('div');
+                rectwrapper.className = 'rectwrapper';
+                var canvas1 = document.createElement('canvas1');
+                canvas1.className = 'canvas';
+                canvas1.style.backgroundColor = 'transparent';
+                var canvas2 = document.createElement('canvas2');
+                canvas2.className = 'canvas1';
+                canvas2.style.backgroundColor = settings.chartOptions.bandBgshow ? settings.chartOptions.bandBg : 'transparent';
+
+                // Append child
+                wrapper.appendChild(container);
+                container.appendChild(titlediv);
+                container.appendChild(chartcontainer);
+                chartcontainer.appendChild(rectwrapper);
+                chartcontainer.appendChild(versioncontainer);
+                rectwrapper.appendChild(canvas1);
+                rectwrapper.appendChild(canvas2);
+                tabl1div.appendChild(wrapper);
+
+                // Tab 1 version year text 
+                this.currentVersionYearCalc(data, versioncontainer)
+                // Plot chart
+                const Value1label = Values1.map(v => v.name)
+                let clientHeight = document.getElementById('tab1').offsetHeight;
+                let chartHeight, vllength;
+                if (data.categorical['groupDimension'][0].values.length > 1) {
+                    chartHeight = clientHeight / (Values1.length / 2);
+                    vllength = Values1.length / 2;
+                } else {
+                    chartHeight = clientHeight / (Values1.length);
+                    vllength = Values1.length;
                 }
-                else {
-                    const wrapper = document.createElement('div');
-                    const container = document.createElement('div');
-                    const titlediv = document.createElement('div');
-                    const chartcontainer = document.createElement('div');
-                    const versioncontainer = document.createElement('div');
-
-                    // create id
-                    wrapper.className = 'wrapper';
-                    container.className = 'container'
-                    titlediv.id = 'titlediv';
-                    chartcontainer.className = 'chartcontainer';
-                    chartcontainer.id = 'chartcontainer';
-                    versioncontainer.className = 'versioncontainer';
-
-                    // create rectangle element
-                    let rectwrapper = document.createElement('div');
-                    rectwrapper.className = 'rectwrapper';
-                    var canvas1 = document.createElement('canvas1');
-                    canvas1.className = 'canvas';
-                    canvas1.style.backgroundColor = 'transparent';
-                    var canvas2 = document.createElement('canvas2');
-                    canvas2.className = 'canvas1';
-                    canvas2.style.backgroundColor = settings.chartOptions.bandBgshow ? settings.chartOptions.bandBg : 'transparent';
-
-                    // append child
-                    wrapper.appendChild(container);
-                    container.appendChild(titlediv);
-                    container.appendChild(chartcontainer);
-                    chartcontainer.appendChild(rectwrapper);
-                    chartcontainer.appendChild(versioncontainer);
-                    rectwrapper.appendChild(canvas1);
-                    rectwrapper.appendChild(canvas2);
-                    tabl1div.appendChild(wrapper);
-
-                    const headertext1 = document.createElement('div');
-                    const headertext2 = document.createElement('div');
-                    headertext1.className = 'headertext';
-                    headertext2.className = 'headertext';
-                    versioncontainer.appendChild(headertext1);
-                    versioncontainer.appendChild(headertext2);
-                   
-                    if (data.categorical.dimensions[0].values.length > 1) {
-                        if (data.categorical.dimensions[0].values[0] > data.categorical.dimensions[0].values[1]) {
-                            headertext1.innerHTML = data.categorical.dimensions[0].values[1];
-                            headertext2.innerHTML = data.categorical.dimensions[0].values[0];
-                        } else {
-                            headertext1.innerHTML = data.categorical.dimensions[0].values[0];
-                            headertext2.innerHTML = data.categorical.dimensions[0].values[1];
-                        }
-                    } else {
-                        let lesslength = data.categorical.dimensions[0].values[0];
-                        headertext2.innerHTML = lesslength;
-
-                        if (isNaN(lesslength)) {
-                            headertext1.innerHTML = lesslength;
-                        } else {
-                            headertext1.innerHTML = (parseInt(lesslength) - 1).toString();
-                        }
+                for (let i = 0; i < vllength; i++) {
+                    const titledivsub = document.createElement('div');
+                    const subcontainerOne = document.createElement('div');
+                    titledivsub.className = `titledivsub-${i}`;
+                    titlediv.appendChild(titledivsub);
+                    titledivsub.innerHTML = `<p>${Value1label[i]}</p>`
+                    if(i>2 && (i== ((vllength)-1) &&  (index == data.categorical.dimensions[0].values.indexOf('RASP') || index == data.categorical.dimensions[0].values.indexOf('CAS')))){
+                        titledivsub.style.visibility ='hidden'
                     }
-                       
-                    const Value1label = Values1.map(v =>v.name)
-                    let clientHeight = document.getElementById('tab1').offsetHeight;    
-                    let chartHeight, vllength;
-                    if(data.categorical.dimensions[0].values.length > 1){
-                         chartHeight = clientHeight / (Values1.length / 2);
-                         vllength = Values1.length / 2;
-                    }else{
-                         chartHeight = clientHeight / (Values1.length);
-                         vllength = Values1.length;
-                    }
-              
-                    for (let i = 0; i < vllength; i++) {
-                        const titledivsub = document.createElement('div');
-                        const subcontainerOne = document.createElement('div');
-                        titledivsub.className = `titledivsub-${i}`;
-                        titlediv.appendChild(titledivsub);
-                        titledivsub.innerHTML = `<p>${Value1label[i]}</p>`
-                        subcontainerOne.className = `subcontainerOne-${i}`;
-                        subcontainerOne.style.height = chartHeight + "px";
-                        subcontainerOne.style.width = chartwidth + "px";
-                        chartcontainer.appendChild(subcontainerOne);
-                        this.chartSetting = TreeMapDrilldownUtil.getDefaultValues(this, settings, data, selectionIdBuilder, seriesData, i, true);
-                        this.chartRef = this.highcharts.chart(subcontainerOne, this.chartSetting);
-                        this.chartfilter[i] = [];
-                        this.chartfilter[i].push(this.chartRef);
-                    }
-
+                    subcontainerOne.className = `subcontainerOne-${i}`;
+                    subcontainerOne.style.height = chartHeight + "px";
+                    subcontainerOne.style.width = chartwidth + "px";
+                    chartcontainer.appendChild(subcontainerOne);
+                    this.chartSetting = TreeMapDrilldownUtil.getDefaultValues(this, settings, data, selectionIdBuilder, seriesData, i, true, index);
+                    this.chartRef = this.highcharts.chart(subcontainerOne, this.chartSetting);
+                    this.chartfilter[i] = [];
+                    this.chartfilter[i].push(this.chartRef);
                 }
             }
-            const errorMessageElement2 = document.getElementById("vbi-error-message");
-            if (errorMessageElement2 != null) {
-                errorMessageElement2.parentNode.removeChild(errorMessageElement2);
-            }
-            var Values3 = seriesData.filter(function (item) {
-                return (item.role["Values3"])
-            });
-
-            if (!this.fieldsMeta.hasCategory) {
-                UIIndicators.showErrorMessage(parentdiv, "Please add Category value",);
-                var taberror = document.querySelector('.info-container');
-                parentdiv.insertBefore(taberror, parentdiv.childNodes[0]);
+            //Value 2 check
+            if (!this.fieldsMeta.hasValues3) {
+                UIIndicators.showErrorMessage(tabl2div, "Please add appropriate Tab 2 value data");
+                document.getElementById("vbi-error-message").removeAttribute('id');
+            } else if (somefilter2) {
+                UIIndicators.showErrorMessage(tabl2div, "Invalid data.Please add valid value",);
+                document.getElementById("vbi-error-message").removeAttribute('id');
             }
             else {
-                if (!this.fieldsMeta.hasValues3) {
-                    UIIndicators.showErrorMessage(tabl2div, "Please add appropriate Tab 2 value data");
-                } else if (somefilter2) {
-                    UIIndicators.showErrorMessage(tabl2div, "Invalid data.Please add valid value",);
+                const wrapper1 = document.createElement('div');
+                const container1 = document.createElement('div');
+                const titlediv1 = document.createElement('div');
+                const chartcontainer1 = document.createElement('div');
+                const versioncontainer1 = document.createElement('div');
+                // create id
+                wrapper1.className = 'wrapper';
+                container1.className = 'container'
+                titlediv1.id = 'titlediv';
+                chartcontainer1.className = 'chartcontainer';
+                chartcontainer1.id = 'chartcontainer';
+                versioncontainer1.className = 'versioncontainer';
+                // create canvas background
+                let rectwrapper1 = document.createElement('div');
+                rectwrapper1.className = 'rectwrapper';
+                var canvas1 = document.createElement('canvas1');
+                canvas1.className = 'canvas';
+                canvas1.style.backgroundColor = 'transparent';
+                var canvas2 = document.createElement('canvas2');
+                canvas2.className = 'canvas1';
+                canvas2.style.backgroundColor = settings.chartOptions.bandBgshow ? settings.chartOptions.bandBg : 'transparent';
+                // append child
+                wrapper1.appendChild(container1);
+                container1.appendChild(titlediv1);
+                container1.appendChild(chartcontainer1);
+                chartcontainer1.appendChild(rectwrapper1);
+                chartcontainer1.appendChild(versioncontainer1);
+                rectwrapper1.appendChild(canvas1);
+                rectwrapper1.appendChild(canvas2);
+                tabl2div.appendChild(wrapper1);
+                // Tab 2 version year text 
+                this.PreviousVersionYearCalc(data, versioncontainer1);
+                // Plot graph
+                const Value3label = Values3.map(v => v.name)
+                let clientHeight1 = document.getElementById('tabs').offsetHeight;
+                // console.log("clientHeight1",clientHeight1);
+                let chartHeight1, vllength1;
+                if (data.categorical['groupDimension'][0].values.length > 1) {
+                    chartHeight1 = clientHeight1 / (Values3.length / 2);
+                    vllength1 = Values3.length / 2;
+                } else {
+                    chartHeight1 = clientHeight1 / (Values3.length);
+                    vllength1 = Values3.length;
                 }
-                else {
-                   // console.log("'pass");
-                    const wrapper1 = document.createElement('div');
-                    const container1 = document.createElement('div');
-                    const titlediv1 = document.createElement('div');
-                    const chartcontainer1 = document.createElement('div');
-                    const versioncontainer1 = document.createElement('div');
-                   
-                    // create id
-                    wrapper1.className = 'wrapper';
-                    container1.className = 'container'
-                    titlediv1.id = 'titlediv';
-                    titlediv1.className = 'titlenames';
-                    chartcontainer1.className = 'chartcontainer';
-                    chartcontainer1.id = 'chartcontainer';
-                    versioncontainer1.className = 'versioncontainer';
-                    // create rectangle element
-                    let rectwrapper1 = document.createElement('div');
-                    rectwrapper1.className = 'rectwrapper';
-                    var canvas1 = document.createElement('canvas1');
-                    canvas1.className = 'canvas';
-                    canvas1.style.backgroundColor = 'transparent';
-                    var canvas2 = document.createElement('canvas2');
-                    canvas2.className = 'canvas1';
-                    canvas2.style.backgroundColor = settings.chartOptions.bandBgshow ? settings.chartOptions.bandBg : 'transparent';
-                    // append child
-                    wrapper1.appendChild(container1);
-                    container1.appendChild(titlediv1);
-                    container1.appendChild(chartcontainer1);
-                    chartcontainer1.appendChild(rectwrapper1);
-                    chartcontainer1.appendChild(versioncontainer1);
-                    rectwrapper1.appendChild(canvas1);
-                    rectwrapper1.appendChild(canvas2);
-                    tabl2div.appendChild(wrapper1);
-
-                    const headertext3 = document.createElement('div');
-                    const headertext4 = document.createElement('div');
-                    headertext3.className = 'headertext';
-                    headertext4.className = 'headertext';
-                    versioncontainer1.appendChild(headertext3);
-                    versioncontainer1.appendChild(headertext4);
-
-                    // console.log(data.categorical.dimensions[0].values[0]);
-                    if (data.categorical.dimensions[0].values.length > 1) {
-                        if (isNaN(parseInt(data.categorical.dimensions[0].values[0])) || isNaN(parseInt(data.categorical.dimensions[0].values[1]))) {
-                            headertext3.innerHTML = data.categorical.dimensions[0].values[0];
-                            headertext4.innerHTML = data.categorical.dimensions[0].values[1];
-                        } else {
-                            const tab2offsetvalue = parseInt(data.categorical.dimensions[0].values[0]) - 1;
-                            const tab2offsetvalue2 = parseInt(data.categorical.dimensions[0].values[1]) - 1;
-
-                            if (data.categorical.dimensions[0].values[0] > data.categorical.dimensions[0].values[1]) {
-                                headertext3.innerHTML = tab2offsetvalue2.toString();
-                                headertext4.innerHTML = tab2offsetvalue.toString();
-                            } else {
-
-                                headertext3.innerHTML = tab2offsetvalue.toString();
-                                headertext4.innerHTML = tab2offsetvalue2.toString();
-                            }
-                        }
-                    } else {
-                        let lesslength = data.categorical.dimensions[0].values[0];
-                        headertext4.innerHTML = lesslength;
-
-                        if (isNaN(lesslength)) {
-                            headertext3.innerHTML = lesslength;
-                        } else {
-                            headertext4.innerHTML = (parseInt(lesslength) - 1).toString();
-                            headertext3.innerHTML = (parseInt(lesslength) - 2).toString();
-                        }
+                for (let i = 0; i < vllength1; i++) {
+                    const titledivsub = document.createElement('div');
+                    titledivsub.className = `titledivsub-${i}`;
+                    titlediv1.appendChild(titledivsub);
+                    titledivsub.innerHTML = `<p>${Value3label[i]}</p>`;
+                    if(i>2 && (i== ((vllength1)-1) &&  (index == data.categorical.dimensions[0].values.indexOf('RASP') || index == data.categorical.dimensions[0].values.indexOf('CAS')))){
+                        titledivsub.style.visibility ='hidden'
                     }
-
-                    const Value3label = Values3.map(v => v.name)
-                    let clientHeight1 = document.getElementById('tabs').offsetHeight;
-                    let chartHeight1, vllength1;
-                    if(data.categorical.dimensions[0].values.length > 1){
-                        chartHeight1 = clientHeight1 / (Values3.length / 2);
-                        vllength1 = Values3.length / 2;
-                   }else{
-                        chartHeight1 = clientHeight1 / (Values3.length);
-                        vllength1 = Values3.length;
-                   }
-                   
-                    for (let i = 0; i < vllength1; i++) {
-                        const titledivsub = document.createElement('div');
-                        titledivsub.className = `titledivsub-${i}`;
-                        titlediv1.appendChild(titledivsub);
-                        titledivsub.innerHTML = `<p>${Value3label[i]}</p>`
-                        const subcontainerOne = document.createElement('div');
-                        subcontainerOne.className = `subcontainerOne-${i}`;
-                        subcontainerOne.style.height = chartHeight1 + "px";
-                        subcontainerOne.style.width = chartwidth + "px";
-                        chartcontainer1.appendChild(subcontainerOne);
-                        this.chartSetting2 = TreeMapDrilldownUtil.getDefaultValues(this, settings, data, selectionIdBuilder, seriesData, i, false);
-                        this.chartRef2 = this.highcharts.chart(subcontainerOne, this.chartSetting2);
-                        this.chartfilter1[i] = [];
-                        this.chartfilter1[i].push(this.chartRef2);
-
-                    }
-
+                    const subcontainerOne = document.createElement('div');
+                    subcontainerOne.className = `subcontainerOne-${i}`;
+                    subcontainerOne.style.height = chartHeight1 + "px";
+                    subcontainerOne.style.width = chartwidth + "px";
+                    chartcontainer1.appendChild(subcontainerOne);
+                    this.chartSetting2 = TreeMapDrilldownUtil.getDefaultValues(this, settings, data, selectionIdBuilder, seriesData, i, false, index);
+                    this.chartRef2 = this.highcharts.chart(subcontainerOne, this.chartSetting2);
+                    this.chartfilter1[i] = [];
+                    this.chartfilter1[i].push(this.chartRef2);
                 }
             }
 
+            // check for carousel
             if (carouselstate) {
                 let tbcontainer1 = document.querySelector('.slideshowcontainer');
                 let mySlides = document.createElement('div');
@@ -602,416 +481,12 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 mySlides.appendChild(tabs_container);
             }
 
-            var activeTab = document.querySelector('.error-indicator');
-            var activeNextSibling = activeTab.nextElementSibling;
-            activeNextSibling.insertBefore(errorMessageElement2, activeNextSibling.childNodes[0]);
 
         } catch (e) {
             console.log("error", e);
         }
     }
-    
-    private generateData1(
-        data: Data,
-        element: HTMLElement,
-        selectionIdBuilder: SelectionIdBuilder,
-        settings: VisualSettings,
-        carouselstate: string
-    ) {
-        try {
-            // console.log("Data", data);
-            this.chartfilter = [], this.chartfilter1 = [];
-            let seriesData = this.GET_SERIES(data, settings, selectionIdBuilder, this.hcSelectionManager);
 
-            const tabs_container1 = document.createElement('div');
-            const tabs = document.createElement('div');
-            const charttitle = document.createElement('div');
-            const spantitle = document.createElement('span');
-            const spanpercentvalue = document.createElement('span')
-            const ul = document.createElement('ul');
-            const first_li = document.createElement('li');
-            const second_li = document.createElement('li');
-            const tabl1div1 = document.createElement('div');
-            const tabl2div1 = document.createElement('div');
-            // create id
-            tabs_container1.id = 'tabs_container1';
-            tabs.className = 'tabs';
-            tabs.id = 'tabs';
-            if (settings.chartOptions.chartshow !== false) {
-                // Chart title Options
-                charttitle.id = 'charttitle';
-                spantitle.id = 'spantitle';
-                spanpercentvalue.id = 'spanpercentvalue';
-                spantitle.innerHTML = 'Sample 2';
-                charttitle.style.fontFamily = settings.chartOptions.fontfamily;
-                charttitle.style.fontSize = settings.chartOptions.fontSize + "px";
-                charttitle.style.fontWeight = settings.chartOptions.fontWeight;
-                spantitle.style.color = settings.chartOptions.fontColor;
-                spanpercentvalue.style.color = settings.chartOptions.percentvalfontColor;
-                charttitle.style.textAlign = settings.chartOptions.textAlign;
-            }
-            if (settings.chartOptions.chartshow && spantitle.innerHTML == '') {
-                spantitle.innerHTML = 'Sample';
-            }
-
-            ul.id = 'tabs-list';
-            first_li.className = 'active';
-            // Tabs title Options
-            first_li.innerHTML = settings.tabtitleOptions.tabtext1;
-            second_li.innerHTML = settings.tabtitleOptions.tabtext2;
-
-            if (first_li.innerHTML == '') {
-                first_li.innerHTML = 'Tab 1';
-            }
-            if (second_li.innerHTML == '') {
-                second_li.innerHTML = 'Tab 2';
-            }
-            tabl1div1.id = 'tab1';
-            tabl1div1.className = 'active';
-            tabl2div1.id = 'tab2';
-
-            first_li.style.color = settings.tabtitleOptions.tabfontColor;
-            first_li.style.fontFamily = settings.tabtitleOptions.tabfontfamily;
-            first_li.style.fontSize = settings.tabtitleOptions.tabfontSize + "px";
-            first_li.style.borderBottomColor = settings.tabtitleOptions.borderbottomColor;
-            second_li.style.color = settings.tabtitleOptions.tabfontColor;
-            second_li.style.fontSize = settings.tabtitleOptions.tabfontSize + "px";
-            second_li.style.borderBottomColor = settings.tabtitleOptions.borderbottomColor;
-            second_li.style.fontFamily = settings.tabtitleOptions.tabfontfamily;
-            // Append
-            tabs.appendChild(charttitle);
-            charttitle.appendChild(spantitle);
-            charttitle.appendChild(spanpercentvalue);
-            tabs.appendChild(ul);
-            ul.appendChild(first_li);
-            ul.appendChild(second_li);
-            tabs.appendChild(tabl1div1);
-            tabs.appendChild(tabl2div1);
-            tabs_container1.appendChild(tabs);
-            
-            const errorElement = document.getElementById("tabs_container1");
-            if (errorElement != null) {
-                errorElement.parentNode.removeChild(errorElement);
-                element.appendChild(tabs_container1);
-            } else {
-                element.appendChild(tabs_container1);
-            }
-            // ADD EVENT LISTENER
-            first_li.onclick = () => {
-                tabl2div1.classList.remove('active');
-                tabl1div1.classList.add('active');
-                first_li.classList.add('active');
-                second_li.classList.remove('active');
-            }
-            second_li.onclick = () => {
-                tabl1div1.classList.remove('active');
-                tabl2div1.classList.add('active');
-                first_li.classList.remove('active');
-                second_li.classList.add('active');
-                tabl1div1.style.display = 'none';
-            }
-
-            if (settings.chartOptions.chartshow !== false && this.fieldsMeta.hasPercentageValues && this.fieldsMeta.hasCategory) {
-                const percentval = data.categorical.measures.filter(function (item) {
-                    return (item.role["PercentageValues"])
-                });
-                if (percentval.length > 1) {
-                    let percentValue = percentval[1].values[1];
-                    let decpercent = '';
-                    if (percentValue == 1) {
-                        decpercent = Math.round(percentValue).toString() + '%';
-
-                    } else if (percentValue > 1) {
-                        decpercent = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
-                    }
-                    else if (percentValue < 0) {
-                        decpercent = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
-                    }
-                    else if (percentValue > 0 && percentValue < 1) {
-                        let parsevalue = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
-                        decpercent = parsevalue;
-                    } else if (percentValue == 0) {
-                        decpercent = percentValue.toString() + '%';
-                    }
-                    if (percentValue == null) {
-                        UIIndicators.showErrorMessage(tabs, "Invalid percentage value data. Please add valid value");
-                        var taberror = document.querySelector('.info-container');
-                        taberror.classList.add('percenterror');
-                        tabs.insertBefore(taberror, tabs.childNodes[0]);
-                    }
-                    const percent = (settings.chartOptions.chartshow == true && this.fieldsMeta.hasPercentageValues) ? decpercent : '';
-                    spanpercentvalue.innerHTML = percent.toString();
-
-                } else {
-                    //  console.log("percent");
-                }
-            }
-
-            var Values1 = seriesData.filter(function (item) {
-                return (item.role["Values1"])
-            });
-
-            let filtermeeasure = data.categorical.measures.filter(f => f.role["Values1"]);
-            let filtervalues = filtermeeasure.map(function (e, i) {
-                return e.values;
-            })
-            let somefilter = filtervalues.some(item => (item[0] === null && item[1] === null) || (item.length == 0) || (item[0] === undefined && item[1] === undefined));
-
-            let filtermeeasure2 = data.categorical.measures.filter(f => f.role["Values3"]);
-            let filtervalues2 = filtermeeasure2.map(function (e, i) {
-                return e.values;
-            })
-            let somefilter2 = filtervalues2.some(item => (item[0] === null && item[1] === null) || (item.length == 0) || (item[0] === undefined && item[1] === undefined));
-           
-            // chart width calculation
-            var widowwidth = document.getElementById('slideshowcontainer').offsetWidth;
-            var actual_width1, newactualwidth1, chartwidth1;
-            if (widowwidth <= 600) {
-                actual_width1 = ((widowwidth) * 25);
-                newactualwidth1 = (actual_width1 / 100);
-                chartwidth1 = (widowwidth) - newactualwidth1;
-            } else {
-                actual_width1 = ((widowwidth / 2) * 25);
-                newactualwidth1 = (actual_width1 / 100);
-                chartwidth1 = (widowwidth / 2) - newactualwidth1;
-            }
-           
-            const parentdiv = document.getElementById('slideshowcontainer');
-            if (!this.fieldsMeta.hasCategory) {
-                UIIndicators.showErrorMessage(parentdiv, "Please add Category value",);
-                var taberror = document.querySelector('.info-container');
-                parentdiv.insertBefore(taberror, parentdiv.childNodes[0]);
-            }
-            else {
-                if (!this.fieldsMeta.hasValues1) {
-                    UIIndicators.showErrorMessage(tabl1div1, "Please add appropriate Tab 1 value data");
-                } else if (somefilter) {
-                    UIIndicators.showErrorMessage(tabl1div1, "Invalid data.Please add valid value",);
-                }
-                else {
-                    const wrapper = document.createElement('div');
-                    const container = document.createElement('div');
-                    const titlediv = document.createElement('div');
-                    const chartcontainer = document.createElement('div');
-                    const versioncontainer = document.createElement('div');
-
-                    // create id
-                    wrapper.className = 'wrapper';
-                    container.className = 'container'
-                    titlediv.id = 'titlediv';
-                    chartcontainer.className = 'chartcontainer';
-                    chartcontainer.id = 'chartcontainer';
-                    versioncontainer.className = 'versioncontainer';
-
-                    // create rectangle element
-                    var rectwrapper = document.createElement('div');
-                    rectwrapper.className = 'rectwrapper';
-                    var canvas1 = document.createElement('canvas1');
-                    canvas1.className = 'canvas';
-                    canvas1.style.backgroundColor = 'transparent';
-                    var canvas2 = document.createElement('canvas2');
-                    canvas2.className = 'canvas1';
-                    canvas2.style.backgroundColor = settings.chartOptions.bandBgshow ? settings.chartOptions.bandBg : 'transparent';
-
-                    // append child
-                    wrapper.appendChild(container);
-                    container.appendChild(titlediv);
-                    container.appendChild(chartcontainer);
-                    chartcontainer.appendChild(rectwrapper);
-                    chartcontainer.appendChild(versioncontainer);
-                    rectwrapper.appendChild(canvas1);
-                    rectwrapper.appendChild(canvas2);
-                    tabl1div1.appendChild(wrapper);
-
-                    const headertext1 = document.createElement('div');
-                    const headertext2 = document.createElement('div');
-                    headertext1.className = 'headertext';
-                    headertext2.className = 'headertext';
-                    versioncontainer.appendChild(headertext1);
-                    versioncontainer.appendChild(headertext2);
-
-                    // debugger
-                    // console.log("data.categorical.dimensions", data.categorical.dimensions[0]);
-                    if (data.categorical.dimensions[0].values.length > 1) {
-                        if (data.categorical.dimensions[0].values[0] > data.categorical.dimensions[0].values[1]) {
-                            headertext1.innerHTML = data.categorical.dimensions[0].values[1];
-                            headertext2.innerHTML = data.categorical.dimensions[0].values[0];
-                        } else {
-                            headertext1.innerHTML = data.categorical.dimensions[0].values[0];
-                            headertext2.innerHTML = data.categorical.dimensions[0].values[1];
-                        }
-                    } else {
-                        let lesslength = data.categorical.dimensions[0].values[0];
-                        headertext2.innerHTML = lesslength;
-
-                        if (isNaN(lesslength)) {
-                            headertext1.innerHTML = lesslength;
-                        } else {
-                            headertext1.innerHTML = (parseInt(lesslength) - 1).toString();
-                        }
-                    }
-
-                    const Value1label = Values1.map(v =>v.name)
-                    let clientHeight = document.getElementById('tab1').offsetHeight;
-                    let chartHeight, vllength;
-                    if(data.categorical.dimensions[0].values.length > 1){
-                         chartHeight = clientHeight / (Values1.length / 2);
-                         vllength = Values1.length / 2;
-                    }else{
-                         chartHeight = clientHeight / (Values1.length);
-                         vllength = Values1.length;
-                    }
-                    for (let i = 0; i < vllength; i++) {
-                        const titledivsub = document.createElement('div');
-                        const subcontainerOne = document.createElement('div');
-                        titledivsub.className = `titledivsub-${i}`;
-                        titlediv.appendChild(titledivsub);
-                        titledivsub.innerHTML = `<p>${Value1label[i]}</p>`
-                        subcontainerOne.className = `subcontainerOne-${i}`;
-                        subcontainerOne.style.height = chartHeight + "px";
-                        subcontainerOne.style.width = chartwidth1 + "px";
-                        chartcontainer.appendChild(subcontainerOne);
-                        this.chartSetting3 = TreeMapDrilldownUtil.getDefaultValues(this, settings, data, selectionIdBuilder, seriesData, i, true);
-                        this.chartRef3 = this.highcharts.chart(subcontainerOne, this.chartSetting3);
-                        //console.log("chartRef", this.chartRef);
-                        this.chartfilter3[i] = [];
-                        this.chartfilter3[i].push(this.chartRef3);
-                    }
-                }
-            }
-            let errorMessageElement2 = document.getElementById("vbi-error-message");
-            if (errorMessageElement2 != null) {
-                errorMessageElement2.parentNode.removeChild(errorMessageElement2);
-            }
-
-
-            var Values3 = seriesData.filter(function (item) {
-                return (item.role["Values3"])
-            });
-            if (!this.fieldsMeta.hasCategory) {
-                UIIndicators.showErrorMessage(parentdiv, "Please add Category value",);
-                var taberror = document.querySelector('.info-container');
-                parentdiv.insertBefore(taberror, parentdiv.childNodes[0]);
-            }
-            else {
-                if (!this.fieldsMeta.hasValues3) {
-                    UIIndicators.showErrorMessage(tabl2div1, "Please add appropriate Tab 2 value data");
-                } else if (somefilter2) {
-                    UIIndicators.showErrorMessage(tabl2div1, "Invalid data.Please add valid value",);
-                }
-                else {
-                    const wrapper = document.createElement('div');
-                    const container = document.createElement('div');
-                    const titlediv = document.createElement('div');
-                    const chartcontainer = document.createElement('div');
-                    const versioncontainer = document.createElement('div');
-                   
-                    // create id
-                    wrapper.className = 'wrapper';
-                    container.className = 'container'
-                    titlediv.id = 'titlediv';
-                    chartcontainer.className = 'chartcontainer';
-                    chartcontainer.id = 'chartcontainer';
-                    versioncontainer.className = 'versioncontainer';
-                    // create rectangle element
-                    var rectwrapper = document.createElement('div');
-                    rectwrapper.className = 'rectwrapper';
-                    var canvas1 = document.createElement('canvas1');
-                    canvas1.className = 'canvas';
-                    canvas1.style.backgroundColor = 'transparent';
-                    var canvas2 = document.createElement('canvas2');
-                    canvas2.className = 'canvas1';
-                    canvas2.style.backgroundColor = settings.chartOptions.bandBgshow ? settings.chartOptions.bandBg : 'transparent';
-                    // append child
-                    wrapper.appendChild(container);
-                    container.appendChild(titlediv);
-                    container.appendChild(chartcontainer);
-                    chartcontainer.appendChild(rectwrapper);
-                    chartcontainer.appendChild(versioncontainer);
-                    rectwrapper.appendChild(canvas1);
-                    rectwrapper.appendChild(canvas2);
-                    tabl2div1.appendChild(wrapper);
-
-                    const headertext3 = document.createElement('div');
-                    const headertext4 = document.createElement('div');
-                    headertext3.className = 'headertext';
-                    headertext4.className = 'headertext';
-                    versioncontainer.appendChild(headertext3);
-                    versioncontainer.appendChild(headertext4);
-
-                    // console.log(data.categorical.dimensions[0].values[0]);
-                    if (data.categorical.dimensions[0].values.length > 1) {
-                        if (isNaN(parseInt(data.categorical.dimensions[0].values[0])) || isNaN(parseInt(data.categorical.dimensions[0].values[1]))) {
-                            headertext3.innerHTML = data.categorical.dimensions[0].values[0];
-                            headertext4.innerHTML = data.categorical.dimensions[0].values[1];
-                        } else {
-                            const tab2offsetvalue = parseInt(data.categorical.dimensions[0].values[0]) - 1;
-                            const tab2offsetvalue2 = parseInt(data.categorical.dimensions[0].values[1]) - 1;
-
-                            if (data.categorical.dimensions[0].values[0] > data.categorical.dimensions[0].values[1]) {
-                                headertext3.innerHTML = tab2offsetvalue2.toString();
-                                headertext4.innerHTML = tab2offsetvalue.toString();
-                            } else {
-
-                                headertext3.innerHTML = tab2offsetvalue.toString();
-                                headertext4.innerHTML = tab2offsetvalue2.toString();
-                            }
-                        }
-                    } else {
-                        let lesslength = data.categorical.dimensions[0].values[0];
-                        headertext4.innerHTML = lesslength;
-
-                        if (isNaN(lesslength)) {
-                            headertext3.innerHTML = lesslength;
-                        } else {
-                            headertext4.innerHTML = (parseInt(lesslength) - 1).toString();
-                            headertext3.innerHTML = (parseInt(lesslength) - 2).toString();
-                        }
-                    }
-                    const Value3label = Values3.map(v => v.name)
-                    let clientHeight1 = document.getElementById('tabs').offsetHeight;
-                    let chartHeight1, vllength1;
-                    if(data.categorical.dimensions[0].values.length > 1){
-                        chartHeight1 = clientHeight1 / (Values3.length / 2);
-                        vllength1 = Values3.length / 2;
-                   }else{
-                        chartHeight1 = clientHeight1 / (Values3.length);
-                        vllength1 = Values3.length;
-                   }
-                    for (let i = 0; i < vllength1; i++) {
-                        const titledivsub = document.createElement('div');
-                        titledivsub.className = `titledivsub-${i}`;
-                        titlediv.appendChild(titledivsub);
-                        titledivsub.innerHTML = `<p>${Value3label[i]}</p>`
-                        const subcontainerOne = document.createElement('div');
-                        subcontainerOne.className = `subcontainerOne-${i}`;
-                        subcontainerOne.style.height = chartHeight1 + "px";
-                        subcontainerOne.style.width = chartwidth1 + "px";
-                        chartcontainer.appendChild(subcontainerOne);
-                        this.chartSetting4 = TreeMapDrilldownUtil.getDefaultValues(this, settings, data, selectionIdBuilder, seriesData, i, false);
-                        this.chartRef4 = this.highcharts.chart(subcontainerOne, this.chartSetting4);
-                        this.chartfilter4[i] = [];
-                        this.chartfilter4[i].push(this.chartRef4);
-                    }
-                }
-            }
-
-            if (carouselstate) {
-                let tbcontainer1 = document.querySelector('.slideshowcontainer');
-                let mySlides = document.createElement('div');
-                mySlides.className = 'mySlides';
-                tbcontainer1.appendChild(mySlides);
-                mySlides.appendChild(tabs_container1);
-            }
-            var activeTab = document.querySelector('.error-indicator');
-            var activeNextSibling = activeTab.nextElementSibling;
-            activeNextSibling.insertBefore(errorMessageElement2, activeNextSibling.childNodes[0]);
-
-        } catch (e) {
-            console.log("error", e);
-        }
-    }
-   
     private getNumberFormattingSettings(numberFormatSettings: any, settings: VisualSettings) {
         let noOfDecimal, scalingFactor, prefix, suffix;
         if (numberFormatSettings && numberFormatSettings.showMeasureLabel) {
@@ -1079,7 +554,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                         shadow: false,
                         style: {
                             fontSize: settings.dataLabels.dlfontSize + 'px',
-                            fontWeight: (dataViewMeasure.role.Values1 == true && (dataViewMeasure.values[1] || dataViewMeasure.values[1] == 0)) || (dataViewMeasure.role.Values3 == true && (dataViewMeasure.values[1] || dataViewMeasure.values[1] == 0)) ? settings.dataLabels.currentdlfontWeight : settings.dataLabels.dlFontWeight,
+                            fontWeight:  measureIndex >= (valueMeasures.length / 2) ? settings.dataLabels.currentdlfontWeight : settings.dataLabels.dlFontWeight,
                             color: settings.dataLabels.dlfontColor,
                             textShadow: false,
                             textOutline: false,
@@ -1107,12 +582,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         return seriesData;
     }
 
-    private responsiveChart(
-        data: Data,
-        element: HTMLElement,
-        selectionIdBuilder: SelectionIdBuilder,
-        settings: VisualSettings,
-    ) {
+    private responsiveChart(data: Data, element: HTMLElement, selectionIdBuilder: SelectionIdBuilder, settings: VisualSettings) {
         try {
             const varcheck = document.getElementById('slideshowcontainer');
             const slideshowcontainer = document.createElement('div');
@@ -1124,10 +594,28 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             } else {
                 element.appendChild(slideshowcontainer);
             }
+            if (!this.fieldsMeta.hasCategory) {
+                this.emptyElement(element);
+                UIIndicators.showErrorMessage(element, "Please add Category value", null);
+                 document.getElementById("vbi-error-message").removeAttribute('id');
+                return false;
+            } if (!this.fieldsMeta.hasBusinessUnit) {
+                this.emptyElement(element);
+                UIIndicators.showErrorMessage(element, "Please add Business unit", null);
+                 document.getElementById("vbi-error-message").removeAttribute('id');
+                return false;
+            } 
             var slideshowcontainerwidth = slideshowcontainer.offsetWidth;
-            if (slideshowcontainerwidth <= 600) {
-                this.generateData(data, element, selectionIdBuilder, settings, 'mySlides');
-                this.generateData1(data, element, selectionIdBuilder, settings, 'mySlides');
+            if (slideshowcontainerwidth <= settings.chartOptions.breakWidth) {
+                const errorcont1 = document.querySelector('.info-container')
+                if (errorcont1 != null) {
+                    errorcont1.parentNode.removeChild(errorcont1);
+                }
+
+                this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', data.categorical.dimensions[0].values.indexOf('RASP'));
+                this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', data.categorical.dimensions[0].values.indexOf('CAS'));
+                this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', data.categorical.dimensions[0].values.indexOf('PAS'));
+                //this.generateData1(data, element, selectionIdBuilder, settings, 'mySlides');
                 const prev = document.createElement('a');
                 const next = document.createElement('a');
                 prev.className = 'prev';
@@ -1143,8 +631,14 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 this.showSlides(this.slideIndex);
 
             } else {
-                this.generateData(data, element, selectionIdBuilder, settings, null);
-                this.generateData1(data, element, selectionIdBuilder, settings, null);
+                const errorcont = document.querySelector('.info-container')
+                if (errorcont != null) {
+                    errorcont.parentNode.removeChild(errorcont);
+                }
+               
+                    this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('RASP'));
+                    this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('CAS'));
+                    this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('PAS'));
             }
         }
         catch (e) {
@@ -1167,6 +661,160 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         }
         slides[this.slideIndex - 1].style.display = "block";
         slides[this.slideIndex - 1].className += " active";
+    }
+
+    public emptyElement(element: HTMLElement) {
+        while (element.hasChildNodes()) {
+            element.removeChild(element.lastChild);
+        }
+    }
+
+    private sharePercentCalc(data: Data, settings: VisualSettings, element: HTMLElement, insertingElement, business: integer) {
+        const spanpercentvalue = document.createElement('span');
+        const chattily = document.createElement('div');
+        const spantitle = document.createElement('span');
+        insertingElement.appendChild(chattily);
+        chattily.appendChild(spantitle);
+        chattily.appendChild(spanpercentvalue);
+
+        if (settings.chartOptions.chartshow !== false) {
+            // Chart title Options
+            chattily.id = 'charttitle';
+            spantitle.id = 'spantitle';
+            spanpercentvalue.id = 'spanpercentvalue';
+            if(business == data.categorical.dimensions[0].values.indexOf('RASP')){
+                spantitle.innerHTML = (settings.chartOptions.chartshow == true) ? settings.chartOptions.charttitle : settings.chartOptions.charttitle = '';
+            }else if(business == data.categorical.dimensions[0].values.indexOf('CAS')){
+                spantitle.innerHTML = (settings.chartOptions.chartshow == true) ? settings.chartOptions.charttitle2 : settings.chartOptions.charttitle2 = '';
+            }else if(business == data.categorical.dimensions[0].values.indexOf('PAS')){
+                spantitle.innerHTML = (settings.chartOptions.chartshow == true) ? settings.chartOptions.charttitle3 : settings.chartOptions.charttitle3 = '';
+            }
+           
+            chattily.style.fontFamily = settings.chartOptions.fontfamily;
+            chattily.style.fontSize = settings.chartOptions.fontSize + "px";
+            chattily.style.fontWeight = settings.chartOptions.fontWeight;
+            spantitle.style.color = settings.chartOptions.fontColor;
+            spanpercentvalue.style.color = settings.chartOptions.percentvalfontColor;
+            chattily.style.textAlign = settings.chartOptions.textAlign;
+        }
+        if (settings.chartOptions.chartshow && spantitle.innerHTML == '') {
+            spantitle.innerHTML = 'Sample';
+        }
+        if (settings.chartOptions.chartshow !== false && this.fieldsMeta.hasPercentageValues && this.fieldsMeta.hasCategory) {
+            const percentval = data.categorical.measures.filter(function (item) {
+                return (item.role["PercentageValues"])
+            });
+
+            let percentValue;
+            if (percentval.length > 1) {
+                percentValue = percentval[1].values[business];
+            } else {
+                percentValue = percentval[0].values[business];
+            }
+            // console.log("percentValue", percentValue);
+            let decpercent = '';
+            if (percentValue == 1) {
+                decpercent = (percentValue * 100).toString() + '%';
+
+            } else if (percentValue > 1 && percentValue < 100) {
+                decpercent = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
+            } else if (percentValue >= 100) {
+                decpercent = (percentValue).toString() + '%';
+            }
+            else if (percentValue < 0) {
+                decpercent = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
+            }
+            else if (percentValue > 0 && percentValue < 1) {
+                let parsevalue = (percentValue * 100).toFixed(settings.chartOptions.percentDecimal) + '%';
+                decpercent = parsevalue;
+
+            } else if (percentValue == 0) {
+                decpercent = percentValue.toString() + '%';
+            }
+
+            const percent = (settings.chartOptions.chartshow == true && this.fieldsMeta.hasPercentageValues) ? decpercent : '';
+
+            spanpercentvalue.innerHTML = percent.toString();
+
+            if (percentValue == null) {
+                this.emptyElement(element)
+                UIIndicators.showErrorMessage(element, "Invalid percentage value data. Please add valid value");
+                // var taberror = document.querySelector('.info-container');
+                // taberror.classList.add('percenterror');
+                // insertingElement.insertBefore(taberror, insertingElement.childNodes[0]);
+                document.getElementById("vbi-error-message").removeAttribute('id');
+            }
+        }
+    }
+
+    private currentVersionYearCalc(data: Data, versionwrapper) {
+        // Adding version year text
+        const headertext1 = document.createElement('div');
+        const headertext2 = document.createElement('div');
+        headertext1.className = 'headertext';
+        headertext2.className = 'headertext2';
+        versionwrapper.appendChild(headertext1);
+        versionwrapper.appendChild(headertext2);
+        // Version year calculations
+        if (data.categorical['groupDimension'][0].values.length > 1) {
+            if (data.categorical['groupDimension'][0].values[0] < data.categorical['groupDimension'][0].values[1]) {
+                headertext1.innerHTML = data.categorical['groupDimension'][0].values[0];
+                headertext2.innerHTML = data.categorical['groupDimension'][0].values[1];
+            } else {
+                headertext1.innerHTML = data.categorical['groupDimension'][0].values[1];
+                headertext2.innerHTML = data.categorical['groupDimension'][0].values[0];
+            }
+        } else {
+            let lesslength = data.categorical['groupDimension'][0].values[0];
+            headertext2.innerHTML = lesslength;
+
+            if (isNaN(lesslength)) {
+                headertext1.innerHTML = lesslength;
+            } else {
+                headertext1.innerHTML = (parseInt(lesslength) - 1).toString();
+            }
+        }
+    }
+
+    private PreviousVersionYearCalc(
+        data: Data,
+        versionwrapper
+    ) {
+        // Previous Version year calculations
+        const headertext3 = document.createElement('div');
+        const headertext4 = document.createElement('div');
+        headertext3.className = 'headertext';
+        headertext4.className = 'headertext2';
+        versionwrapper.appendChild(headertext3);
+        versionwrapper.appendChild(headertext4);
+        if (data.categorical['groupDimension'][0].values.length > 1) {
+            if (isNaN(parseInt(data.categorical['groupDimension'][0].values[0])) || isNaN(parseInt(data.categorical['groupDimension'][0].values[1]))) {
+                headertext3.innerHTML = data.categorical['groupDimension'][0].values[0];
+                headertext4.innerHTML = data.categorical['groupDimension'][0].values[1];
+            } else {
+                const tab2offsetvalue = parseInt(data.categorical['groupDimension'][0].values[0]) - 1;
+                const tab2offsetvalue2 = parseInt(data.categorical['groupDimension'][0].values[1]) - 1;
+
+                if (data.categorical['groupDimension'][0].values[0] < data.categorical['groupDimension'][0].values[1]) {
+                    headertext3.innerHTML = tab2offsetvalue.toString();
+                    headertext4.innerHTML = tab2offsetvalue2.toString();
+                } else {
+
+                    headertext3.innerHTML = tab2offsetvalue2.toString();
+                    headertext4.innerHTML = tab2offsetvalue.toString();
+                }
+            }
+        } else {
+            let lesslength = data.categorical['groupDimension'][0].values[0];
+            headertext4.innerHTML = lesslength;
+
+            if (isNaN(lesslength)) {
+                headertext3.innerHTML = lesslength;
+            } else {
+                headertext4.innerHTML = (parseInt(lesslength) - 1).toString();
+                headertext3.innerHTML = (parseInt(lesslength) - 2).toString();
+            }
+        }
     }
 
     public generateSampleVisual(element) {
@@ -1224,8 +872,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         };
         this.highcharts.chart(element, lpChartSettings);
     }
+
 }
-function showSlides(slideIndex: number) {
-    throw new Error("Function not implemented.");
-}
+
 
