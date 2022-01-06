@@ -1,12 +1,10 @@
 /**********************
-Tab section css
+CSS Section Starts
 **********************/
 #tabs_container0,
 #tabs_container1,
 #tabs_container2 {
   width: 33.3%;
-  /* position: absolute;
-  top: 0; */
   z-index: 1000;
   min-height: 100% !important;
   height: 100%;
@@ -153,7 +151,7 @@ div[class*="titledivsub-"] {
   padding-top: 10px;
   height: 35px;
 }
-.headertext2{
+.headertext2 {
   margin-left: 25px;
 }
 .versioncontainer {
@@ -168,7 +166,7 @@ div[class*="titledivsub-"] {
 }
 
 /**********************
-slider css
+Slider css
 **********************/
 
 .mySlides #tabs_container2,
@@ -204,7 +202,7 @@ slider css
 .next::after {
   content: "\02C3";
 }
-.prev{
+.prev {
   left: 0;
 }
 .next {
@@ -219,29 +217,48 @@ slider css
   color: #8e8e8e !important;
   text-decoration: none !important;
 }
-.mySlides .container{
+
+.mySlides .container {
   display: flex;
 }
-.mySlides #titlediv{
+.mySlides #titlediv {
   height: unset !important;
 }
-#slideshowcontainer{}
-
-/**********************
-Media query
-**********************/
-@media screen and (max-width: 600px) {
-  /* .container {
-    position: absolute;
-  } */
-  /* .mySlides #tabs_container2,
-  .mySlides #tabs_container1,
-  .mySlides #tabs_container0 {
-  position:absolute;
-  } */
-  /* .slideshowcontainer {
-    width: 100%;
-    height: 100%;
-    top: 0;
-  } */
+.mySlides,
+#slideshowcontainer,
+.slideshowcontainer.scrollbar {
+  width: 100%;
+  height: 100%;
 }
+/**********************
+Scrollbar css
+**********************/
+
+.slideshowcontainer.scrollbar {
+  overflow-x: auto;
+  white-space: nowrap;
+  overflow-y: hidden;
+}
+.slideshowcontainer.scrollbar.mid  #tabs_container2,
+.slideshowcontainer.scrollbar.mid  #tabs_container1,
+.slideshowcontainer.scrollbar.mid  #tabs_container0{
+  width:50% !important;
+}
+.slideshowcontainer.scrollbar #tabs_container2,
+.slideshowcontainer.scrollbar #tabs_container1,
+.slideshowcontainer.scrollbar #tabs_container0{
+  width:100% !important;
+   float: unset !important;
+}
+
+::-webkit-scrollbar {
+  height: 6px;              
+  width: 4px;              
+  border: 1px solid #d5d5d5;
+}
+::-webkit-scrollbar-thumb:horizontal{
+  background: #b6b6b6bf;
+  border-radius: 10px;
+}
+
+

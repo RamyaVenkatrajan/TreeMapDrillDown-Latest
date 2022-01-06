@@ -138,6 +138,18 @@
                 }
             }
         },
+        "responsiveOptions":{
+            "displayName": "Responsive Options",
+            "properties": {
+                "scrollshow": {
+                    "description": "Enable Scroll ",
+                    "displayName": "Enable Scroll",
+                    "type": {
+                        "bool": true
+                    }
+                }
+            }
+        },
         "chartOptions": {
             "displayName": "Chart Options",
             "properties": {

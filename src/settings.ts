@@ -30,6 +30,7 @@ import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 export class VisualSettings extends DataViewObjectsParser {
   public bifrostSection = new BifrostSection();
   public license = new License();
+  public responsiveOptions =new ResponsiveOptions();
   public chartOptions = new ChartOptions();
   public tabtitleOptions = new TabtitleOptions();
   public dataLabels = new DataLabels();
@@ -44,7 +45,9 @@ export class License {
   public key: string = "";
   public customer: string = "";
 }
-
+export class ResponsiveOptions {
+  public scrollshow: boolean = false;
+}
 export class ChartOptions {
   public bandBgshow: boolean = true;
   public bandBg: string = "#FFF7E2";

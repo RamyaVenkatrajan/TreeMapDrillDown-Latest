@@ -176,50 +176,6 @@ export class TreeMapDrilldownUtil {
             }],
             responsive: {
                 rules: [
-                //     {
-                //     condition: {
-                //         minWidth:401,
-                //         maxWidth: 500
-                //     },
-                //     chartOptions: {
-                //         chart: {
-                //             margin: [40, 120, 40, 120],
-                //         }
-                //     }
-                // // },
-                // {
-                //     condition: {
-                //         minWidth: 301,
-                //         maxWidth: 400,
-                //     },
-                //     chartOptions: {
-                //         chart: {
-                //            margin: [50, 90, 50, 90],
-                //         }
-                //     }
-                // },
-                // {
-                //     condition: {
-                //         minWidth: 230,
-                //         maxWidth: 300
-                //     },
-                //     chartOptions: {
-                //         chart: {
-                //             margin: [40, 90, 40, 80],
-                //         }
-                //     }
-                // },
-                // {
-                //     condition: {
-                //         minWidth:1,
-                //         maxWidth: 229
-                //     },
-                //     chartOptions: {
-                //         chart: {
-                //             margin: [20, 70, 20, 70],
-                //         }
-                //     }
-                // },
                 {
                     condition: {
                         minHeight:41,
@@ -238,8 +194,7 @@ export class TreeMapDrilldownUtil {
                     chartOptions: {
                         chart: {
                             margin: [5, 70, 5, 70],
-                            
-                        }
+                        },
                     }
                 },
                 ]
