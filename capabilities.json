@@ -421,13 +421,6 @@
                             }
                         }
                     }
-                },
-                "breakWidth": {
-                    "description": "Responsive Breakwidth",
-                    "displayName": "Break Width",
-                    "type": {
-                        "numeric": true
-                    }
                 }
             }
         },

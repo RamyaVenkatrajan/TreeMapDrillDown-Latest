@@ -52,9 +52,9 @@ export class ChartOptions {
   public bandBgshow: boolean = true;
   public bandBg: string = "#FFF7E2";
   public chartshow: boolean = true;
-  public charttitle: string = "Sample";
-  public charttitle2: string = "Sample";
-  public charttitle3: string = "Sample";
+  public charttitle: string = "";
+  public charttitle2: string = "";
+  public charttitle3: string = "";
   public fontColor: string = "#C10230";
   public percentDecimal: number = 0.0;
   public percentvalfontColor: string = "#CDCECD";
@@ -62,7 +62,6 @@ export class ChartOptions {
   public fontSize: number = 20.0;
   public fontWeight: string = "600";
   public textAlign: string = "center";
-  public breakWidth: number = 600;
 
 }
 export class TabtitleOptions {

@@ -644,14 +644,13 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             } else if (screenwidth > 600 && screenwidth <= 1100) {
                 this.removeInfoElement(element);
                 // for scroll responsive - mid devices
-                const slideshowcontainer1 = document.createElement('div');
-                slideshowcontainer1.className = 'slideshowcontainer';
-                slideshowcontainer1.id = 'slideshowcontainer';
-                if (varcheck) {
-                    varcheck.replaceWith(slideshowcontainer1);
-                    element.appendChild(slideshowcontainer1);
-                } else {
-                    element.appendChild(slideshowcontainer1);
+                const prev = document.querySelector('.prev')
+                if (prev != null) {
+                    prev.parentNode.removeChild(prev);
+                }
+                const next = document.querySelector('.next')
+                if (next != null) {
+                    next.parentNode.removeChild(next);
                 }
                 document.getElementById('slideshowcontainer').className += ' scrollbar mid'
                 this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('RASP'));

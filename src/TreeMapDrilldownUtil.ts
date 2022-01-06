@@ -30,8 +30,14 @@ export class TreeMapDrilldownUtil {
                
                 for (let i = 0; i < Values1.length; i++) {
                     seriesfilterdata1[i] = [];
-                    seriesfilterdata1[i].push(null);
-                    seriesfilterdata1[i].push(Values1[i].data[businessunits]);
+                    if(i>2 && (i==((Values1.length)-1) &&  (businessunits == data.categorical.dimensions[0].values.indexOf('RASP') || businessunits == data.categorical.dimensions[0].values.indexOf('CAS')))){
+                        seriesfilterdata1[i].push(null);
+                        seriesfilterdata1[i].push(null);
+                    }else{
+                        seriesfilterdata1[i].push(null);
+                        seriesfilterdata1[i].push(Values1[i].data[businessunits]);
+                    }
+                 
                 }
             }
         }
