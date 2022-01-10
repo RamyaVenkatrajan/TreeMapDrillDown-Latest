@@ -14,7 +14,6 @@ export class TreeMapDrilldownUtil {
             if (data.categorical['groupDimension'][0].values.length > 1) {
                 var firsthalfseries = Values1.slice(0, Values1.length / 2);
                 var secondhalfseries = Values1.slice(-Values1.length / 2);
-               // console.log("Values1.length/2",Values1.length/2);
                 for (let i = 0; i < Values1.length / 2; i++) {
                     seriesfilterdata1[i] = [];
                     if(i>2 && (i==((Values1.length/2)-1) &&  (businessunits == data.categorical.dimensions[0].values.indexOf('RASP') || businessunits == data.categorical.dimensions[0].values.indexOf('CAS')))){
@@ -45,7 +44,6 @@ export class TreeMapDrilldownUtil {
             var Values3 = seriesData.filter(function (item) {
                 return (item.role["Values3"])
             });
-            //console.log("Values3",Values3);
             if (data.categorical['groupDimension'][0].values.length > 1) {
                 var firsthalfseries = Values3.slice(0, Values3.length / 2);
                 var secondhalfseries = Values3.slice(-Values3.length / 2);

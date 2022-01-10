@@ -234,7 +234,8 @@ Slider css
 Scrollbar css
 **********************/
 
-.slideshowcontainer.scrollbar {
+.slideshowcontainer.scrollbar.mid {
+  display: block;
   overflow-x: auto;
   white-space: nowrap;
   overflow-y: hidden;
@@ -250,13 +251,20 @@ Scrollbar css
   width:100% !important;
    float: unset !important;
 }
+.slideshowcontainer.scrollbar {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
 
 ::-webkit-scrollbar {
   height: 6px;              
   width: 4px;              
   border: 1px solid #d5d5d5;
 }
-::-webkit-scrollbar-thumb:horizontal{
+::-webkit-scrollbar-thumb:vertical{
   background: #b6b6b6bf;
   border-radius: 10px;
 }

@@ -46,7 +46,7 @@ export class License {
   public customer: string = "";
 }
 export class ResponsiveOptions {
-  public scrollshow: boolean = false;
+  public scrollshow: boolean = true;
 }
 export class ChartOptions {
   public bandBgshow: boolean = true;

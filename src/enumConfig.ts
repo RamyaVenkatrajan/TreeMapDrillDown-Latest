@@ -7,15 +7,10 @@ export class EnumConfig {
     private PropertyType = SettingsSchemaTypeDef.PropertyType;
     private IteratorType = SettingsSchemaTypeDef.IteratorType;
     private isProPropertiesUsed: boolean;
-    private maxlength;
-    constructor(data) {
-        this.maxlength = data;
-    }
+
 
     public getEnumerationConfigurationArray(instance): SettingsSchemaTypeDef.Section[] {
-
         const measureData = {};
-
         if (instance && instance.metadata) {
             if (instance.metadata.dimensions)
                 instance.metadata.dimensions.forEach(dim => {
@@ -35,12 +30,13 @@ export class EnumConfig {
         enumerationConfig.push(this.getTitleOptions(instance));
         enumerationConfig.push(this.getDataLabels(instance));
         enumerationConfig.push(this.getMarkerOption(instance));
+        enumerationConfig.push(this.getResponsiveOptions(instance));
         
+
 
         return enumerationConfig;
     }
-    private getChartOptions(instance: TreeMapDrilldownChart,) {
-
+    private getChartOptions(instance: TreeMapDrilldownChart) {
         return {
             name: 'chartOptions',
             properties: [
@@ -108,7 +104,7 @@ export class EnumConfig {
                     name: 'percentvalfontColor',
                     isVisible: (settings: VisualSettings) => settings.chartOptions.chartshow !== false
                 }
-              
+
             ]
         };
     }
@@ -214,6 +210,7 @@ export class EnumConfig {
             ]
         }
     }
+
     private getTitleOptions(instance: TreeMapDrilldownChart,) {
         return {
             name: 'tabtitleOptions',
@@ -269,6 +266,7 @@ export class EnumConfig {
             ]
         }
     }
+
     private getDataLabels(instance: TreeMapDrilldownChart) {
         return {
             name: 'dataLabels',
@@ -288,6 +286,7 @@ export class EnumConfig {
             ]
         }
     }
+
     private getMarkerOption(instance: TreeMapDrilldownChart) {
         return {
             name: 'markerOption',
@@ -303,6 +302,18 @@ export class EnumConfig {
                             },
                         }
                     },
+                },
+            ]
+        }
+    }
+
+    private getResponsiveOptions(instance: TreeMapDrilldownChart) {
+        return {
+            name: 'responsiveOptions',
+            properties: [
+                {
+                    name: 'scrollshow',
+                    isVisible: (settings: VisualSettings) => instance._isPBIMobile == true
                 },
             ]
         }
