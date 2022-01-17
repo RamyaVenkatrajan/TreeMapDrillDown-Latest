@@ -1,8 +1,8 @@
 {
     "name": "visual",
     "dependencies": {
-        "@visualbi/powerbi-common": "1.1.343",
-        "@visualbi/powerbi-editor": "1.1.231",
+        "@visualbi/powerbi-common": "1.1.439",
+        "@visualbi/powerbi-editor": "1.1.291",
         "highcharts-custom-events": "3.0.9",
         "powerbi-visuals-utils-colorutils": "2.3.0",
         "react": "16.13.1",

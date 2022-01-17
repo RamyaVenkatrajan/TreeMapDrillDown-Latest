@@ -1,5 +1,5 @@
 import { VisualSettings } from "./settings";
-import { SettingsSchemaTypeDef } from "@visualbi/bifrost-powerbi/dist/types/SettingsSchemaTypeDef";
+import * as SettingsSchemaTypeDef from '@visualbi/bifrost-powerbi/dist/types/SettingsSchemaTypeDef';
 import { TreeMapDrilldownChart } from './visual';
 import { settings } from "cluster";
 
@@ -308,6 +308,7 @@ export class EnumConfig {
     }
 
     private getResponsiveOptions(instance: TreeMapDrilldownChart) {
+        console.log("instance",instance);
         return {
             name: 'responsiveOptions',
             properties: [

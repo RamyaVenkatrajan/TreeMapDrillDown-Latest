@@ -1,10 +1,11 @@
 // Bifrost files import
-import { BifrostVisual } from "@visualbi/bifrost-powerbi/dist/BifrostVisual";
+import * as BifrostVisual from '@visualbi/bifrost-powerbi/dist/BifrostVisual';
+import { RenderOptions } from '@visualbi/bifrost-powerbi/dist/types/BifrostTypeDef';
 import { SelectionIdBuilder } from "@visualbi/bifrost-powerbi/dist/SelectionIdBuilder";
 import { HighContrastColors } from "@visualbi/bifrost-powerbi/dist/types/BifrostTypeDef";
 import * as Categorical from '@visualbi/bifrost-powerbi/dist/types/DataTypeDef';
 import { Data } from "@visualbi/bifrost-powerbi/dist/types/DataTypeDef";
-import { SettingsSchemaTypeDef } from "@visualbi/bifrost-powerbi/dist/types/SettingsSchemaTypeDef";
+import * as SettingsSchemaTypeDef from '@visualbi/bifrost-powerbi/dist/types/SettingsSchemaTypeDef';
 import { UIIndicators } from '@visualbi/bifrost-powerbi/dist/UIIndicators';
 import { HighchartSelectionManager } from "@visualbi/powerbi-common/dist/HighChartUtils/selection";
 import { BifrostDataUtils } from '@visualbi/powerbi-common/dist/Utils/bifrostDataUtils';
@@ -77,6 +78,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
     public _element: HTMLElement;
     private __selectionIdBuilder: SelectionIdBuilder;
     public __isPBIMobile: boolean;
+    public isInFocus: boolean;
 
     constructor(options: VisualConstructorOptions) {
         super(options, VisualSettings, ValidValues);
@@ -126,7 +128,6 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         this.enumConfig = new EnumConfig();
         return this.enumConfig.getEnumerationConfigurationArray(this);
     };
-
     public render({ data, element, selectionIdBuilder, settings, sampleVisual, isPBIDesktop, isPBIMobile, isMSBrowser }: {
         data: Data;
         element: HTMLElement;
@@ -136,23 +137,25 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         isPBIDesktop: boolean;
         isPBIMobile: boolean;
         isMSBrowser: boolean;
-        measureValueIndex: number;
-        options: VisualConstructorOptions
+
+
     }) {
-        console.log("Data", data);
+
         if (sampleVisual) {
             this.generateSampleVisual(element);
             return;
         } else {
             this._data = data; this._element = element; this._settings = settings;
             this.__selectionIdBuilder = selectionIdBuilder; this.__isPBIMobile = this._isPBIMobile;
-
             this.getFieldsMeta(data);
             this._isPBIApplication = isPBIDesktop || isPBIMobile;
             this._isMSBrowser = isMSBrowser;
             this._isPBIMobile = isPBIMobile;
+
+
             this.hcSelectionManager = new HighchartSelectionManager(selectionIdBuilder);
             this.responsiveChart(data, element, selectionIdBuilder, settings, isPBIMobile);
+
             selectionIdBuilder.registerOnSelectCallback(() => {
             });
             if (selectionIdBuilder.getSelectionIds().length > 0 && this.chartRef) {
@@ -162,7 +165,6 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
     }
 
     private getFieldsMeta(data: Data) {
-
         this.fieldsMeta = {
             hasCategory: false,
             hasBusinessUnit: false,
@@ -308,11 +310,11 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 actual_width = ((widowwidth) * 65);
                 newactualwidth = (actual_width / 100);
                 chartwidth = (widowwidth) - newactualwidth;
-            
-            }else if( this._isPBIMobile){
+
+            } else if (this._isPBIMobile) {
                 actual_width = ((widowwidth) * 25);
                 newactualwidth = (actual_width / 100);
-                chartwidth = (widowwidth ) - newactualwidth;
+                chartwidth = (widowwidth) - newactualwidth;
             }
             else {
                 actual_width = ((widowwidth / 3) * 25);
@@ -575,7 +577,8 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         return seriesData;
     }
 
-    private responsiveChart(data: Data, element: HTMLElement, selectionIdBuilder: SelectionIdBuilder, settings: VisualSettings, isPBIMobile: boolean) {
+    private responsiveChart(data: Data, element: HTMLElement, selectionIdBuilder: SelectionIdBuilder, settings: VisualSettings, isPBIMobile: boolean,
+    ) {
         try {
             const varcheck = document.getElementById('slideshowcontainer');
             const slideshowcontainer = document.createElement('div');
@@ -600,7 +603,28 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 return false;
             }
             var screenwidth = window.innerWidth
-            if (screenwidth <= 600) {
+            if (this._isPBIMobile) {
+                this.removeInfoElement(element);
+
+                this.setSwitchFocusModeState(true);
+
+                let scrollbtn = settings.responsiveOptions.scrollshow;
+                const prev = document.querySelector('.prev')
+                if (prev != null) {
+                    prev.parentNode.removeChild(prev);
+                }
+                const next = document.querySelector('.next')
+                if (next != null) {
+                    next.parentNode.removeChild(next);
+                }
+                document.getElementById('slideshowcontainer').className += ' scrollbar'
+
+                this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('RASP'));
+                this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('CAS'));
+                this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('PAS'));
+
+            } else if (screenwidth <= 600) {
+
                 this.removeInfoElement(element);
                 // for slider mobile responsive
                 document.getElementById('slideshowcontainer').className += ' Slider'
@@ -609,8 +633,8 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', data.categorical.dimensions[0].values.indexOf('PAS'));
                 const prev = document.createElement('a');
                 const next = document.createElement('a');
-                prev.className = 'prev';
-                next.className = 'next';
+                prev.className = 'prev ms-Icon ms-Icon--ChevronLeftSmall';
+                next.className = 'next ms-Icon ms-Icon--ChevronRightSmall';
                 slideshowcontainer.appendChild(prev);
                 slideshowcontainer.appendChild(next);
                 prev.addEventListener("click", event => {
@@ -620,44 +644,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                     this.plusSlides(1);
                 })
                 this.showSlides(this.slideIndex);
-            } else if (this._isPBIMobile) {
-                   this.removeInfoElement(element);
-                let scrollbtn = settings.responsiveOptions.scrollshow;
-                if (scrollbtn) {
-                    const prev = document.querySelector('.prev')
-                    if (prev != null) {
-                        prev.parentNode.removeChild(prev);
-                    }
-                    const next = document.querySelector('.next')
-                    if (next != null) {
-                        next.parentNode.removeChild(next);
-                    }
-                    document.getElementById('slideshowcontainer').className += ' scrollbar'
 
-                    this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('RASP'));
-                    this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('CAS'));
-                    this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('PAS'));
-                } else if (!scrollbtn) {
-                    this.removeInfoElement(element);
-                    // for slider mobile responsive
-                    document.getElementById('slideshowcontainer').className += ' Slider'
-                    this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', data.categorical.dimensions[0].values.indexOf('RASP'));
-                    this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', data.categorical.dimensions[0].values.indexOf('CAS'));
-                    this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', data.categorical.dimensions[0].values.indexOf('PAS'));
-                    const prev = document.createElement('a');
-                    const next = document.createElement('a');
-                    prev.className = 'prev';
-                    next.className = 'next';
-                    slideshowcontainer.appendChild(prev);
-                    slideshowcontainer.appendChild(next);
-                    prev.addEventListener("click", event => {
-                        this.plusSlides(-1);
-                    })
-                    next.addEventListener("click", event => {
-                        this.plusSlides(1);
-                    })
-                    this.showSlides(this.slideIndex);
-                }
             }
             else if (screenwidth > 600 && screenwidth <= 1100) {
                 this.removeInfoElement(element);
