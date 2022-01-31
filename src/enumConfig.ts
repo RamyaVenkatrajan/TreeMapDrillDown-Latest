@@ -25,17 +25,59 @@ export class EnumConfig {
         this.isProPropertiesUsed = false;
 
         const enumerationConfig: SettingsSchemaTypeDef.Section[] = [];
+        enumerationConfig.push(this.getHeaderOptions(instance));
         enumerationConfig.push(this.getChartOptions(instance));
         enumerationConfig.push(this.getNumberFormat(instance, measureData));
         enumerationConfig.push(this.getTitleOptions(instance));
         enumerationConfig.push(this.getDataLabels(instance));
         enumerationConfig.push(this.getMarkerOption(instance));
         enumerationConfig.push(this.getResponsiveOptions(instance));
-        
-
-
         return enumerationConfig;
     }
+    private getHeaderOptions(instance: TreeMapDrilldownChart) {
+        return {
+            name: 'headerOptions',
+            properties: [
+                {
+                    name: 'headerfontSize',
+                    isVisible: true,
+                    validValues: (settings: any) => {
+                        return {
+                            numberRange: {
+                                min: 8,
+                                max: 60
+                            },
+                        }
+                    }
+                },
+                {
+                    name: 'labelfontSize',
+                    isVisible: true,
+                    validValues: (settings: any) => {
+                        return {
+                            numberRange: {
+                                min: 8,
+                                max: 60
+                            },
+                        }
+                    }
+                },
+                {
+                    name: 'valuefontSize',
+                    isVisible: true,
+                    validValues: (settings: any) => {
+                        return {
+                            numberRange: {
+                                min: 8,
+                                max: 60
+                            },
+                        }
+                    }
+                }
+            ]
+        }
+    }
+
     private getChartOptions(instance: TreeMapDrilldownChart) {
         return {
             name: 'chartOptions',
@@ -108,6 +150,7 @@ export class EnumConfig {
             ]
         };
     }
+
     private getNumberFormat(instance: TreeMapDrilldownChart, metaData) {
 
         return {
@@ -308,7 +351,6 @@ export class EnumConfig {
     }
 
     private getResponsiveOptions(instance: TreeMapDrilldownChart) {
-        console.log("instance",instance);
         return {
             name: 'responsiveOptions',
             properties: [

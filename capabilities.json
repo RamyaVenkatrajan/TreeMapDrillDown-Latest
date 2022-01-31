@@ -50,6 +50,31 @@
                     "integer": true
                 }
             ]
+        },
+        {
+            "displayName": "Parent Name",
+            "name": "parentname",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "Account #",
+            "name": "account",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "Account Type",
+            "name": "accounttype",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "Sales Manager",
+            "name": "salesmanager",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "2022 Benefit Level",
+            "name": "benefitlevel",
+            "kind": "Measure"
         }
     ],
     "dataViewMappings": [
@@ -81,6 +106,31 @@
                                 "bind": {
                                     "to": "PercentageValues"
                                 }
+                            },
+                            {
+                                "bind": {
+                                    "to": "parentname"
+                                }
+                            },
+                            {
+                                "bind": {
+                                    "to": "account"
+                                }
+                            },
+                            {
+                                "bind": {
+                                    "to": "accounttype"
+                                }
+                            },
+                            {
+                                "bind": {
+                                    "to": "salesmanager"
+                                }
+                            },
+                            {
+                                "bind": {
+                                    "to": "benefitlevel"
+                                }
                             }
                         ]
                     }
@@ -101,6 +151,21 @@
                         "max": 4
                     },
                     "PercentageValues": {
+                        "max": 1
+                    },
+                    "parentname": {
+                        "max": 1
+                    },
+                    "account": {
+                        "max": 1
+                    },
+                    "accounttype": {
+                        "max": 1
+                    },
+                    "salesmanager": {
+                        "max": 1
+                    },
+                    "benefitlevel": {
                         "max": 1
                     }
                 }
@@ -146,6 +211,329 @@
                     "displayName": "Enable Scroll",
                     "type": {
                         "bool": true
+                    }
+                }
+            }
+        },
+        "headerOptions":{
+            "displayName": "Header Options",
+            "properties": {
+                "headerfontfamily": {
+                    "description": "Applied to all the header texts in the visual",
+                    "displayName": "Header Texts Font Family",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "Standard for numbers",
+                                "value": "Lucida Grande, Lucida Sans Unicode, Arial, Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Arial",
+                                "value": "Arial, Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Arial Black",
+                                "value": "Arial Black"
+                            },
+                            {
+                                "displayName": "Arial Unicode MS",
+                                "value": "Arial Unicode MS"
+                            },
+                            {
+                                "displayName": "Calibri",
+                                "value": "Calibri"
+                            },
+                            {
+                                "displayName": "Cambria",
+                                "value": "Cambria"
+                            },
+                            {
+                                "displayName": "Cambria Math",
+                                "value": "Cambria Math"
+                            },
+                            {
+                                "displayName": "Candara",
+                                "value": "Candara"
+                            },
+                            {
+                                "displayName": "Comic Sans MS",
+                                "value": "Comic Sans MS"
+                            },
+                            {
+                                "displayName": "Consolas",
+                                "value": "Consolas"
+                            },
+                            {
+                                "displayName": "Constantia",
+                                "value": "Constantia"
+                            },
+                            {
+                                "displayName": "Corbel",
+                                "value": "Corbel"
+                            },
+                            {
+                                "displayName": "Courier New",
+                                "value": "Courier New"
+                            },
+                            {
+                                "displayName": "Georgia",
+                                "value": "Georgia"
+                            },
+                            {
+                                "displayName": "Helvetica Neue",
+                                "value": "Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Lucida Sans Unicode",
+                                "value": "Lucida Sans Unicode"
+                            },
+                            {
+                                "displayName": "Segoe (Bold)",
+                                "value": "\"Segoe UI Bold\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI",
+                                "value": "\"Segoe UI\", wf_segoe-ui_normal, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Segoe UI Light",
+                                "value": "\"Segoe UI Light\", wf_segoe-ui_bold, helvetica, arial, sans-serif"
+                            },
+                            {
+                                "displayName": "Symbol",
+                                "value": "Symbol"
+                            },
+                            {
+                                "displayName": "Tahoma",
+                                "value": "Tahoma"
+                            },
+                            {
+                                "displayName": "Times New Roman",
+                                "value": "Times New Roman"
+                            },
+                            {
+                                "displayName": "Trebuchet MS",
+                                "value": "Trebuchet MS"
+                            },
+                            {
+                                "displayName": "Verdana",
+                                "value": "Verdana"
+                            },
+                            {
+                                "displayName": "Wingdings",
+                                "value": "Wingdings"
+                            },
+                            {
+                                "displayName": "Helvetica Neue",
+                                "value": "Helvetica, sans-serif"
+                            },
+                            {
+                                "displayName": "Eurostile",
+                                "value": "Eurostile, sans-serif"
+                            }
+                        ]
+                    }
+                },
+                "headerfontColor": {
+                    "description": "Select color for Header Titles",
+                    "displayName": "Title Text Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "headerfontSize": {
+                    "description": "Select font size for Header title",
+                    "displayName": "Title Text Font Size",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "headerfontWeight": {
+                    "description": "Select font weight for Header title",
+                    "displayName": "Title Text Font Weight",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "100",
+                                "value": "100"
+                            },
+                            {
+                                "displayName": "200",
+                                "value": "200"
+                            },
+                            {
+                                "displayName": "300",
+                                "value": "300"
+                            },
+                            {
+                                "displayName": "400",
+                                "value": "400"
+                            },
+                            {
+                                "displayName": "500",
+                                "value": "500"
+                            },
+                            {
+                                "displayName": "600",
+                                "value": "600"
+                            },
+                            {
+                                "displayName": "700",
+                                "value": "700"
+                            },
+                            {
+                                "displayName": "800",
+                                "value": "800"
+                            },
+                            {
+                                "displayName": "Bold",
+                                "value": "bold"
+                            },
+                            {
+                                "displayName": "Thin",
+                                "value": "thin"
+                            }
+                        ]
+                    }
+                },
+                "labelfontcolor": {
+                    "displayName": "Header Label Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "labelfontSize": {
+                    "displayName": "Header Label Font Size",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "labelfontWeight": {
+                    "displayName": "Header Label Font Weight",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "100",
+                                "value": "100"
+                            },
+                            {
+                                "displayName": "200",
+                                "value": "200"
+                            },
+                            {
+                                "displayName": "300",
+                                "value": "300"
+                            },
+                            {
+                                "displayName": "400",
+                                "value": "400"
+                            },
+                            {
+                                "displayName": "500",
+                                "value": "500"
+                            },
+                            {
+                                "displayName": "600",
+                                "value": "600"
+                            },
+                            {
+                                "displayName": "700",
+                                "value": "700"
+                            },
+                            {
+                                "displayName": "800",
+                                "value": "800"
+                            },
+                            {
+                                "displayName": "Bold",
+                                "value": "bold"
+                            },
+                            {
+                                "displayName": "Thin",
+                                "value": "thin"
+                            }
+                        ]
+                    }
+                },
+                "valuefontcolor": {
+                    "displayName": "Header Values Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "valuefontSize": {
+                    "displayName": "Header Values Font Size",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "valuefontWeight": {
+                    "displayName": "Header Values Font Weight",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "100",
+                                "value": "100"
+                            },
+                            {
+                                "displayName": "200",
+                                "value": "200"
+                            },
+                            {
+                                "displayName": "300",
+                                "value": "300"
+                            },
+                            {
+                                "displayName": "400",
+                                "value": "400"
+                            },
+                            {
+                                "displayName": "500",
+                                "value": "500"
+                            },
+                            {
+                                "displayName": "600",
+                                "value": "600"
+                            },
+                            {
+                                "displayName": "700",
+                                "value": "700"
+                            },
+                            {
+                                "displayName": "800",
+                                "value": "800"
+                            },
+                            {
+                                "displayName": "Bold",
+                                "value": "bold"
+                            },
+                            {
+                                "displayName": "Thin",
+                                "value": "thin"
+                            }
+                        ]
+                    }
+                },
+                "benefitlevelcolor": {
+                    "displayName": "Benefit level Text Color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
                     }
                 }
             }

@@ -31,6 +31,7 @@ export class VisualSettings extends DataViewObjectsParser {
   public bifrostSection = new BifrostSection();
   public license = new License();
   public responsiveOptions =new ResponsiveOptions();
+  public headerOptions = new HeaderOptions();
   public chartOptions = new ChartOptions();
   public tabtitleOptions = new TabtitleOptions();
   public dataLabels = new DataLabels();
@@ -47,6 +48,20 @@ export class License {
 }
 export class ResponsiveOptions {
   public scrollshow: boolean = true;
+}
+export class HeaderOptions{
+  public headerfontfamily: string = "Arial, Helvetica, sans-serif";
+  public headerfontColor: string = "#000";
+  public headerfontSize: number = 32.0;
+  public headerfontWeight: string = "bold";
+  public labelfontcolor: string = "#707070";
+  public labelfontSize: number = 16.0;
+  public labelfontWeight: string = "bold";
+  public valuefontcolor: string = "#707070";
+  public valuefontSize: number = 16.0;
+  public valuefontWeight: string = "400";
+  public benefitlevelcolor: string = '#008000'
+
 }
 export class ChartOptions {
   public bandBgshow: boolean = true;
@@ -146,6 +161,45 @@ export class ValidValues {
             }
           }
         }
+      ]
+    },
+    {
+      name:'headerOptions',
+      properties: [
+        {
+          name: "headerfontSize",
+          configuration: {
+            validValues: {
+              numberRange: {
+                min: 8,
+                max: 60
+              }
+            }
+          }
+        },
+        {
+          name: "labelfontSize",
+          configuration: {
+            validValues: {
+              numberRange: {
+                min: 8,
+                max: 60
+              }
+            }
+          }
+        },
+        {
+          name: "valuefontSize",
+          configuration: {
+            validValues: {
+              numberRange: {
+                min: 8,
+                max: 60
+              }
+            }
+          }
+        },
+
       ]
     },
     {

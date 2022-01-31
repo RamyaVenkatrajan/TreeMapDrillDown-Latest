@@ -19,6 +19,11 @@ export interface FieldsMeta {
     hasValues1: boolean;
     hasValues3: boolean;
     hasPercentageValues:boolean;
+    hasParentName:boolean;
+    hasAccount:boolean;
+    hasAccountType :boolean;
+    hasSalesManager:boolean;
+    hasBenefitlevel:boolean;
     hastooltips: boolean;
     countValues1: 0,
     countValues3: 0,

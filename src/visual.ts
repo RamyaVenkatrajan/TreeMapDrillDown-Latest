@@ -1,4 +1,3 @@
-// Bifrost files import
 import * as BifrostVisual from '@visualbi/bifrost-powerbi/dist/BifrostVisual';
 import { RenderOptions } from '@visualbi/bifrost-powerbi/dist/types/BifrostTypeDef';
 import { SelectionIdBuilder } from "@visualbi/bifrost-powerbi/dist/SelectionIdBuilder";
@@ -171,6 +170,11 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             hasValues1: false,
             hasValues3: false,
             hasPercentageValues: false,
+            hasParentName: false,
+            hasAccount: false,
+            hasAccountType: false,
+            hasSalesManager: false,
+            hasBenefitlevel: false,
             hastooltips: false,
             countValues1: 0,
             countValues3: 0,
@@ -204,6 +208,22 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             }
             if (mesMeta.role["PercentageValues"])
                 this.fieldsMeta.hasPercentageValues = true;
+
+            if (mesMeta.role["parentname"])
+                this.fieldsMeta.hasParentName = true;
+
+            if (mesMeta.role["account"])
+                this.fieldsMeta.hasAccount = true;
+
+            if (mesMeta.role["accounttype"])
+                this.fieldsMeta.hasAccountType = true;
+
+            if (mesMeta.role["salesmanager"])
+                this.fieldsMeta.hasSalesManager = true;
+
+            if (mesMeta.role["benefitlevel"])
+                this.fieldsMeta.hasBenefitlevel = true;
+
         });
     }
 
@@ -310,7 +330,6 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 actual_width = ((widowwidth) * 65);
                 newactualwidth = (actual_width / 100);
                 chartwidth = (widowwidth) - newactualwidth;
-
             } else if (this._isPBIMobile) {
                 actual_width = ((widowwidth) * 25);
                 newactualwidth = (actual_width / 100);
@@ -319,9 +338,8 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             else {
                 actual_width = ((widowwidth / 3) * 25);
                 newactualwidth = (actual_width / 100);
-                chartwidth = (widowwidth / 3) - newactualwidth;
+                chartwidth = ((widowwidth / 3) - newactualwidth) - 30;
             }
-
             //  Tab 1 chart series
             if (!this.fieldsMeta.hasValues1) {
                 UIIndicators.showErrorMessage(tabl1div, "Please add appropriate Tab 1 value data", null);
@@ -577,8 +595,155 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         return seriesData;
     }
 
-    private responsiveChart(data: Data, element: HTMLElement, selectionIdBuilder: SelectionIdBuilder, settings: VisualSettings, isPBIMobile: boolean,
-    ) {
+    private headerdetails(data: Data, settings: VisualSettings) {
+        var screensize = window.innerWidth;
+        const parentfilter = data.categorical.measures.filter(item => item.role["parentname"]);
+        const accountfilter = data.categorical.measures.filter(item => item.role["account"]);
+        const accounttypefilter = data.categorical.measures.filter(item => item.role["accounttype"]);
+        const salesmanagerfilter = data.categorical.measures.filter(item => item.role["salesmanager"]);
+        const benefitlevelfilter = data.categorical.measures.filter(item => item.role["benefitlevel"]);
+        const parentelement = document.getElementById('slideshowcontainer');
+        const headerElement = document.createElement("div");
+        headerElement.setAttribute("id", "headerbar");
+        const parentname = document.createElement("p");
+        parentname.classList.add("parentname");
+        //parentname. className = 'accordion active';
+        const detailElement = document.createElement("div");
+        detailElement.classList.add("account_details");
+        const accountelement = document.createElement("div");
+        accountelement.classList.add("acc_ele");
+        const accountelementlabel = document.createElement("p");
+        const accountelementtext = document.createElement("p");
+        const accounttype = document.createElement("div");
+        accounttype.classList.add("acc_type");
+        const accounttypelabel = document.createElement("p");
+        const accounttypetext = document.createElement("p");
+        const salesmanager = document.createElement("div");
+        salesmanager.classList.add("salesmanager_type");
+        const salesmanagerlabel = document.createElement("p");
+        const salesmanagertext = document.createElement("p");
+        const benefitlevel = document.createElement("div");
+        benefitlevel.classList.add("benefitlevel_type");
+        const benefitlevellabel = document.createElement("p");
+        const benefitleveltext = document.createElement("p");
+        //styles for header elements
+        parentname.style.color = settings.headerOptions.headerfontColor;
+        parentname.style.fontSize = screensize <= 600 || this._isPBIMobile ? (settings.headerOptions.headerfontSize * 0) + 20 + 'px' : settings.headerOptions.headerfontSize + 'px';
+        parentname.style.fontWeight = settings.headerOptions.headerfontWeight;
+        parentname.style.fontFamily = settings.headerOptions.headerfontfamily;
+        //style sub header label elements
+        accountelementlabel.style.color = settings.headerOptions.labelfontcolor;
+        accountelementlabel.style.fontSize = settings.headerOptions.labelfontSize + 'px';
+        accountelementlabel.style.fontWeight = settings.headerOptions.labelfontWeight;
+        accountelementlabel.style.fontFamily = settings.headerOptions.headerfontfamily;
+        accounttypelabel.style.color = settings.headerOptions.labelfontcolor;
+        accounttypelabel.style.fontSize = settings.headerOptions.labelfontSize + 'px';
+        accounttypelabel.style.fontWeight = settings.headerOptions.labelfontWeight;
+        accounttypelabel.style.fontFamily = settings.headerOptions.headerfontfamily;
+        salesmanagerlabel.style.color = settings.headerOptions.labelfontcolor;
+        salesmanagerlabel.style.fontSize = settings.headerOptions.labelfontSize + 'px';
+        salesmanagerlabel.style.fontWeight = settings.headerOptions.labelfontWeight;
+        salesmanagerlabel.style.fontFamily = settings.headerOptions.headerfontfamily;
+        benefitlevellabel.style.color = settings.headerOptions.labelfontcolor;
+        benefitlevellabel.style.fontSize = settings.headerOptions.labelfontSize + 'px';
+        benefitlevellabel.style.fontWeight = settings.headerOptions.labelfontWeight;
+        benefitlevellabel.style.fontFamily = settings.headerOptions.headerfontfamily;
+        //style sub header value elements
+        accountelementtext.style.color = settings.headerOptions.valuefontcolor;
+        accountelementtext.style.fontSize = settings.headerOptions.valuefontSize + 'px';
+        accountelementtext.style.fontWeight = settings.headerOptions.valuefontWeight;
+        accountelementtext.style.fontFamily = settings.headerOptions.headerfontfamily;
+        accounttypetext.style.color = settings.headerOptions.valuefontcolor;
+        accounttypetext.style.fontSize = settings.headerOptions.valuefontSize + 'px';
+        accounttypetext.style.fontWeight = settings.headerOptions.valuefontWeight;
+        accounttypetext.style.fontFamily = settings.headerOptions.headerfontfamily;
+        salesmanagertext.style.color = settings.headerOptions.valuefontcolor;
+        salesmanagertext.style.fontSize = settings.headerOptions.valuefontSize + 'px';
+        salesmanagertext.style.fontWeight = settings.headerOptions.valuefontWeight;
+        salesmanagertext.style.fontFamily = settings.headerOptions.headerfontfamily;
+        benefitleveltext.style.color = settings.headerOptions.benefitlevelcolor;
+        benefitleveltext.style.fontSize = settings.headerOptions.valuefontSize + 'px';
+        benefitleveltext.style.fontWeight = settings.headerOptions.valuefontWeight;
+        benefitleveltext.style.fontFamily = settings.headerOptions.headerfontfamily;
+
+        parentname.innerHTML = this.fieldsMeta.hasParentName ? (parentfilter[0].values[0]).toString() : 'Sample'
+        accountelementlabel.innerHTML = 'Account #';
+        accountelementtext.innerHTML = this.fieldsMeta.hasAccount ? (accountfilter[0].values[0]).toString() : 'Sample'
+        accounttypelabel.innerHTML = 'Account Type';
+        accounttypetext.innerHTML = this.fieldsMeta.hasAccountType ? (accounttypefilter[0].values[0]).toString() : 'Sample';
+        salesmanagerlabel.innerHTML = 'Sales Manager';
+        salesmanagertext.innerHTML = this.fieldsMeta.hasSalesManager ? (salesmanagerfilter[0].values[0]).toString() : 'Sample';
+       // benefitleveltext.innerHTML = this.fieldsMeta.hasBenefitlevel ? (benefitlevelfilter[0].values[0]).toString() :'Sample' ;
+        if (this.fieldsMeta.hasBenefitlevel) {
+            if((benefitlevelfilter[0].values[0]).toString() === '' || (benefitlevelfilter[0].values[0]).toString() === 'Select' || (benefitlevelfilter[0].values[0]).toString() === 'Not assigned'){
+                benefitlevellabel.innerHTML = '2022 Benefit Level';
+                benefitleveltext.innerHTML = '.'
+                benefitleveltext.style.visibility = 'hidden'
+                benefitlevellabel.style.visibility = 'hidden'
+            }else{
+                benefitlevellabel.innerHTML = '2022 Benefit Level';
+                benefitleveltext.innerHTML = (benefitlevelfilter[0].values[0]).toString();
+            }
+        }else if(!this.fieldsMeta.hasBenefitlevel){
+            benefitlevellabel.innerHTML = '2022 Benefit Level';
+            benefitleveltext.innerHTML = 'Sample'
+           
+        }
+       
+        //append div
+        headerElement.appendChild(parentname);
+        headerElement.appendChild(detailElement);
+        detailElement.appendChild(accountelement);
+        detailElement.appendChild(accounttype);
+        detailElement.appendChild(salesmanager);
+        detailElement.appendChild(benefitlevel);
+        accountelement.appendChild(accountelementlabel);
+        accountelement.appendChild(accountelementtext);
+        accounttype.appendChild(accounttypelabel);
+        accounttype.appendChild(accounttypetext);
+        salesmanager.appendChild(salesmanagerlabel);
+        salesmanager.appendChild(salesmanagertext);
+        benefitlevel.appendChild(benefitlevellabel);
+        benefitlevel.appendChild(benefitleveltext);
+        parentelement.insertBefore(headerElement, parentelement.children[0]);
+        // add accordion
+        if(screensize > 600 ){
+            parentname.className = 'accordion active ms-Icon ms-Icon--ChevronUpSmall';
+        }else if(screensize <=600 || this._isPBIMobile){
+            parentname.className = 'accordion active ms-Icon ms-Icon--ChevronDownSmall';
+        }
+
+        var acc = document.querySelector<HTMLElement>(".accordion")!;
+        acc.addEventListener("click", event => {
+            acc.classList.toggle("active");
+            var panel = <HTMLElement>acc.nextElementSibling;
+            if (screensize > 600 ){
+                if (acc.classList.contains('active')) {
+                    panel.style.display = "block";
+                    parentname.classList.add('ms-Icon--ChevronUpSmall');
+                    parentname.classList.remove('ms-Icon--ChevronDownSmall');
+                } else {
+                    parentname.classList.remove('ms-Icon--ChevronUpSmall');
+                    parentname.classList.add('ms-Icon--ChevronDownSmall');
+                    panel.style.display = "none";
+                }
+            }else if(screensize <=600 || this._isPBIMobile) {
+                if (acc.classList.contains('active')) {
+                    panel.style.display = "block";
+                    parentname.classList.add('ms-Icon--ChevronDownSmall');
+                    parentname.classList.remove('ms-Icon--ChevronRightSmall');
+                } else {
+                    parentname.classList.remove('ms-Icon--ChevronDownSmall');
+                    parentname.classList.add('ms-Icon--ChevronRightSmall');
+                    // parentname.className.replace('ms-Icon--ChevronUpSmall', 'ms-Icon--ChevronDownSmall');
+                    panel.style.display = "none";
+                }
+            }
+            
+        });
+    }
+
+    private responsiveChart(data: Data, element: HTMLElement, selectionIdBuilder: SelectionIdBuilder, settings: VisualSettings, isPBIMobile: boolean) {
         try {
             const varcheck = document.getElementById('slideshowcontainer');
             const slideshowcontainer = document.createElement('div');
@@ -602,7 +767,8 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 document.getElementById("vbi-error-message").removeAttribute('id');
                 return false;
             }
-            var screenwidth = window.innerWidth
+            var screenwidth = window.innerWidth;
+
             if (this._isPBIMobile) {
                 this.removeInfoElement(element);
 
@@ -624,7 +790,6 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('PAS'));
 
             } else if (screenwidth <= 600) {
-
                 this.removeInfoElement(element);
                 // for slider mobile responsive
                 document.getElementById('slideshowcontainer').className += ' Slider'
@@ -668,6 +833,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('CAS'));
                 this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('PAS'));
             }
+            this.headerdetails(data, settings);
         }
         catch (e) {
             console.log("error", e);
@@ -807,10 +973,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         }
     }
 
-    private PreviousVersionYearCalc(
-        data: Data,
-        versionwrapper
-    ) {
+    private PreviousVersionYearCalc(data: Data, versionwrapper) {
         // Previous Version year calculations
         const headertext3 = document.createElement('div');
         const headertext4 = document.createElement('div');
@@ -903,7 +1066,4 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         };
         this.highcharts.chart(element, lpChartSettings);
     }
-
 }
-
-

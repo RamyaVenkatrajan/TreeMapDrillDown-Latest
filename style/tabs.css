@@ -6,10 +6,12 @@ CSS Section Starts
 #tabs_container2 {
   width: 33.3%;
   z-index: 1000;
-  min-height: 100% !important;
+  /* min-height: 100% !important; */
   height: 100%;
   display: inline-block;
   float: left;
+  height: calc(100% - (100px));
+  padding: 0 10px;
 }
 
 .tabs,
@@ -40,7 +42,7 @@ CSS Section Starts
   display: flex;
   justify-content: center;
   height: 40px;
-  margin: 5px 0 0 0;
+  margin: 0;
   z-index: 1050;
   width: 100%;
   background: #fff;
@@ -119,6 +121,7 @@ div[class*="titledivsub-"] {
 #titlediv p,
 #titlediv1 {
   margin: 0;
+  white-space: normal;
 }
 
 .container,
@@ -212,11 +215,23 @@ Slider css
 .mySlides #titlediv {
   height: unset !important;
 }
+#slideshowcontainer {
+  padding: 0 30px;
+  width: 100%;
+  min-height: 100% !important;
+  height: 100%;
+  background: #efefef;
+}
 .mySlides,
-#slideshowcontainer,
 .slideshowcontainer.scrollbar {
   width: 100%;
+  min-height: 100% !important;
   height: 100%;
+  background: #efefef;
+  padding: unset !important;
+}
+.slideshowcontainer.Slider{
+  padding: unset !important;
 }
 /**********************
 Scrollbar css
@@ -228,16 +243,16 @@ Scrollbar css
   white-space: nowrap;
   overflow-y: hidden;
 }
-.slideshowcontainer.scrollbar.mid  #tabs_container2,
-.slideshowcontainer.scrollbar.mid  #tabs_container1,
-.slideshowcontainer.scrollbar.mid  #tabs_container0{
-  width:50% !important;
+.slideshowcontainer.scrollbar.mid #tabs_container2,
+.slideshowcontainer.scrollbar.mid #tabs_container1,
+.slideshowcontainer.scrollbar.mid #tabs_container0 {
+  width: 50% !important;
 }
 .slideshowcontainer.scrollbar #tabs_container2,
 .slideshowcontainer.scrollbar #tabs_container1,
-.slideshowcontainer.scrollbar #tabs_container0{
-  width:100% !important;
-   float: unset !important;
+.slideshowcontainer.scrollbar #tabs_container0 {
+  width: 100% !important;
+  float: unset !important;
 }
 .slideshowcontainer.scrollbar {
   display: flex;
@@ -248,13 +263,54 @@ Scrollbar css
 }
 
 ::-webkit-scrollbar {
-  height: 6px;              
-  width: 4px;              
+  height: 6px;
+  width: 4px;
   border: 1px solid #d5d5d5;
 }
-::-webkit-scrollbar-thumb:vertical{
+::-webkit-scrollbar-thumb:vertical {
   background: #b6b6b6bf;
   border-radius: 10px;
 }
+/**********************
+Header Bar css
+***********************/
 
+.account_details {
+  width: 100%;
+}
+.account_details div {
+  margin-right: 20px;
+  display: inline-block;
+}
 
+#headerbar p {
+  margin: 0;
+}
+/**********************
+Header Bar Accordion css
+***********************/
+#headerbar {
+  padding-left: 10px;
+  margin-bottom: 10px;
+}
+#headerbar .ms-Icon--ChevronDownSmall:after {
+  content: "\E96E";
+  font-family: "FabricMDL2Icons-0" !important;
+  font-size: 14px;
+  margin-left: 20px;
+}
+#headerbar .ms-Icon--ChevronUpSmall:after {
+  content: "\E96D";
+  font-family: "FabricMDL2Icons-0" !important;
+  font-size: 14px;
+  margin-left: 20px;
+}
+#headerbar .ms-Icon--ChevronRightSmall:after {
+  content: "\E970";
+  font-family: "FabricMDL2Icons-0" !important;
+  font-size: 14px;
+  margin-left: 20px;
+}
+#headerbar .ms-Icon--ChevronRightSmall:before {
+  content: " ";
+}
