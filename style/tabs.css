@@ -6,14 +6,11 @@ CSS Section Starts
 #tabs_container2 {
   width: 33.3%;
   z-index: 1000;
-  /* min-height: 100% !important; */
-  height: 100%;
   display: inline-block;
   float: left;
   height: calc(100% - (100px));
   padding: 0 10px;
 }
-
 .tabs,
 .tabs1 {
   width: 100%;
@@ -21,6 +18,7 @@ CSS Section Starts
   z-index: 1000;
   min-height: 100% !important;
   height: 100%;
+  background: #fff;
 }
 #tab1.active,
 #tab2.active {
@@ -45,7 +43,6 @@ CSS Section Starts
   margin: 0;
   z-index: 1050;
   width: 100%;
-  background: #fff;
   padding-left: 0;
 }
 .tabs #tabs-list li,
@@ -123,11 +120,6 @@ div[class*="titledivsub-"] {
   margin: 0;
   white-space: normal;
 }
-
-.container,
-#charttitle {
-  background: #fff;
-}
 .container {
   padding: 0 0 40px 0 !important;
 }
@@ -171,11 +163,15 @@ div[class*="titledivsub-"] {
 /**********************
 Slider css
 **********************/
-
+.slider_Content{
+  height: calc(100% - (100px));
+  position: relative;
+}
 .mySlides #tabs_container2,
 .mySlides #tabs_container1,
 .mySlides #tabs_container0 {
   width: 100% !important;
+  height: 100% !important;
 }
 
 .slideshow-container {
@@ -220,15 +216,14 @@ Slider css
   width: 100%;
   min-height: 100% !important;
   height: 100%;
-  background: #efefef;
 }
 .mySlides,
 .slideshowcontainer.scrollbar {
   width: 100%;
-  min-height: 100% !important;
-  height: 100%;
-  background: #efefef;
+   /* min-height: 100% !important; */
+  height: 100%; 
   padding: unset !important;
+  /* height: calc(100% - (100px)); */
 }
 .slideshowcontainer.Slider{
   padding: unset !important;
@@ -253,6 +248,7 @@ Scrollbar css
 .slideshowcontainer.scrollbar #tabs_container0 {
   width: 100% !important;
   float: unset !important;
+  margin-bottom: 20px
 }
 .slideshowcontainer.scrollbar {
   display: flex;
@@ -285,6 +281,9 @@ Header Bar css
 
 #headerbar p {
   margin: 0;
+}
+.slideshowcontainer.scrollbar .account_details div{
+  float: left;
 }
 /**********************
 Header Bar Accordion css

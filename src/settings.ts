@@ -67,9 +67,9 @@ export class ChartOptions {
   public bandBgshow: boolean = true;
   public bandBg: string = "#FFF7E2";
   public chartshow: boolean = true;
-  public charttitle: string = "";
-  public charttitle2: string = "";
-  public charttitle3: string = "";
+  public charttitle: string = "Residential";
+  public charttitle2: string = "Commercial";
+  public charttitle3: string = "Gates";
   public fontColor: string = "#C10230";
   public percentDecimal: number = 0.0;
   public percentvalfontColor: string = "#CDCECD";

@@ -484,11 +484,20 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             }
             // check for carousel or scroll 
             let tbcontainer1 = document.querySelector('.slideshowcontainer');
+            let slide_container = document.querySelector('.slider_Content');
+            console.log("slide_container",slide_container);
+
             if (carouselstate) {
                 let mySlides = document.createElement('div');
                 mySlides.className = 'mySlides';
-                tbcontainer1.appendChild(mySlides);
+                
+              slide_container.appendChild(mySlides);
                 mySlides.appendChild(tabs_container);
+               
+                // slide_container.appendChild(tabs_container);
+                // mySlides.className = 'mySlides';
+                // tbcontainer1.appendChild(mySlides);
+                // mySlides.appendChild(tabs_container);
             } else {
                 tbcontainer1.appendChild(tabs_container);
             }
@@ -673,23 +682,19 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         accounttypetext.innerHTML = this.fieldsMeta.hasAccountType ? (accounttypefilter[0].values[0]).toString() : 'Sample';
         salesmanagerlabel.innerHTML = 'Sales Manager';
         salesmanagertext.innerHTML = this.fieldsMeta.hasSalesManager ? (salesmanagerfilter[0].values[0]).toString() : 'Sample';
-       // benefitleveltext.innerHTML = this.fieldsMeta.hasBenefitlevel ? (benefitlevelfilter[0].values[0]).toString() :'Sample' ;
+        // benefitleveltext.innerHTML = this.fieldsMeta.hasBenefitlevel ? (benefitlevelfilter[0].values[0]).toString() :'Sample' ;
         if (this.fieldsMeta.hasBenefitlevel) {
-            if((benefitlevelfilter[0].values[0]).toString() === '' || (benefitlevelfilter[0].values[0]).toString() === 'Select' || (benefitlevelfilter[0].values[0]).toString() === 'Not assigned'){
-                benefitlevellabel.innerHTML = '2022 Benefit Level';
-                benefitleveltext.innerHTML = '.'
-                benefitleveltext.style.visibility = 'hidden'
-                benefitlevellabel.style.visibility = 'hidden'
-            }else{
+            if ((benefitlevelfilter[0].values[0]).toString() === '' || (benefitlevelfilter[0].values[0]).toString() === 'Select' || (benefitlevelfilter[0].values[0]).toString() === 'Not assigned') {
+                benefitleveltext.style.display = 'none'
+                benefitlevellabel.style.display = 'none'
+            } else {
                 benefitlevellabel.innerHTML = '2022 Benefit Level';
                 benefitleveltext.innerHTML = (benefitlevelfilter[0].values[0]).toString();
             }
-        }else if(!this.fieldsMeta.hasBenefitlevel){
+        } else if (!this.fieldsMeta.hasBenefitlevel) {
             benefitlevellabel.innerHTML = '2022 Benefit Level';
             benefitleveltext.innerHTML = 'Sample'
-           
         }
-       
         //append div
         headerElement.appendChild(parentname);
         headerElement.appendChild(detailElement);
@@ -707,9 +712,9 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         benefitlevel.appendChild(benefitleveltext);
         parentelement.insertBefore(headerElement, parentelement.children[0]);
         // add accordion
-        if(screensize > 600 ){
+        if (screensize > 600) {
             parentname.className = 'accordion active ms-Icon ms-Icon--ChevronUpSmall';
-        }else if(screensize <=600 || this._isPBIMobile){
+        } else if (screensize <= 600 || this._isPBIMobile) {
             parentname.className = 'accordion active ms-Icon ms-Icon--ChevronDownSmall';
         }
 
@@ -717,7 +722,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         acc.addEventListener("click", event => {
             acc.classList.toggle("active");
             var panel = <HTMLElement>acc.nextElementSibling;
-            if (screensize > 600 ){
+            if (screensize > 600) {
                 if (acc.classList.contains('active')) {
                     panel.style.display = "block";
                     parentname.classList.add('ms-Icon--ChevronUpSmall');
@@ -727,7 +732,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                     parentname.classList.add('ms-Icon--ChevronDownSmall');
                     panel.style.display = "none";
                 }
-            }else if(screensize <=600 || this._isPBIMobile) {
+            } else if (screensize <= 600 || this._isPBIMobile) {
                 if (acc.classList.contains('active')) {
                     panel.style.display = "block";
                     parentname.classList.add('ms-Icon--ChevronDownSmall');
@@ -739,12 +744,13 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                     panel.style.display = "none";
                 }
             }
-            
+
         });
     }
 
     private responsiveChart(data: Data, element: HTMLElement, selectionIdBuilder: SelectionIdBuilder, settings: VisualSettings, isPBIMobile: boolean) {
         try {
+           // this._isPBIMobile = true;
             const varcheck = document.getElementById('slideshowcontainer');
             const slideshowcontainer = document.createElement('div');
             slideshowcontainer.className = 'slideshowcontainer';
@@ -755,6 +761,10 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             } else {
                 element.appendChild(slideshowcontainer);
             }
+            const slider_Content = document.createElement('div');
+            slider_Content.className = 'slider_Content';
+            slideshowcontainer.appendChild(slider_Content);
+
             // check for Category and Business unit 
             if (!this.fieldsMeta.hasCategory) {
                 this.emptyElement(element);
@@ -768,12 +778,10 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 return false;
             }
             var screenwidth = window.innerWidth;
-
             if (this._isPBIMobile) {
                 this.removeInfoElement(element);
-
+                slider_Content.remove();
                 this.setSwitchFocusModeState(true);
-
                 let scrollbtn = settings.responsiveOptions.scrollshow;
                 const prev = document.querySelector('.prev')
                 if (prev != null) {
@@ -793,6 +801,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 this.removeInfoElement(element);
                 // for slider mobile responsive
                 document.getElementById('slideshowcontainer').className += ' Slider'
+
                 this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', data.categorical.dimensions[0].values.indexOf('RASP'));
                 this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', data.categorical.dimensions[0].values.indexOf('CAS'));
                 this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', data.categorical.dimensions[0].values.indexOf('PAS'));
@@ -800,8 +809,8 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 const next = document.createElement('a');
                 prev.className = 'prev ms-Icon ms-Icon--ChevronLeftSmall';
                 next.className = 'next ms-Icon ms-Icon--ChevronRightSmall';
-                slideshowcontainer.appendChild(prev);
-                slideshowcontainer.appendChild(next);
+                slider_Content.appendChild(prev);
+                slider_Content.appendChild(next);
                 prev.addEventListener("click", event => {
                     this.plusSlides(-1);
                 })
@@ -812,6 +821,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
 
             }
             else if (screenwidth > 600 && screenwidth <= 1100) {
+                slider_Content.remove();
                 this.removeInfoElement(element);
                 const prev = document.querySelector('.prev')
                 if (prev != null) {
@@ -828,6 +838,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('PAS'));
             }
             else {
+                slider_Content.remove();
                 this.removeInfoElement(element);
                 this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('RASP'));
                 this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('CAS'));
@@ -877,20 +888,18 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         insertingElement.appendChild(chattily);
         chattily.appendChild(spantitle);
         chattily.appendChild(spanpercentvalue);
-
         if (settings.chartOptions.chartshow !== false) {
             // Chart title Options
             chattily.id = 'charttitle';
             spantitle.id = 'spantitle';
             spanpercentvalue.id = 'spanpercentvalue';
             if (business == data.categorical.dimensions[0].values.indexOf('RASP')) {
-                spantitle.innerHTML = (settings.chartOptions.chartshow == true) ? settings.chartOptions.charttitle : settings.chartOptions.charttitle = '';
+                spantitle.innerHTML = (settings.chartOptions.chartshow == true) && settings.chartOptions.charttitle.length > 0 ? settings.chartOptions.charttitle : settings.chartOptions.charttitle = 'Residential';
             } else if (business == data.categorical.dimensions[0].values.indexOf('CAS')) {
-                spantitle.innerHTML = (settings.chartOptions.chartshow == true) ? settings.chartOptions.charttitle2 : settings.chartOptions.charttitle2 = '';
+                spantitle.innerHTML = (settings.chartOptions.chartshow == true) && settings.chartOptions.charttitle2.length > 0 ? settings.chartOptions.charttitle2 : settings.chartOptions.charttitle2 = 'Commercial';
             } else if (business == data.categorical.dimensions[0].values.indexOf('PAS')) {
-                spantitle.innerHTML = (settings.chartOptions.chartshow == true) ? settings.chartOptions.charttitle3 : settings.chartOptions.charttitle3 = '';
+                spantitle.innerHTML = (settings.chartOptions.chartshow == true) && settings.chartOptions.charttitle3.length > 0 ? settings.chartOptions.charttitle3 : settings.chartOptions.charttitle3 = 'Gates';
             }
-
             chattily.style.fontFamily = settings.chartOptions.fontfamily;
             chattily.style.fontSize = settings.chartOptions.fontSize + "px";
             chattily.style.fontWeight = settings.chartOptions.fontWeight;
@@ -898,14 +907,10 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             spanpercentvalue.style.color = settings.chartOptions.percentvalfontColor;
             chattily.style.textAlign = settings.chartOptions.textAlign;
         }
-        if (settings.chartOptions.chartshow && spantitle.innerHTML == '') {
-            spantitle.innerHTML = 'Sample';
-        }
         if (settings.chartOptions.chartshow !== false && this.fieldsMeta.hasPercentageValues && this.fieldsMeta.hasCategory) {
             const percentval = data.categorical.measures.filter(function (item) {
                 return (item.role["PercentageValues"])
             });
-
             let percentValue;
             if (percentval.length > 1) {
                 percentValue = percentval[1].values[business];
@@ -931,11 +936,8 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             } else if (percentValue == 0) {
                 decpercent = percentValue.toString() + '%';
             }
-
             const percent = (settings.chartOptions.chartshow == true && this.fieldsMeta.hasPercentageValues) ? decpercent : '';
-
             spanpercentvalue.innerHTML = percent.toString();
-
             if (percentValue == null) {
                 this.emptyElement(element)
                 UIIndicators.showErrorMessage(element, "Invalid percentage value data. Please add valid value");
