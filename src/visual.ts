@@ -136,14 +136,13 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
         isPBIDesktop: boolean;
         isPBIMobile: boolean;
         isMSBrowser: boolean;
-
-
     }) {
-
+       
         if (sampleVisual) {
             this.generateSampleVisual(element);
             return;
         } else {
+            console.log("data",data);
             this._data = data; this._element = element; this._settings = settings;
             this.__selectionIdBuilder = selectionIdBuilder; this.__isPBIMobile = this._isPBIMobile;
             this.getFieldsMeta(data);
@@ -485,19 +484,11 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             // check for carousel or scroll 
             let tbcontainer1 = document.querySelector('.slideshowcontainer');
             let slide_container = document.querySelector('.slider_Content');
-            console.log("slide_container",slide_container);
-
             if (carouselstate) {
                 let mySlides = document.createElement('div');
                 mySlides.className = 'mySlides';
-                
-              slide_container.appendChild(mySlides);
+                slide_container.appendChild(mySlides);
                 mySlides.appendChild(tabs_container);
-               
-                // slide_container.appendChild(tabs_container);
-                // mySlides.className = 'mySlides';
-                // tbcontainer1.appendChild(mySlides);
-                // mySlides.appendChild(tabs_container);
             } else {
                 tbcontainer1.appendChild(tabs_container);
             }
@@ -510,8 +501,9 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
 
     private getNumberFormattingSettings(numberFormatSettings: any, settings: VisualSettings) {
         let noOfDecimal, scalingFactor, prefix, suffix;
+        console.log("numberFormatSettings.scalingFactor",numberFormatSettings);
         if (numberFormatSettings && numberFormatSettings.showMeasureLabel) {
-            scalingFactor = numberFormatSettings.scalingFactor != undefined ? numberFormatSettings.scalingFactor : 'none';
+            scalingFactor = numberFormatSettings.scalingFactor != undefined ? numberFormatSettings.scalingFactor : '100';
             noOfDecimal = numberFormatSettings.noOfDecimal != undefined ? numberFormatSettings.noOfDecimal : 2;
             suffix = numberFormatSettings.suffix != undefined ? numberFormatSettings.suffix : '';
             prefix = numberFormatSettings.prefix != undefined ? numberFormatSettings.prefix : '';
@@ -569,7 +561,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                     scalingFactor, prefix, suffix, noOfDecimal, autoScalingFactor: dataViewMeasure.scalingFactor,
                     ruleKey: dataViewMeasure.ruleKeys && dataViewMeasure.ruleKeys[index] ? dataViewMeasure.ruleKeys[index] : null,
                     cfApplied: true,
-                    ispercentagepoint: scalingFactor == "100" ? true : false,
+                    ispercentagepoint: Object.values(categoriesObject).includes('RASP') && scalingFactor == "100" ? true : false,
                     role: dataViewMeasure.role,
                     dataLabels: {
                         enabled: screenwidth > 300 ? settings.dataLabels.show : !settings.dataLabels.show,
@@ -601,6 +593,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             }
             seriesData.push(seriesItem);
         }
+        console.log("seriesData",seriesData);
         return seriesData;
     }
 
@@ -688,11 +681,11 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 benefitleveltext.style.display = 'none'
                 benefitlevellabel.style.display = 'none'
             } else {
-                benefitlevellabel.innerHTML = '2022 Benefit Level';
+                benefitlevellabel.innerHTML = new Date().getFullYear() + ' Benefit Level';
                 benefitleveltext.innerHTML = (benefitlevelfilter[0].values[0]).toString();
             }
         } else if (!this.fieldsMeta.hasBenefitlevel) {
-            benefitlevellabel.innerHTML = '2022 Benefit Level';
+            benefitlevellabel.innerHTML = 'Benefit Level';
             benefitleveltext.innerHTML = 'Sample'
         }
         //append div
@@ -750,7 +743,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
 
     private responsiveChart(data: Data, element: HTMLElement, selectionIdBuilder: SelectionIdBuilder, settings: VisualSettings, isPBIMobile: boolean) {
         try {
-           // this._isPBIMobile = true;
+            // this._isPBIMobile = true;
             const varcheck = document.getElementById('slideshowcontainer');
             const slideshowcontainer = document.createElement('div');
             slideshowcontainer.className = 'slideshowcontainer';

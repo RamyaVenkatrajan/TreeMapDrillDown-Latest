@@ -284,7 +284,10 @@ Header Bar css
 }
 .slideshowcontainer.scrollbar .account_details div{
   float: left;
+}.slideshowcontainer.scrollbar.mid .account_details div{
+  float: unset !important;
 }
+
 /**********************
 Header Bar Accordion css
 ***********************/

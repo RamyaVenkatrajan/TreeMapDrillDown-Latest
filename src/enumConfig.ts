@@ -213,7 +213,7 @@ export class EnumConfig {
                             return "";
                         }
                     },
-                    defaultValue: [false, 2, "auto", " ", " "],
+                    defaultValue: [false, 2, "100", " ", " "],
                     getValidValues: (settings, measureObject, propertyName) => {
                         if (propertyName === "noOfDecimal") {
                             return {
@@ -231,7 +231,6 @@ export class EnumConfig {
                         //Bug-Fix[PBX-1028] - Only measures should be iterated
                         if (metaData[measureObj.name] && metaData[measureObj.name]["type"]) {
                             if (!metaData[measureObj.name]["type"]['numeric']) //Hide if measure's type is not numeric
-
                                 return false;
                         }
                         if (propName === "showMeasureLabel") {

@@ -72,7 +72,7 @@
             "kind": "Measure"
         },
         {
-            "displayName": "2022 Benefit Level",
+            "displayName": "Benefit Level",
             "name": "benefitlevel",
             "kind": "Measure"
         }
