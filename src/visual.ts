@@ -280,7 +280,7 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             tabs.appendChild(tabl1div);
             tabs.appendChild(tabl2div);
             tabs_container.appendChild(tabs);
-            const errorElement = document.getElementById(`tabs_container${index}`);
+            const errorElement = document.getElementById(`tabs_container`);
             if (errorElement != null) {
                 errorElement.parentNode.removeChild(errorElement);
                 element.appendChild(tabs_container);
@@ -501,7 +501,6 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
 
     private getNumberFormattingSettings(numberFormatSettings: any, settings: VisualSettings) {
         let noOfDecimal, scalingFactor, prefix, suffix;
-        console.log("numberFormatSettings.scalingFactor",numberFormatSettings);
         if (numberFormatSettings && numberFormatSettings.showMeasureLabel) {
             scalingFactor = numberFormatSettings.scalingFactor != undefined ? numberFormatSettings.scalingFactor : '100';
             noOfDecimal = numberFormatSettings.noOfDecimal != undefined ? numberFormatSettings.noOfDecimal : 2;
@@ -593,7 +592,6 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
             }
             seriesData.push(seriesItem);
         }
-        console.log("seriesData",seriesData);
         return seriesData;
     }
 
@@ -743,7 +741,34 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
 
     private responsiveChart(data: Data, element: HTMLElement, selectionIdBuilder: SelectionIdBuilder, settings: VisualSettings, isPBIMobile: boolean) {
         try {
-            // this._isPBIMobile = true;
+            let raspvalue = data.categorical.dimensions[0].values.includes('RASP');
+            let casvalue = data.categorical.dimensions[0].values.includes('CAS');
+            let paspvalue = data.categorical.dimensions[0].values.includes('PAS');
+
+            let firstchartview,secchartview,thridchartview;
+            if(settings.chartOptions.chart1 == "RASP" && raspvalue){
+                firstchartview = data.categorical.dimensions[0].values.indexOf('RASP');
+            }else if(settings.chartOptions.chart1 == "CAS" && casvalue){
+                firstchartview = data.categorical.dimensions[0].values.indexOf('CAS');
+            } else if(settings.chartOptions.chart1 == "PAS" && paspvalue){
+                firstchartview = data.categorical.dimensions[0].values.indexOf('PAS');
+            }
+
+            if(settings.chartOptions.chart2 == "RASP" && raspvalue){
+                secchartview = data.categorical.dimensions[0].values.indexOf('RASP');
+            }else if(settings.chartOptions.chart2 == "CAS" && casvalue){
+                secchartview = data.categorical.dimensions[0].values.indexOf('CAS');
+            } else if(settings.chartOptions.chart2 == "PAS" && paspvalue){
+                secchartview = data.categorical.dimensions[0].values.indexOf('PAS');
+            }
+          
+            if(settings.chartOptions.chart3 == "RASP" && raspvalue){
+                thridchartview = data.categorical.dimensions[0].values.indexOf('RASP');
+            }else if(settings.chartOptions.chart3 == "CAS" && casvalue){
+                thridchartview = data.categorical.dimensions[0].values.indexOf('CAS');
+            } else if(settings.chartOptions.chart3 == "PAS" && paspvalue){
+                thridchartview = data.categorical.dimensions[0].values.indexOf('PAS');
+            }
             const varcheck = document.getElementById('slideshowcontainer');
             const slideshowcontainer = document.createElement('div');
             slideshowcontainer.className = 'slideshowcontainer';
@@ -785,19 +810,16 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                     next.parentNode.removeChild(next);
                 }
                 document.getElementById('slideshowcontainer').className += ' scrollbar'
-
-                this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('RASP'));
-                this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('CAS'));
-                this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('PAS'));
-
+                this.generateData(data, element, selectionIdBuilder, settings, null, firstchartview);
+                this.generateData(data, element, selectionIdBuilder, settings, null, secchartview);
+                this.generateData(data, element, selectionIdBuilder, settings, null, thridchartview);
             } else if (screenwidth <= 600) {
                 this.removeInfoElement(element);
                 // for slider mobile responsive
                 document.getElementById('slideshowcontainer').className += ' Slider'
-
-                this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', data.categorical.dimensions[0].values.indexOf('RASP'));
-                this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', data.categorical.dimensions[0].values.indexOf('CAS'));
-                this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', data.categorical.dimensions[0].values.indexOf('PAS'));
+                this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', firstchartview);
+                this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', secchartview);
+                this.generateData(data, element, selectionIdBuilder, settings, 'mySlides', thridchartview);
                 const prev = document.createElement('a');
                 const next = document.createElement('a');
                 prev.className = 'prev ms-Icon ms-Icon--ChevronLeftSmall';
@@ -811,7 +833,6 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                     this.plusSlides(1);
                 })
                 this.showSlides(this.slideIndex);
-
             }
             else if (screenwidth > 600 && screenwidth <= 1100) {
                 slider_Content.remove();
@@ -826,16 +847,16 @@ export class TreeMapDrilldownChart extends BifrostVisual.BifrostVisual {
                 }
                 // for scroll responsive - mid devices
                 document.getElementById('slideshowcontainer').className += ' scrollbar mid'
-                this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('RASP'));
-                this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('CAS'));
-                this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('PAS'));
+                this.generateData(data, element, selectionIdBuilder, settings, null, firstchartview);
+                this.generateData(data, element, selectionIdBuilder, settings, null, secchartview);
+                this.generateData(data, element, selectionIdBuilder, settings, null, thridchartview);
             }
             else {
                 slider_Content.remove();
                 this.removeInfoElement(element);
-                this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('RASP'));
-                this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('CAS'));
-                this.generateData(data, element, selectionIdBuilder, settings, null, data.categorical.dimensions[0].values.indexOf('PAS'));
+                this.generateData(data, element, selectionIdBuilder, settings, null, firstchartview);
+                this.generateData(data, element, selectionIdBuilder, settings, null, secchartview);
+                this.generateData(data, element, selectionIdBuilder, settings, null, thridchartview);
             }
             this.headerdetails(data, settings);
         }

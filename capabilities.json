@@ -541,6 +541,63 @@
         "chartOptions": {
             "displayName": "Chart Options",
             "properties": {
+                "chart1": {
+                    "displayName": "Chart 1",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "RASP",
+                                "value": "RASP"
+                            },
+                            {
+                                "displayName": "CAS",
+                                "value": "CAS"
+                            },
+                            {
+                                "displayName": "PAS",
+                                "value": "PAS"
+                            }
+                        ]
+                    }
+                },
+                "chart2": {
+                    "displayName": "Chart 2",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "RASP",
+                                "value": "RASP"
+                            },
+                            {
+                                "displayName": "CAS",
+                                "value": "CAS"
+                            },
+                            {
+                                "displayName": "PAS",
+                                "value": "PAS"
+                            }
+                        ]
+                    }
+                },
+                "chart3": {
+                    "displayName": "Chart 3",
+                    "type": {
+                        "enumeration": [
+                            {
+                                "displayName": "RASP",
+                                "value": "RASP"
+                            },
+                            {
+                                "displayName": "CAS",
+                                "value": "CAS"
+                            },
+                            {
+                                "displayName": "PAS",
+                                "value": "PAS"
+                            }
+                        ]
+                    }
+                },
                 "bandBgshow": {
                     "description": "Enable Band Background",
                     "displayName": "Show Band Background",

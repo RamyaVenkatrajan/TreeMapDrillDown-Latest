@@ -64,6 +64,9 @@ export class HeaderOptions{
 
 }
 export class ChartOptions {
+  public chart1: string = "RASP";
+  public chart2: string = "CAS";
+  public chart3: string = "PAS";
   public bandBgshow: boolean = true;
   public bandBg: string = "#FFF7E2";
   public chartshow: boolean = true;
