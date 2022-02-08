@@ -138,17 +138,11 @@
             },
             "conditions": [
                 {
-                    "category":{
+                    "category": {
                         "max": 1
                     },
                     "BusinessUnit": {
                         "max": 1
-                    },
-                    "Values1": {
-                        "max": 4
-                    },
-                    "Values3": {
-                        "max": 4
                     },
                     "PercentageValues": {
                         "max": 1
@@ -172,7 +166,6 @@
             ]
         }
     ],
-   
     "objects": {
         "license": {
             "displayName": "License",
@@ -203,7 +196,7 @@
                 }
             }
         },
-        "responsiveOptions":{
+        "responsiveOptions": {
             "displayName": "Responsive Options",
             "properties": {
                 "scrollshow": {
@@ -215,7 +208,7 @@
                 }
             }
         },
-        "headerOptions":{
+        "headerOptions": {
             "displayName": "Header Options",
             "properties": {
                 "headerfontfamily": {
@@ -596,6 +589,42 @@
                                 "value": "PAS"
                             }
                         ]
+                    }
+                },
+                "chart1kpi1": {
+                    "displayName": "No of KPI - Tab1 Chart 1",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "chart1kpi2": {
+                    "displayName": "No of KPI - Tab2 Chart 1",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "chart2kpi1": {
+                    "displayName": "No of KPI - Tab1 chart 2",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "chart2kpi2": {
+                    "displayName": "No of KPI - Tab2 chart 2",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "chart3kpi1": {
+                    "displayName": "No of KPI -Tab1 chart 3",
+                    "type": {
+                        "numeric": true
+                    }
+                },
+                "chart3kpi2": {
+                    "displayName": "No of KPI -Tab2 chart 3",
+                    "type": {
+                        "numeric": true
                     }
                 },
                 "bandBgshow": {
@@ -1327,7 +1356,7 @@
                     }
                 },
                 "markerSymbol": {
-                    "description":"Marker Symbol for data label formats",
+                    "description": "Marker Symbol for data label formats",
                     "displayName": "Marker Symbol",
                     "type": {
                         "enumeration": [
@@ -1355,14 +1384,14 @@
                     }
                 },
                 "markerRadius": {
-                    "description":"Marker Radius for data label formats",
+                    "description": "Marker Radius for data label formats",
                     "displayName": "Marker Radius",
                     "type": {
                         "numeric": true
                     }
                 },
                 "markerfillcolor": {
-                    "description":"Marker coloring for data label formats",
+                    "description": "Marker coloring for data label formats",
                     "displayName": "Marker color",
                     "type": {
                         "fill": {

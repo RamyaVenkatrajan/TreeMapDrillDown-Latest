@@ -30,7 +30,7 @@ import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 export class VisualSettings extends DataViewObjectsParser {
   public bifrostSection = new BifrostSection();
   public license = new License();
-  public responsiveOptions =new ResponsiveOptions();
+  public responsiveOptions = new ResponsiveOptions();
   public headerOptions = new HeaderOptions();
   public chartOptions = new ChartOptions();
   public tabtitleOptions = new TabtitleOptions();
@@ -49,7 +49,7 @@ export class License {
 export class ResponsiveOptions {
   public scrollshow: boolean = true;
 }
-export class HeaderOptions{
+export class HeaderOptions {
   public headerfontfamily: string = "Arial, Helvetica, sans-serif";
   public headerfontColor: string = "#000";
   public headerfontSize: number = 32.0;
@@ -67,6 +67,12 @@ export class ChartOptions {
   public chart1: string = "RASP";
   public chart2: string = "CAS";
   public chart3: string = "PAS";
+  public chart1kpi1: number = 3;
+  public chart1kpi2: number = 3;
+  public chart2kpi1: number = 3;
+  public chart2kpi2: number = 3;
+  public chart3kpi1: number = 4;
+  public chart3kpi2: number = 3;
   public bandBgshow: boolean = true;
   public bandBg: string = "#FFF7E2";
   public chartshow: boolean = true;
@@ -138,7 +144,7 @@ export class NumberFormat {
 
 export class ValidValues {
   static sections = [
-    
+
     {
       name: "numberformat",
       properties: [
@@ -167,7 +173,7 @@ export class ValidValues {
       ]
     },
     {
-      name:'headerOptions',
+      name: 'headerOptions',
       properties: [
         {
           name: "headerfontSize",

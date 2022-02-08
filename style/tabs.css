@@ -1,16 +1,14 @@
 /**********************
 CSS Section Starts
 **********************/
-#tabs_container0,
-#tabs_container1,
-#tabs_container2 {
+[id^="tabs_container"] {
   width: 33.3%;
   z-index: 1000;
   display: inline-block;
-  float: left;
   height: calc(100% - (100px));
   padding: 0 10px;
 }
+
 .tabs,
 .tabs1 {
   width: 100%;
@@ -89,13 +87,11 @@ div[class*="titledivsub-"] {
   justify-content: center;
 }
 .container,
-.wrapper,
-.wrapper1 {
+.wrapper {
   height: 100%;
   width: 100%;
 }
-#titlediv,
-#titlediv1 {
+#titlediv {
   display: flex;
   height: 100%;
   justify-content: space-between;
@@ -163,17 +159,14 @@ div[class*="titledivsub-"] {
 /**********************
 Slider css
 **********************/
-.slider_Content{
+.slider_Content {
   height: calc(100% - (100px));
   position: relative;
 }
-.mySlides #tabs_container2,
-.mySlides #tabs_container1,
-.mySlides #tabs_container0 {
+.mySlides div[id^="tabs_container"] {
   width: 100% !important;
   height: 100% !important;
 }
-
 .slideshow-container {
   max-width: 1000px;
   position: relative;
@@ -196,7 +189,6 @@ Slider css
   right: 0;
   border-radius: 3px 0 0 3px;
 }
-
 .prev:hover,
 .next:hover,
 .prev:active,
@@ -204,7 +196,6 @@ Slider css
   color: #8e8e8e !important;
   text-decoration: none !important;
 }
-
 .mySlides .container {
   display: flex;
 }
@@ -216,39 +207,38 @@ Slider css
   width: 100%;
   min-height: 100% !important;
   height: 100%;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  overflow-y: hidden;
 }
 .mySlides,
 .slideshowcontainer.scrollbar {
   width: 100%;
-   /* min-height: 100% !important; */
-  height: 100%; 
+  height: 100%;
   padding: unset !important;
-  /* height: calc(100% - (100px)); */
 }
-.slideshowcontainer.Slider{
+.slideshowcontainer.Slider {
   padding: unset !important;
+  overflow: unset !important;
+  white-space: unset !important;
 }
 /**********************
 Scrollbar css
 **********************/
-
 .slideshowcontainer.scrollbar.mid {
   display: block;
   overflow-x: auto;
   white-space: nowrap;
   overflow-y: hidden;
 }
-.slideshowcontainer.scrollbar.mid #tabs_container2,
-.slideshowcontainer.scrollbar.mid #tabs_container1,
-.slideshowcontainer.scrollbar.mid #tabs_container0 {
+.slideshowcontainer.scrollbar.mid div[id^="tabs_container"] {
   width: 50% !important;
 }
-.slideshowcontainer.scrollbar #tabs_container2,
-.slideshowcontainer.scrollbar #tabs_container1,
-.slideshowcontainer.scrollbar #tabs_container0 {
+.slideshowcontainer.scrollbar div[id^="tabs_container"] {
   width: 100% !important;
   float: unset !important;
-  margin-bottom: 20px
+  margin-bottom: 20px;
 }
 .slideshowcontainer.scrollbar {
   display: flex;
@@ -257,7 +247,6 @@ Scrollbar css
   white-space: nowrap;
   overflow-x: hidden;
 }
-
 ::-webkit-scrollbar {
   height: 6px;
   width: 4px;
@@ -270,7 +259,6 @@ Scrollbar css
 /**********************
 Header Bar css
 ***********************/
-
 .account_details {
   width: 100%;
 }
@@ -278,13 +266,13 @@ Header Bar css
   margin-right: 20px;
   display: inline-block;
 }
-
 #headerbar p {
   margin: 0;
 }
-.slideshowcontainer.scrollbar .account_details div{
+.slideshowcontainer.scrollbar .account_details div {
   float: left;
-}.slideshowcontainer.scrollbar.mid .account_details div{
+}
+.slideshowcontainer.scrollbar.mid .account_details div {
   float: unset !important;
 }
 

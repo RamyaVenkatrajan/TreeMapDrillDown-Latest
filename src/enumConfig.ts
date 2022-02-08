@@ -196,8 +196,8 @@ export class EnumConfig {
                 {
                     name: ['showMeasureLabel', 'noOfDecimal', 'scalingFactor', 'prefix', 'suffix'],
                     type: SettingsSchemaTypeDef.PropertyType.ITERATOR,
-                    iteratorType: SettingsSchemaTypeDef.IteratorType.MEASURE,
-                    roles: ["Values1", "Values3",],
+                    iteratorType: SettingsSchemaTypeDef.IteratorType.GROUP,
+                    roles: ["category"],
                     getIteratorText: (techName, meaName) => {
                         if (techName === "showMeasureLabel") {
                             return meaName;
@@ -227,21 +227,23 @@ export class EnumConfig {
                         }
                     },
                     isIteratorVisible: (settings, measureObj, propName) => {
-
+                      //  debugger
+                        return true;
                         //Bug-Fix[PBX-1028] - Only measures should be iterated
-                        if (metaData[measureObj.name] && metaData[measureObj.name]["type"]) {
-                            if (!metaData[measureObj.name]["type"]['numeric']) //Hide if measure's type is not numeric
-                                return false;
-                        }
-                        if (propName === "showMeasureLabel") {
-                            return true;
-                        } else {
-                            if ((measureObj && measureObj.settings && measureObj.settings.numberformat && measureObj.settings.numberformat.showMeasureLabel)) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }
+                        // if (metaData[measureObj.name] && metaData[measureObj.name]["type"]) {
+                        //     if (!metaData[measureObj.name]["type"]['numeric']) //Hide if measure's type is not numeric
+                        //         return false;
+                        // }
+                        // if (propName === "showMeasureLabel") {
+                        //     return true;
+                        // } 
+                        // else {
+                        //     if ((measureObj && measureObj.settings && measureObj.settings.numberformat && measureObj.settings.numberformat.showMeasureLabel)) {
+                        //         return true;
+                        //     } else {
+                        //         return false;
+                        //     }
+                        // }
                     },
                     isVisible: () => {
                         return true;
